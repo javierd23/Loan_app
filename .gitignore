@@ -1,0 +1,39 @@
+# === Python general ===
+__pycache__/
+*.py[cod]
+*.so
+*.log
+
+# === Django specific ===
+db.sqlite3
+*.sqlite3
+.env
+*.pot
+*.pyc
+
+# === Virtual environments ===
+venv/
+env/
+ENV/
+.venv/
+
+# === Django migrations (optional, unless you're sharing them) ===
+**/migrations/
+!**/migrations/__init__.py
+
+# === Static & media files (if auto-generated) ===
+staticfiles/
+media/
+
+# === VS Code ===
+.vscode/
+
+# === PyCharm ===
+.idea/
+
+# === macOS ===
+.DS_Store
+
+# === Windows ===
+Thumbs.db
+ehthumbs.db
