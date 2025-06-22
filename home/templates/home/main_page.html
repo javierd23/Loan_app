@@ -6,20 +6,22 @@
 
 <main>
   <h1>TuCuotaRD</h1>
-    <p>Calcula tus prestamos.</p>
+    <p>Calcula tus préstamos de forma fácil y rápida con nosotros.</p>
 </main>
-<h2>Seleciona el tipo de prestamo que quieres calcular:</h2>
+<h3>Selecciona el tipo de préstamo que deseas calcular:</h3>
   <div id="bank">
-    <h3>Prestamos Bancario</h3>
-    <img src="">
+    <h4>Prestamos Bancario</h4>
+    <a href="{% url 'loan:bank' %}">
+      <img src="bank.jpeg" alt="bank" width="100" height="100">
+    </a>
+  </div>
+  <div id="no_bank">
+    <h4>Prestamos no Bancario</h4>
+    <br>
+    <a href="{% url 'loan:no_bank' %}">
+      <img src="no_bank.jpeg" alt="no_bank" width="100" height="100">
+    </a>
     
   </div>
-  
-
-
-
 {% endblock content %}
 
-
-</body>
-</html>

@@ -1,10 +1,13 @@
+from http.client import responses
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
+def bank(request):
+    return render(request, "loan/bank.html")
 
-def index(request):
-    return HttpResponse("Hello, world. You are seening the first app t"
-                        "hat will calculte your loan for you.")
+
+def no_bank(request):
+    return render(request, "loan/no_bank.html")
 
 
 

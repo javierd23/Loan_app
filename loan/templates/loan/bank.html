@@ -1,0 +1,63 @@
+{% extends 'base_loan.html' %}
+
+{% block title %}Bank{% endblock title %}
+
+{% block content %}
+<h1>Préstamos bancarios</h1>
+  <p>Préstamos bancarios son financiamientos otorgados por instituciones financieras
+    reguladas, como bancos múltiples o asociaciones de ahorro y préstamo, que permiten a
+    personas o empresas acceder a una suma de dinero a cambio de
+    pagarla en cuotas mensuales, incluyendo intereses, durante un período determinado.</p>
+  <main>
+    <h2>Características comunes de los préstamos bancarios en RD:</h2>
+      <ul>
+        <li><strong>Interés fijo o variable</strong> (según el tipo de préstamo)</li>
+        <li><strong>Cuotas mensuales</strong> (usualmente bajo sistema francés de amortización)</li>
+        <li><strong>Plazos variados</strong> (desde 6 meses hasta 20 años o más)</li>
+        <li><strong>Requisitos:</strong> historial crediticio, ingresos comprobables, garantía en algunos casos</li>
+        <li><strong>Regulados por:</strong>
+          <a href="https://www.sb.gob.do/" target="_blank">la Superintendencia de Bancos (SB) y sujetos a normas de la Junta Monetaria</a>
+        </li>
+      </ul>
+  </main>
+<div id = "bank_form">
+  <form method="POST" action="bank.html">
+  {% csrf_token %}
+    <label for="amount">Monto del préstamo:</label>
+      <input type="number" id="amount" name="loan_amount" min="10" step="10">
+    <br>
+    <label for="rate">Interés anual:</label>
+      <input type="number" id="rate" name="loan_rate" min="10" step="10">
+    <br>
+    <label for="months">Cuotas:</label>
+      <input type="number" id="months" name="loan_months" min="10" step="10">
+    <br>
+    <input type="submit" value="Calcular">
+    <section class="notes">
+      <h4>Los resultados de esta simulación son aproximados.</h4>
+        <ul>
+          <li>
+            <h5>Variaciones en las tasas de interés</h5>
+              <p>Los bancos pueden tener tasas promocionales, tasas variables, o cambiar condiciones sin previo aviso.</p>
+          </li>
+          <li>
+            <h5>Comisiones y cargos ocultos</h5>
+              <p>Algunos préstamos incluyen cargos por apertura, seguros obligatorios o
+                gastos legales que no siempre se reflejan en el interés nominal.</p>
+          </li>
+          <li>
+            <h5>Cambios en condiciones del préstamo</h5>
+              <p>Si haces pagos adelantados, reestructuraciones o cancelaciones anticipadas, el cálculo se modifica.</p>
+          </li>
+          <li>
+            <h5>En caso de ser un préstamo hipotecario</h5>
+              <p>En caso de préstamos hipotecarios, la cuota mensual aumentaría producto del seguro
+                de vida y de propiedad, no incluidos en el cálculo.</p>
+          </li>
+        </ul>
+    </section>
+  </form>
+
+</div>
+
+{% endblock  %}

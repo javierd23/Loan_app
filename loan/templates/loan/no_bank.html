@@ -1,0 +1,46 @@
+{% extends 'base_loan.html' %}
+
+{% block title %}Bank{% endblock title %}
+
+{% block content %}
+<h1>Préstamos no bancarios</h1>
+<p><strong>Préstamos no bancarios</strong> son aquellos que se otorgan fuera del sistema financiero tradicional (bancos).
+    Los otorgan entidades como cooperativas, financieras, prestamistas privados, empresas de microcrédito
+    o plataformas digitales. Aunque cumplen funciones similares,
+    suelen tener condiciones más flexibles, pero también pueden tener mayores riesgos o intereses más altos.
+  </p>
+<nav>
+  <h3>Características principales:</h3>
+    <ul>
+      <li><strong>Entidad:</strong> No es un banco. Puede ser una financiera, cooperativa, empresa privada o persona física.</li>
+      <li><strong>Acceso rápido:</strong> Menos requisitos, ideal para personas sin historial bancario o con urgencias.</li>
+      <li><strong>Intereses:</strong> A menudo son más altos que los bancarios.</li>
+      <li><strong>Flexibilidad:</strong> Plazos de pago y montos más personalizados, pero con menor regulación.</li>
+      <li><strong>Riesgos:</strong> Algunos no están regulados formalmente, por lo que es importante leer bien las condiciones.</li>
+    </ul>
+  <p>En muchos paises, muchas personas recurren a financieras, prestamistas informales o cooperativas como alternativa a los bancos,
+    especialmente cuando necesitan dinero rápido y no califican para un préstamo bancario tradicional.</p>
+</nav>
+
+<div id = "nobank">
+  <form method="post" action="no_bank.html">
+    {% csrf_token %}
+    <label for="amount">Monto del préstamo:</label>
+      <input type="number" id="amount" name="amount" min="10" step="10">
+    <br>
+    <label for="payments">Pagos al préstamo:</label>
+      <input type="number" id="payments" name="payments" min="10" step="10">
+    <br>
+    <label for="interest">Interés del Préstamo:</label>
+      <input type="number" id="interest" name="interest" min="10" step="10">
+    <br>
+    <input type="submit" value="Calcular">
+  </form>
+
+  <p>Los <strong>pagos del préstamo</strong> deben ajustarse a lo que estés realmente dispuesto y capaz de pagar por tu préstamo mensualmente.
+    Esto nos permite calcular un plazo de pago específico según el monto que te comprometas a cubrir cada mes.</p>
+
+</div>
+
+
+{% endblock  %}
