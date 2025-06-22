@@ -21,18 +21,43 @@
       </ul>
   </main>
 <div id = "bank_form">
-  <form method="POST" action="bank.html">
+  <form method="POST">
   {% csrf_token %}
     <label for="amount">Monto del préstamo:</label>
-      <input type="number" id="amount" name="loan_amount" min="10" step="10">
+      <input type="number" id="amount" name="loan_amount" min="1" step="1">
     <br>
     <label for="rate">Interés anual:</label>
-      <input type="number" id="rate" name="loan_rate" min="10" step="10">
+      <input type="number" id="rate" name="loan_rate" min="1" step="1">
     <br>
     <label for="months">Cuotas:</label>
-      <input type="number" id="months" name="loan_months" min="10" step="10">
+      <input type="number" id="months" name="loan_months" min="1" step="1">
     <br>
     <input type="submit" value="Calcular">
+  </form>
+
+{% if result %}
+  Este es el resultado de la préstamo:
+  {% for loan in result %}
+  <table>
+  <tr>
+    <th>Mes</th>
+    <th>Pago mensual</th>
+    <th>Pago al capital</th>
+    <th>Pago de interés</th>
+    <th>Balance</th>
+  </tr>
+  <tr>
+    <td>{{ loan.month}}</td>
+    <td>${{loan.monthly_payment}}</td>
+    <td>${{loan.principal}}</td>
+    <td>${{loan.interest}}</td>
+    <td>${{loan.remaining_balance}}</td>
+  </tr>
+
+</table>
+  {% endfor %}
+  {% endif %}
+
     <section class="notes">
       <h4>Los resultados de esta simulación son aproximados.</h4>
         <ul>
@@ -56,7 +81,8 @@
           </li>
         </ul>
     </section>
-  </form>
+
+
 
 </div>
 

@@ -42,7 +42,7 @@ class Loans:
 
 #In this program we will call culculate the quote for a bank loan.
 
-class Bank():
+class Bank:
     def __init__(self, loan, rate, months):
         self.loan_amount = loan
         self.months = months
@@ -66,13 +66,13 @@ class Bank():
             pay_month = month_pay- desc_pay
             months_count +=  1
 
-            total.append([
+            total.append(
                 {"month":math.ceil(months_count),
                  "monthly_payment":math.ceil(month_pay),
                  "principal": math.ceil(pay_month),
                  "interest": math.ceil(desc_pay),
                  "remaining_balance": math.ceil(self.loan_amount)}
-                ])
+                )
 
             if self.loan_amount  <= 0: break
         return total
