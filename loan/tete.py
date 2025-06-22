@@ -77,8 +77,8 @@ class Bank:
             if self.loan_amount  <= 0: break
         return total
 
-result = Bank(100000,5, 40)
-print(result.bank_loan())
+#result = Bank(100000,5, 40)
+#print(result.bank_loan())
 
 
 
