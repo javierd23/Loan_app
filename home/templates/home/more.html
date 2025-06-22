@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
-  <nav>
-    <a href="{% url 'home:about_page' %}">Nosotros</a>
-    <a href="{% url 'home:more_page' %}">Mas+</a>
-    <a href="{% url 'home:contact_page' %}">Contactos</a>
-  <h1><a href="{% url 'home:home' %}"><img src="logo.png" alt="Logo de tuCuotaRD" width="100" height="100"></a></h1>
-  </nav>
+{% extends 'base.html' %}
+
+{% block title %}Home page{% endblock title %}
+
+{% block content %}
   <h1>Que debo saber antes de tomar un prestamo.</h1>
     <ol>
       <li>
@@ -105,5 +97,4 @@
         </ol>
   </main>
 
-</body>
-</html>
+{% endblock content %}

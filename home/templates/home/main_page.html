@@ -1,23 +1,24 @@
-<!DOCTYPE html>
-<html lang="ES">
-<head>
-  <meta charset="UTF-8">
-  <title>TuCuotaRD</title>
-</head>
-<body>
-  <nav>
-    <a href="{% url 'home:about_page' %}">Nosotros</a>
-    <a href="{% url 'home:more_page' %}">Mas+</a>
-    <a href="{% url 'home:contact_page' %}">Contactos</a>
-  <h1><a href="{% url 'home:home' %}"><img src="logo.png" alt="Logo de tuCuotaRD" width="100" height="100"></a></h1>
-  </nav>
+{% extends 'base.html' %}
 
+{% block title %}Home page{% endblock title %}
+
+{% block content %}
+
+<main>
   <h1>TuCuotaRD</h1>
-    <p>La calculadora de tus prestamos.</p>
+    <p>Calcula tus prestamos.</p>
+</main>
+<h2>Seleciona el tipo de prestamo que quieres calcular:</h2>
+  <div id="bank">
+    <h3>Prestamos Bancario</h3>
+    <img src="">
+    
+  </div>
+  
 
 
 
-
+{% endblock content %}
 
 
 </body>
