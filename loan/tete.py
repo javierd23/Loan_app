@@ -63,22 +63,28 @@ class Bank:
             desc_amount = self.loan_amount - dec_pay
             self.loan_amount = desc_amount
             desc_pay = interest_rat * self.loan_amount
-            pay_month = month_pay- desc_pay
+            pay_month = month_pay - desc_pay
             months_count +=  1
 
             total.append(
-                {"month":math.ceil(months_count),
-                 "monthly_payment":math.ceil(month_pay),
-                 "principal": math.ceil(pay_month),
-                 "interest": math.ceil(desc_pay),
-                 "remaining_balance": math.ceil(self.loan_amount)}
+                {"month": months_count,
+                 "monthly_payment": round(month_pay, 2),
+                 "principal": round(pay_month, 2),
+                 "interest": round(desc_pay, 2),
+                 "remaining_balance": round(max(self.loan_amount, 0), 2)}
                 )
 
             if self.loan_amount  <= 0: break
-        return total
+        return {
+        "schedule": total,
+        "month_pay": round(month_pay, 2),
+        "loan_amount": round(self.loan_amount, 2),
+        "interest_rate": round(self.loan_interest, 2),  # Back to %
+        "months": self.months
+    }
 
-#result = Bank(100000,5, 40)
-#print(result.bank_loan())
+result = Bank(100000,5, 40)
+print(result.bank_loan())
 
 
 

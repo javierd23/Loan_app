@@ -24,39 +24,54 @@
   <form method="POST">
   {% csrf_token %}
     <label for="amount">Monto del préstamo:</label>
-      <input type="number" id="amount" name="loan_amount" min="1" step="1">
+      <input type="number" id="amount" name="loan_amount" min="1" step="1" required>
     <br>
     <label for="rate">Interés anual:</label>
-      <input type="number" id="rate" name="loan_rate" min="1" step="1">
+      <input type="number" id="rate" name="loan_rate" min="1" step="1" required>
     <br>
     <label for="months">Cuotas:</label>
-      <input type="number" id="months" name="loan_months" min="1" step="1">
+      <input type="number" id="months" name="loan_months" min="1" step="1" required>
     <br>
     <input type="submit" value="Calcular">
   </form>
+</div>
 
 {% if result %}
-  Este es el resultado de la préstamo:
-  {% for loan in result %}
-  <table>
-  <tr>
-    <th>Mes</th>
-    <th>Pago mensual</th>
-    <th>Pago al capital</th>
-    <th>Pago de interés</th>
-    <th>Balance</th>
-  </tr>
-  <tr>
-    <td>{{ loan.month}}</td>
-    <td>${{loan.monthly_payment}}</td>
-    <td>${{loan.principal}}</td>
-    <td>${{loan.interest}}</td>
-    <td>${{loan.remaining_balance}}</td>
-  </tr>
+<div class="summary">
+    <h3>Resultado:</h3>
+    <p>
+      La cuota mensual sería de:<br>
+      <strong>${{ result.monthly_payment|floatformat:2 }}</strong><br>
+      Considerando un monto de <strong>${{ result.loan_amount|floatformat:2 }}</strong>
+      a una tasa de interés de <strong>{{ result.interest_rate }}%</strong>
+      por un plazo de <strong>{{ result.months }}</strong> meses.
+    </p>
+  </div>
+{% for row in result.schedule %}
+<table>
+    <thead>
+        <tr>
+            <th>Month</th>
+            <th>Payment</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Remaining</th>
+        </tr>
+    </thead>
+    <tbody>
 
+        <tr>
+            <td>{{ row.month }}</td>
+            <td>${{ row.monthly_payment }}</td>
+            <td>${{ row.principal }}</td>
+            <td>${{ row.interest }}</td>
+            <td>${{ row.remaining_balance }}</td>
+        </tr>
+
+    </tbody>
 </table>
-  {% endfor %}
-  {% endif %}
+{% endfor %}
+{% endif %}
 
     <section class="notes">
       <h4>Los resultados de esta simulación son aproximados.</h4>
@@ -84,6 +99,6 @@
 
 
 
-</div>
+
 
 {% endblock  %}
