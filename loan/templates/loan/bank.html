@@ -23,15 +23,7 @@
 <div id = "bank_form">
   <form method="POST">
   {% csrf_token %}
-    <label for="amount">Monto del préstamo:</label>
-      <input type="number" id="amount" name="loan_amount" min="1" step="1" required>
-    <br>
-    <label for="rate">Interés anual:</label>
-      <input type="number" id="rate" name="loan_rate" min="1" step="1" required>
-    <br>
-    <label for="months">Cuotas:</label>
-      <input type="number" id="months" name="loan_months" min="1" step="1" required>
-    <br>
+    {{ form.as_p }}
     <input type="submit" value="Calcular">
   </form>
 </div>
@@ -41,13 +33,13 @@
     <h3>Resultado:</h3>
     <p>
       La cuota mensual sería de:<br>
-      <strong>${{ result.monthly_payment|floatformat:2 }}</strong><br>
-      Considerando un monto de <strong>${{ result.loan_amount|floatformat:2 }}</strong>
+      <strong>${{ result.month_pay|floatformat:2 }}</strong>
+      Considerando un monto de <strong>${{ result.loan_amount_total |floatformat:2 }}</strong>
       a una tasa de interés de <strong>{{ result.interest_rate }}%</strong>
       por un plazo de <strong>{{ result.months }}</strong> meses.
     </p>
   </div>
-{% for row in result.schedule %}
+
 <table>
     <thead>
         <tr>
@@ -58,6 +50,7 @@
             <th>Remaining</th>
         </tr>
     </thead>
+    {% for row in result.schedule %}
     <tbody>
 
         <tr>
@@ -69,8 +62,9 @@
         </tr>
 
     </tbody>
+  {% endfor %}
 </table>
-{% endfor %}
+
 {% endif %}
 
     <section class="notes">

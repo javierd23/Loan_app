@@ -3,7 +3,7 @@
 {% block title %}Home page{% endblock title %}
 
 {% block content %}
-
+{% load static %}
 <main>
   <h1>TuCuotaRD</h1>
     <p>Calcula tus préstamos de forma fácil y rápida con nosotros.</p>
@@ -12,14 +12,14 @@
   <div id="bank">
     <h4>Prestamos Bancario</h4>
     <a href="{% url 'loan:bank' %}">
-      <img src="bank.jpeg" alt="bank" width="100" height="100">
+      <img src="{% static 'home/bank.jpeg' %}" alt="bank" width="100" height="100">
     </a>
   </div>
   <div id="no_bank">
     <h4>Prestamos no Bancario</h4>
     <br>
     <a href="{% url 'loan:no_bank' %}">
-      <img src="no_bank.jpeg" alt="no_bank" width="100" height="100">
+      <img src="{% static 'home/nobank.jpeg' %}" alt="no_bank" width="100" height="100">
     </a>
     
   </div>

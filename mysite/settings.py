@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'loan.apps.LoanConfig',
     'home.apps.HomeConfig',
+    'forum.apps.ForumConfig',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{# Django provides its own views and URL path for log in, you need to provide an error and the form. #}
+
+{% if form.errors %}
+  <p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Tu cuenta no tiene acceso a esta página. Para continuar, inicia sesión con una cuenta que tenga acceso.</p>
+    {% else %}
+    <p>Por favor, inicia sesión para ver esta página.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" class="btn btn-primary" value="Login" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+{% endblock %}

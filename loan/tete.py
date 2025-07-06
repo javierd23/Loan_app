@@ -2,6 +2,8 @@
 import math
 
 
+
+
 class Loans:
 
     def __init__(self, loan, pays, rate):
@@ -44,9 +46,9 @@ class Loans:
     }
 
 
-loan1 = Loans(150000, 39800, 10)
+#loan1 = Loans(150000, 39800, 10)
 
-print(loan1.pay_loan_amount())
+#print(loan1.pay_loan_amount())
 
 
 #In this program we will call culculate the quote for a bank loan.
@@ -58,8 +60,9 @@ class Bank:
         self.loan_interest = rate
         self.interest_rate = rate / 100
 
-    def bank_loan(self):
 
+    def bank_loan(self):
+        loan_amount = self.loan_amount
         interest_rat = self.interest_rate / 12
         rate_int = interest_rat * (1 + interest_rat)**self.months
         rate_down = (1 + interest_rat)**self.months - 1
@@ -87,14 +90,13 @@ class Bank:
         return {
         "schedule": total, #this is the whole dict and the following is just to get some info in the a different display
         "month_pay": round(month_pay, 2),
-        "loan_amount": round(self.loan_amount, 2),
+        "loan_amount_total": round(loan_amount, 2),
         "interest_rate": round(self.loan_interest, 2),  # Back to %
         "months": self.months
     }
 
-#result = Bank(100000,5, 40)
-#print(result.bank_loan())
-
+result = Bank(100000,5, 40)
+print(result.bank_loan())
 
 
 
