@@ -1,6 +1,6 @@
-{% extends 'base_loan.html' %}
+{% extends 'base.html' %}
 
-{% block title %}Bank{% endblock title %}
+{% block title %}No Bank{% endblock title %}
 
 {% block content %}
 <h1>Préstamos no bancarios</h1>
@@ -22,20 +22,50 @@
     especialmente cuando necesitan dinero rápido y no califican para un préstamo bancario tradicional.</p>
 </nav>
 
-<div id = "nobank">
-  <form method="post" action="no_bank.html">
+
+<div id="nobank">
+  <form method="post" action="">
     {% csrf_token %}
-    <label for="amount">Monto del préstamo:</label>
-      <input type="number" id="amount" name="amount" min="10" step="10">
-    <br>
-    <label for="payments">Pagos al préstamo:</label>
-      <input type="number" id="payments" name="payments" min="10" step="10">
-    <br>
-    <label for="interest">Interés del Préstamo:</label>
-      <input type="number" id="interest" name="interest" min="10" step="10">
-    <br>
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+        {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {{ form.as_p }}
     <input type="submit" value="Calcular">
   </form>
+
+  {% if result %}
+    <h3>Resultado del préstamo:</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Mes</th>
+          <th>Pagos mensuales</th>
+          <th>Pago al capital</th>
+          <th>Pago al interés</th>
+          <th>Balance del préstamo</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for loan in result.schedule %}
+        <tr>
+          <td>{{ loan.month }}</td>
+          <td>{{ loan.monthly_pay }}</td>
+          <td>{{ loan.des_pay }}</td>
+          <td>{{ loan.des_int }}</td>
+          <td>{{ loan.loan_amount }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</div>
+
 
   <p>Los <strong>pagos del préstamo</strong> deben ajustarse a lo que estés realmente dispuesto y capaz de pagar por tu préstamo mensualmente.
     Esto nos permite calcular un plazo de pago específico según el monto que te comprometas a cubrir cada mes.</p>
