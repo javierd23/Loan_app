@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete{% endblock %}
+
+{% block content %}
+
+<h2>Eliminar este forum:</h2>
+
+<p>Estas seguro de querer eliminar el forum: {{ forum }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+  <input type="button" value="Cancel" onclick="window.location.href='{% url 'forum:all' %}';">
+</form>
+
+{% endblock %}

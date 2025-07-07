@@ -17,7 +17,7 @@ class OwnerCreateView(LoginRequiredMixin, CreateView):
         #but it know that the form will be assgined to the logged in User
         
         create = form.save(commit=False)
-        create.user = self.request.user
+        create.owner = self.request.user
         create.save()
         return super(OwnerCreateView, self).form_valid(form)
 
@@ -27,13 +27,13 @@ class OwnerUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self):
         qs = super(OwnerUpdateView, self).get_queryset()
-        return qs.filter(user=self.request.user)
+        return qs.filter(owner=self.request.user)
 
 
 class OwnerDeleteView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         qs = super().get_queryset()
-        return qs.filter(user=self.request.user)
+        return qs.filter(owner=self.request.user)
     
 
-    
+

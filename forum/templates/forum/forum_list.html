@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Forum{% endblock %}
+
+{% block content %}
+
+{% if forum_list %}
+<ul class="list-group">
+  {% for forum in forum_list %}
+  <li>
+    <a href="{% url 'forum:forum_detail' forum.id %}">{{ forum.title }}</a>
+    {% if forum.owner == request.user %}
+    <a href="{% url 'forum:forum_update' forum.id %}">Editar</a> |
+    <a href="{% url 'forum:forum_delete' forum.id %}">Eliminar</a>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No hay Forum</p>
+{% endif %}
+
+<nav aria-label="Page navigation">
+  <a href="{% url 'forum:forum_create' %}">Crear un forum</a>
+
+</nav>
+
+{% endblock %}
+
