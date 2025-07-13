@@ -11,10 +11,12 @@
     {% if forum.owner == request.user %}
     <a href="{% url 'forum:forum_update' forum.id %}">Editar</a> |
     <a href="{% url 'forum:forum_delete' forum.id %}">Eliminar</a>
+
     {% endif %}
   </li>
   {% endfor %}
 </ul>
+
 {% else %}
 <p>No hay Forum</p>
 {% endif %}

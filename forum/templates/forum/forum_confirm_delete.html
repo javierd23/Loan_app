@@ -8,7 +8,7 @@
 
 <p>Estas seguro de querer eliminar el forum: {{ forum }}?</p>
 
-<form action="" method="POST">
+<form action="" method="POST" onsubmit="return confirmDelete();">
   {% csrf_token %}
   <input type="submit" value="Yes, delete.">
   <input type="button" value="Cancel" onclick="window.location.href='{% url 'forum:all' %}';">
