@@ -6,8 +6,14 @@ from django.contrib.auth.models import User
 
 
 class SingUpForm(UserCreationForm):
-    model = User
-    class Meta:
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+    email = forms.EmailField(max_length=254, help_text='Ejemplo: ejemplo@hotmail.com')
 
-        fields = ['username','first_name', 'last_name', 'email' '<PASSWORD>', '<PASSWORD>', ]
+
+
+    model = User
+    class Meta(UserCreationForm.Meta):
+
+        fields = ['username','first_name', 'last_name', 'email' ]
 

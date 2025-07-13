@@ -28,11 +28,11 @@ def more(request):
 
 class SingUpView(View):
     def get(self, request):
-        form = UserCreationForm()
+        form = SingUpForm()
         return render(request, "home/sing_up.html", {'form': form})
 
     def post(self, request):
-        form = UserCreationForm(request.POST)
+        form = SingUpForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)

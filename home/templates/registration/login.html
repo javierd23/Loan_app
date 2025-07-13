@@ -5,7 +5,7 @@
 {# Django provides its own views and URL path for log in, you need to provide an error and the form. #}
 
 {% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
+  <p>Tu nombre de usuario y contraseña no coinciden. Por favor, inténtalo de nuevo.</p>
 {% endif %}
 
 {% if next %}
@@ -19,12 +19,15 @@
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 {{ form.as_p }}
-<input type="submit" class="btn btn-primary" value="Login" />
+<input type="submit" value="Login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
 <div>
-    <h3>Si no tienes una cuenta</h3>
+    <p>¿Olvidaste tu contraseña?</p>
+    <a href="{% url 'password_reset' %}">Recuperar contraseña</a>
+</div>
+<div>
+    <h3>¿Todavía no tienes una cuenta?</h3>
     <p><a href="{% url 'home:sing_up' %}">Registrate</a></p>
 </div>
 
