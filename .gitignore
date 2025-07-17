@@ -24,7 +24,7 @@ ENV/
 # === Static & media files (if auto-generated) ===
 staticfiles/
 media/
-
+EMAIL_HOST_PASSWORD
 # === VS Code ===
 .vscode/
 
@@ -37,3 +37,4 @@ media/
 # === Windows ===
 Thumbs.db
 ehthumbs.db
+

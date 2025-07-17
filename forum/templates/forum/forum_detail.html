@@ -3,11 +3,31 @@
 {% block title %}Details{% endblock %}
 
 {% block content %}
-<h2>Forum: {{forum.title}}</h2>
-<p>Texto: {{forum.text}}</p>
+<div>
+  <h2>Forum: {{forum.title}}</h2>
+  <p>Texto: {{forum.text}}</p>
+</div>
 
-
-
+<div>
+  <h3>
+    Commentarios:
+  </h3>
+  <p>
+    <form action="" method="post">
+  {% csrf_token %}
+  {{ CommentForm.as_p }}
+  <input type="submit" value="Submit">
+  <input onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}'" type="button" value="Cancel">
+</form>
+  </p>
+  {% if comments %}
+  {% for comment in comments %}
+  <p>{{comment.text}}</p>
+  {% endfor %}
+  {% else %}
+  <p>No hay Comentarios</p>
+  {% endif %}
+</div>
 
 
 

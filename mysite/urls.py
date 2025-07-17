@@ -23,8 +23,7 @@ urlpatterns = [
     path("home/", include("home.urls")),
     path("loan/", include("loan.urls")),
     path("", include("forum.urls")),
+    path("accounts/", include("accounts.urls")),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/password_reset/',
-         auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'),
-         name='password_reset'),
+
 ]

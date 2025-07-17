@@ -95,8 +95,8 @@ class Bank:
         "months": self.months
     }
 
-result = Bank(100000,5, 40)
-print(result.bank_loan())
+#result = Bank(100000,5, 40)
+#print(result.bank_loan())
 
 
 

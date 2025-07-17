@@ -1,13 +1,4 @@
-from http.client import responses
-
-from django.urls import reverse
-
-from .forms import SingUpForm
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.views import View
+from django.shortcuts import render
 
 
 def home(request):
@@ -24,19 +15,6 @@ def more(request):
     return render(request, "home/more.html")
 
 
-#Let's get the user a sing up on here.
 
-class SingUpView(View):
-    def get(self, request):
-        form = SingUpForm()
-        return render(request, "home/sing_up.html", {'form': form})
 
-    def post(self, request):
-        form = SingUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
 
-            return redirect(reverse('home:home'))
-        else:
-            return render(request, "home/sing_up.html", {'form': form})
