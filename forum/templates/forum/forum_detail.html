@@ -3,32 +3,42 @@
 {% block title %}Details{% endblock %}
 
 {% block content %}
-<div>
-  <h2>Forum: {{forum.title}}</h2>
-  <p>Texto: {{forum.text}}</p>
+<div style="line-heights: 1.0;">
+  <h3 style="margin: 0; padding: 0;">Forum: {{forum.title | title }}</h3>
+  <small style="margin: 0; padding: 0; color: gray;">Posteado en {{forum.updated_at|date:"j F Y"}}</small>
 </div>
 
+
+  <h4>
+    Comentarios:
+  </h4>
 <div>
-  <h3>
-    Commentarios:
-  </h3>
-  <p>
-    <form action="" method="post">
+  {% if comments %}
+    {% for comment in comments %}
+      <div style="margin-bottom: 10px;">
+        <p style="margin: 0; padding: 0; border-left: 5px solid transparent;">{{ comment.text }}</p>
+        <small style="margin: 0; padding: 0; color: gray;">
+          {{ comment.owner.username }} - {{ comment.created_at|date:"j F Y" }}
+        </small>
+        {% if comment.owner == request.user %}
+        <a href="{% url 'forum:comment_delete' comment.id %}">Delete</a>
+
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No hay comentarios todavía.</p>
+  {% endif %}
+</div>
+
+
+
+<form action="{% url 'forum:comment_create' forum.id %}" method="post">
   {% csrf_token %}
   {{ CommentForm.as_p }}
   <input type="submit" value="Submit">
   <input onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}'" type="button" value="Cancel">
 </form>
-  </p>
-  {% if comments %}
-  {% for comment in comments %}
-  <p>{{comment.text}}</p>
-  {% endfor %}
-  {% else %}
-  <p>No hay Comentarios</p>
-  {% endif %}
-</div>
-
 
 
 {% endblock %}

@@ -18,10 +18,19 @@ class Forum(models.Model):
         return self.title
 
 class Comment(models.Model):
-    text = models.TextField()
+    text = models.TextField(verbose_name='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     forum = models.ForeignKey(Forum, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text
+
+class Reply(models.Model):
+    text = models.TextField(verbose_name='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

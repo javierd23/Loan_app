@@ -9,8 +9,8 @@
   <li>
     <a href="{% url 'forum:forum_detail' forum.id %}">{{ forum.title }}</a>
     {% if forum.owner == request.user %}
-    <a href="{% url 'forum:forum_update' forum.id %}">Editar</a> |
-    <a href="{% url 'forum:forum_delete' forum.id %}">Eliminar</a>
+    <a href="{% url 'forum:forum_update' forum.id %}">E</i></a> |
+    <a href="{% url 'forum:forum_delete' forum.id %}">D</a>
 
     {% endif %}
   </li>
