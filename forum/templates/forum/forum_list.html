@@ -1,24 +1,30 @@
 {% extends 'base.html' %}
+{% load humanize %}
 {% block title %}Forum{% endblock %}
 
 {% block content %}
 
 {% if forum_list %}
-<ul class="list-group">
+<ul class="list-group" style="padding-left: 0;">
   {% for forum in forum_list %}
-  <li>
-    <a href="{% url 'forum:forum_detail' forum.id %}">{{ forum.title }}</a>
-    {% if forum.owner == request.user %}
-    <a href="{% url 'forum:forum_update' forum.id %}">E</i></a> |
-    <a href="{% url 'forum:forum_delete' forum.id %}">D</a>
+  <li class="list-group-item" style="margin-bottom: 1rem; padding: 1rem; border-left: 5px solid #007bff; border-radius: 4px; background-color: #f8f9fa;">
 
-    {% endif %}
+    <div style="margin-bottom: 0.25rem; font-size: 0.9rem; color: #555;">
+      <strong>{{ forum.owner.username }}</strong> &nbsp;|&nbsp;
+      {{ forum.updated_at|naturaltime }}
+    </div>
+
+    <h3 style="margin: 0; font-size: 1.2rem;">
+      <a href="{% url 'forum:forum_detail' forum.id %}" style="text-decoration: none; color: #007bff;">
+        {{ forum.title }}
+      </a>
+    </h3>
+
   </li>
   {% endfor %}
 </ul>
-
 {% else %}
-<p>No hay Forum</p>
+  <p>No hay foros disponibles aún.</p>
 {% endif %}
 
 <nav aria-label="Page navigation">

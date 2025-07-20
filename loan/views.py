@@ -1,6 +1,8 @@
 import json
 from django.contrib import messages
 from http.client import responses, error
+
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
@@ -31,6 +33,13 @@ class BankView(View):
             loan_amount = float(form.cleaned_data['loan_amount'])
             int_rate = float(form.cleaned_data['int_rate'])
             months = int(form.cleaned_data['months'])
+
+            #Let's catch some tests on here. We do not want the user to enter more than 600 months,
+            # 600 months is iqual to 50 years, this is enough not to kill the server. To avoid creative
+            # enter of eg. 40,000, or something like that, it would kill the server for sure.
+            if months < 1 or months > 60:
+                form.add_error(None, ('No mas de 600 meses y menos de 1 mes es permitido.'))  # Displaying error message...
+                return render(request, self.template_name, {'form': form})
 
             data = Bank(loan_amount, int_rate, months)
             result = data.bank_loan()  # This should be a list of dicts

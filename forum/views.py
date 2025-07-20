@@ -1,13 +1,20 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+#import URL_path, and redirect...
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
+
+#import form and models
+from .models import Forum, Comment
+from .forms import CommentForm
+
+#import generic views and base views.
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 
-from .forms import CommentForm
-from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
-from .models import Forum, Comment
 from .owner import OwnerListView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView, OwnerDetailView
 
+#Natural time import
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 
 #Check owner.py to check the inherent from the generic view, with the modifications.
@@ -44,7 +51,7 @@ class ForumDeleteView(OwnerDeleteView):
     success_url = reverse_lazy('forum:all')
 
 
-#Here we add the comment post
+#Here we add the comment post, delete and update views
 
 class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, pk):
@@ -87,8 +94,13 @@ class CommentDeleteView(OwnerDeleteView):
 
 class CommentUpdateView(OwnerUpdateView):
     model = Comment
-    fields = ['title', 'text']
+    fields = ['text']
     template_name = "forum/comment_update.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["forum"] = Forum.objects.get(pk=self.object.forum_id)
+        return context
 
     def get_success_url(self):
         # we need to get the pk as well

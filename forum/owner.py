@@ -26,7 +26,7 @@ class OwnerUpdateView(LoginRequiredMixin, UpdateView):
     #so the user do not see the data that they cannot update we change this to the queryset
 
     def get_queryset(self):
-        qs = super(OwnerUpdateView, self).get_queryset()
+        qs = super().get_queryset()
         return qs.filter(owner=self.request.user)
 
 

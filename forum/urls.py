@@ -13,5 +13,6 @@ urlpatterns = [
     #comments urls...
     path("forum/<int:pk>/comment/", views.CommentCreateView.as_view(), name="comment_create"),
     path("forum/<int:pk>/comment/delete", views.CommentDeleteView.as_view(), name="comment_delete"),
+    path("forum/<int:pk>/comment/update", views.CommentUpdateView.as_view(), name="comment_update"),
 
 ]
