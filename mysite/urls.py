@@ -20,10 +20,13 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("home/", include("home.urls")),
+    path("", include("home.urls")),
     path("loan/", include("loan.urls")),
-    path("", include("forum.urls")),
+    path("forum/", include("forum.urls")),
+    path("api/forum/", include("forum.api.urls")),
     path("accounts/", include("accounts.urls")),
     path('accounts/', include('django.contrib.auth.urls')),
+
+
 
 ]
