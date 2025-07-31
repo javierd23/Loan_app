@@ -40,7 +40,7 @@ class ForumDetailView(OwnerDetailView):
         context["ReplyForm"] = ReplyForm()
 
         #fetching replies for each comment, so I can do comment.replies.all().
-        # you use replies on the prefet, bc that the relate_name in db
+        # you use replies on the prefetching, bc that the relate_name in db
         comments = Comment.objects.filter(forum=self.object).prefetch_related('replies').order_by('-created_at')
         #Doing a loop to get the pagination in the replies...
         for comment in comments:
@@ -120,7 +120,7 @@ class CommentUpdateView(OwnerUpdateView):
         return reverse_lazy('forum:forum_detail', args=[self.object.forum_id])
 
 
-
+#reply views...
 class ReplyCreateView(LoginRequiredMixin, View):
 
     def post(self, request, forum_pk, comment_pk):
@@ -143,12 +143,35 @@ class ReplyCreateView(LoginRequiredMixin, View):
         return render(request, "forum/reply.html", context)
 
 
-class replyUpdateView(OwnerUpdateView):
+class ReplyUpdateView(OwnerUpdateView):
     model = Reply
+    form_class = ReplyForm
+    template_name = "forum/reply_form.html"
 
-class replyDeleteView(OwnerDeleteView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["forum"] = self.object.comment.forum #I grap the instance reply traverse from Reply -> Comment -> Forum
+        context["comment"] = self.object.comment #I grap the instance reply traverse from Reply -> Comment
+
+        return context
+
+    def get_success_url(self):
+        forum_id = self.object.comment.forum.id
+        return reverse_lazy('forum:forum_detail', args=[forum_id])
+
+class ReplyDeleteView(OwnerDeleteView):
     model = Reply
+    template_name = "forum/reply_confirm_delete.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["forum"] = self.object.comment.forum
+
+        return context
+
+    def get_success_url(self):
+        forum_id = self.object.comment.forum.id
+        return reverse_lazy('forum:forum_detail', args=[forum_id])
 
 
 

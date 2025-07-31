@@ -40,16 +40,22 @@
         {# Display replies to this specific comment #}
         <div class="reply-container">
           {% if comment.replies.all %}
-          <h4>Replies:</h4>
-            {% for reply in comment.top_replies  %}
+            {% for reply in comment.top_replies %}
             <p>{{ reply.text }}</p>
             <p class="meta">
               Reply by {{ reply.owner.username }} on {{ reply.created_at| naturaltime }}
             </p>
-            {# I will add the edit and delete reply on here later #}
-
-            {% endfor %}
+          {% if reply.owner == request.user %}
+            <div>
+              <a href="{% url 'forum:reply_update' forum.id reply.id %}">E</a> |
+              <a href="{% url 'forum:reply_delete' forum.id reply.id %}">D</a>
+            </div>
           {% endif %}
+          {% endfor %}
+          {% endif %}
+
+          {# I will add the link to see all replies with the comment on here #} }
+
         </div>
         <div>
           <form action="{% url 'forum:reply_create' forum.id comment.id %}" method="post">
