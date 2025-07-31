@@ -28,9 +28,9 @@ class Comment(models.Model):
         return self.text
 
 class Reply(models.Model):
-    text = models.TextField(verbose_name='')
+    text = models.TextField(verbose_name='', max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='replies')
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

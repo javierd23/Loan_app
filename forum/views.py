@@ -3,8 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 
 #import form and models
-from .models import Forum, Comment
-from .forms import CommentForm
+from .models import Forum, Comment, Reply
+from .forms import CommentForm, ReplyForm
 
 #import generic views and base views.
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -22,7 +22,12 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 class ForumListView(OwnerListView):
     model = Forum
 
+    #Ording the qs...
+    def get_queryset(self):
+        qs = Forum.objects.all().order_by('-created_at')
+        return qs
 
+#forum detail...
 class ForumDetailView(OwnerDetailView):
     model = Forum
     template_name = "forum/forum_detail.html"
@@ -30,8 +35,17 @@ class ForumDetailView(OwnerDetailView):
     #adding the extra data, form of the comments and the comments itself
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        #forms..
         context["CommentForm"] = CommentForm()
-        context["comments"] = Comment.objects.filter(forum=self.object)
+        context["ReplyForm"] = ReplyForm()
+
+        #fetching replies for each comment, so I can do comment.replies.all().
+        # you use replies on the prefet, bc that the relate_name in db
+        comments = Comment.objects.filter(forum=self.object).prefetch_related('replies').order_by('-created_at')
+        #Doing a loop to get the pagination in the replies...
+        for comment in comments:
+            comment.top_replies = comment.replies.all().order_by('-created_at')[:3]
+        context["comments"] = comments
 
         return context
 
@@ -52,7 +66,6 @@ class ForumDeleteView(OwnerDeleteView):
 
 
 #Here we add the comment post, delete and update views
-
 class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, pk):
 
@@ -108,6 +121,33 @@ class CommentUpdateView(OwnerUpdateView):
 
 
 
+class ReplyCreateView(LoginRequiredMixin, View):
+
+    def post(self, request, forum_pk, comment_pk):
+        #for this creating, I will get two pk to handle nested relations
+        forum_id = get_object_or_404(Forum, pk=forum_pk) #grap the forum.
+        comments_instance = get_object_or_404(Comment, pk=comment_pk, forum__pk=forum_pk)
+
+        #assigning an owner, and comments to the reply and redirecting to forum details...
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.comment = comments_instance
+            reply.owner = request.user
+            reply.save()
+            return redirect(reverse("forum:forum_detail", args=[forum_pk]))
+        #rendering to details with erros if invalid reply...
+        all_comments_forum = Comment.objects.filter(forum=forum_id).prefetch_related('replies')
+        form = ReplyForm()
+        context = {"form": form, "comments": all_comments_forum, "pk": forum_id}
+        return render(request, "forum/reply.html", context)
+
+
+class replyUpdateView(OwnerUpdateView):
+    model = Reply
+
+class replyDeleteView(OwnerDeleteView):
+    model = Reply
 
 
 

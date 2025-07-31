@@ -3,41 +3,23 @@
 {% block title %}Details{% endblock %}
 
 {% block content %}
-<div style="line-heights: 1.0;">
-  <h3 style="margin: 0; padding: 0;">{{forum.title | capfirst }}</h3>
-  <small style="margin: 0; padding: 0; color: gray;">{{ forum.owner.username }}</small> |
-  <small style="margin: 0; padding: 0; color: gray;">{{forum.updated_at| naturaltime }}</small>
+<div class="forum-container">
+  <h3>{{forum.title | capfirst }}</h3>
+  <small class="meta">{{ forum.owner.username }}</small> |
+  <small class="meta">{{forum.updated_at| naturaltime }}</small>
 </div>
 <aside>
   {% if forum.owner == request.user %}
+  <div style="margin-top: 10px;">
     <a href="{% url 'forum:forum_update' forum.id %}">E</i></a> |
     <a href="{% url 'forum:forum_delete' forum.id %}">D</a>
+  </div>
   {% endif %}
 </aside>
 
   <h4>
     Comentarios:
   </h4>
-<div>
-  {% if comments %}
-     {% for comment in comments %}
-      <div style="margin-bottom: 10px;">
-        <p style="margin: 0; padding: 0; border-left: 5px solid transparent;">{{ comment.text }}</p>
-        <small style="margin: 0; padding: 0; color: gray;">
-          {{ comment.owner.username }} - {{ comment.created_at|naturaltime }}
-        </small>
-        {% if comment.owner == request.user %}
-        <nav>
-          <a href="{% url 'forum:comment_update' comment.id %}">E</a>
-          <a href="{% url 'forum:comment_delete' comment.id %}">D</a>
-        </nav>
-        {% endif %}
-      </div>
-    {% endfor %}
-  {% else %}
-    <p>No hay comentarios todavía.</p>
-  {% endif %}
-</div>
 
 <form action="{% url 'forum:comment_create' forum.id %}" method="post">
   {% csrf_token %}
@@ -45,5 +27,49 @@
   <input type="submit" value="Submit">
   <input onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}'" type="button" value="Cancel">
 </form>
+<br>
+<div class="comment-container">
+  {% if comments %}
+  {% for comment in comments %}
+      <div>
+        <p>{{ comment.text | capfirst }}</p>
+        <p class="meta">
+          {{ comment.owner.username }} - {{ comment.created_at|naturaltime }}
+        </p>
+
+        {# Display replies to this specific comment #}
+        <div class="reply-container">
+          {% if comment.replies.all %}
+          <h4>Replies:</h4>
+            {% for reply in comment.top_replies  %}
+            <p>{{ reply.text }}</p>
+            <p class="meta">
+              Reply by {{ reply.owner.username }} on {{ reply.created_at| naturaltime }}
+            </p>
+            {# I will add the edit and delete reply on here later #}
+
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div>
+          <form action="{% url 'forum:reply_create' forum.id comment.id %}" method="post">
+            {% csrf_token %}
+            {{ ReplyForm.as_p }}
+            <input type="submit" value="Submit">
+            <input onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}'" type="button" value="Cancel">
+          </form>
+        </div>
+        {% if comment.owner == request.user %}
+        <div style="margin-top: 10px;">
+          <a href="{% url 'forum:comment_update' comment.id %}">E</a>
+          <a href="{% url 'forum:comment_delete' comment.id %}">D</a>
+        </div>
+        {% endif %}
+      </div>
+  {% endfor %}
+  {% else %}
+    <p>No hay comentarios todavía.</p>
+  {% endif %}
+</div>
 
 {% endblock %}

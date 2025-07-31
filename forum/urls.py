@@ -15,4 +15,6 @@ urlpatterns = [
     path("forum/<int:pk>/comment/delete", views.CommentDeleteView.as_view(), name="comment_delete"),
     path("forum/<int:pk>/comment/update", views.CommentUpdateView.as_view(), name="comment_update"),
 
+    #reply urls...
+    path('forum/<int:forum_pk>/comment/<int:comment_pk>/reply/', views.ReplyCreateView.as_view(), name="reply_create"),
 ]

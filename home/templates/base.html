@@ -3,6 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}Nosotros{% endblock %}</title>
+  <style>
+    /* Basic styling for readability */
+    body { font-family: sans-serif; margin: 20px; line-height: 1.6; }
+    .forum-container, .comment-container, .reply-container {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    .forum-container h1 { color: #333; }
+    .comment-container { background-color: #f9f9f9; margin-left: 20px; }
+    .reply-container { background-color: #f0f0f0; margin-left: 40px; border-left: 3px solid #ccc; padding-left: 10px; }
+    .meta { font-size: 0.9em; color: #666; margin-top: 5px; }
+    form { margin-top: 15px; padding: 10px; border: 1px dashed #ccc; border-radius: 5px; background-color: #fff; }
+    form input[type="submit"], form input[type="button"] {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    form input[type="submit"] { background-color: #007bff; color: white; }
+    form input[type="button"] { background-color: #6c757d; color: white; }
+    .errorlist { color: red; list-style-type: none; padding: 0; margin: 0; }
+  </style>
 </head>
 <body>
   <nav>
