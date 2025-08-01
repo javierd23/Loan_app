@@ -23,7 +23,7 @@ class OwnerCreateView(LoginRequiredMixin, CreateView):
 
 
 class OwnerUpdateView(LoginRequiredMixin, UpdateView):
-    #so the user do not see the data that they cannot update we change this to the queryset
+    #the user does not see the data that they cannot update we change this to the queryset
 
     def get_queryset(self):
         qs = super().get_queryset()

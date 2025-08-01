@@ -19,4 +19,18 @@ urlpatterns = [
     path('forum/<int:forum_pk>/comment/<int:comment_pk>/reply/', views.ReplyCreateView.as_view(), name="reply_create"),
     path('forum/<int:forum_pk>/<int:pk>/reply/update', views.ReplyUpdateView.as_view(), name="reply_update"),
     path('forum/<int:forum_pk>/<int:pk>/reply/delete', views.ReplyDeleteView.as_view(), name="reply_delete"),
+
+    #replies and comments
+    path("comment/<int:comment_pk>/reply", views.CommentReplyDetailView.as_view(), name="comment_reply_detail"),
+    path("comment/<int:pk>/reply/delete", views.SingleRepyDeleteView.as_view(), name="single_reply_delete"),
+    path("comment/<int:pk>/reply/update", views.SingleReplyUpdateView.as_view(), name="single_reply_update"),
+
+
+
+
+
+
+
+
+
 ]

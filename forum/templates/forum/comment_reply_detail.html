@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Comments and replies{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <a class="breadcrumb-item active" href="{% url 'forum:all' %}">Forums</a>
+</nav>
+<br>
+<div class="comment-container">
+  <h4>{{ comment.text | capfirst }}</h4>
+</div>
+<div class="reply-container">
+  {% if user.is_authenticated %}
+  <form action="{% url 'forum:comment_reply_detail' comment.id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+    <input onclick="window.location.href='{% url 'forum:all' %}'" type="button" value="Cancel">
+  </form>
+  {% endif %}
+</div>
+<div class="reply-container">
+  {% if comment.replies.all %}
+  {% for reply in replies %}
+  <p>{{ reply.text }}</p>
+  <small>{{ reply.owner.username }}</small> |
+  <small style="color: gray;">{{ reply.created_at | naturaltime }}</small>
+  {% if reply.owner == request.user %}
+  <div>
+  <a href="{% url 'forum:single_reply_delete' reply.id %}">D</a> |
+  <a href="{% url 'forum:single_reply_update' reply.id %}">E</a>
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+

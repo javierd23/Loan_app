@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete{% endblock %}
+
+{% block content %}
+
+<h2>Eliminar esta respuesta:</h2>
+
+<p>Estás seguro de querer eliminar esta respuesta?<br>
+  <span>{{ reply.text }}</span>
+</p>
+
+<form action="" method="POST" onsubmit="return confirmDelete();">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+  <input type="button" value="Cancel" onclick="window.location.href='{% url 'forum:comment_reply_detail' comment %}';">
+</form>
+
+{% endblock %}

@@ -3,6 +3,10 @@
 {% block title %}Details{% endblock %}
 
 {% block content %}
+<nav aria-label="breadcrumb">
+  <a class="breadcrumb-item active" href="{% url 'forum:all' %}">Forums</a>
+</nav>
+<br>
 <div class="forum-container">
   <h3>{{forum.title | capfirst }}</h3>
   <small class="meta">{{ forum.owner.username }}</small> |
@@ -53,9 +57,10 @@
           {% endif %}
           {% endfor %}
           {% endif %}
-
-          {# I will add the link to see all replies with the comment on here #} }
-
+          <br>
+          {% if comment.replies.count > 4 %}
+          <a href="{% url 'forum:comment_reply_detail' comment.id %}">Repuestas</a>
+          {% endif %}
         </div>
         <div>
           <form action="{% url 'forum:reply_create' forum.id comment.id %}" method="post">

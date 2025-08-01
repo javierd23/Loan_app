@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Update reply{% endblock %}
+
+{% block content %}
+
+<div>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Someter">
+    <input type="submit" value="Cancel" onclick="window.location.href='{% url 'forum:comment_reply_detail' comment %}';return false;">
+  </form>
+</div>
+
+{% endblock %}

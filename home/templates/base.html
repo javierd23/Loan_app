@@ -5,15 +5,15 @@
   <title>{% block title %}Nosotros{% endblock %}</title>
   <style>
     /* Basic styling for readability */
-    body { font-family: sans-serif; margin: 20px; line-height: 1.6; }
+    body { font-family: sans-serif; margin: 20px; line-height: 1.5; }
     .forum-container, .comment-container, .reply-container {
-      border: 1px solid #ddd;
+      border: 1.0px solid #ddd;
       padding: 15px;
       margin-bottom: 20px;
-      border-radius: 8px;
+      border-radius: 2px;
     }
     .forum-container h1 { color: #333; }
-    .comment-container { background-color: #f9f9f9; margin-left: 20px; }
+    .comment-container { background-color: #f9f9f9; margin-left: 10px; }
     .reply-container { background-color: #f0f0f0; margin-left: 40px; border-left: 3px solid #ccc; padding-left: 10px; }
     .meta { font-size: 0.9em; color: #666; margin-top: 5px; }
     form { margin-top: 15px; padding: 10px; border: 1px dashed #ccc; border-radius: 5px; background-color: #fff; }
@@ -37,6 +37,7 @@
     <a href="{% url 'forum:all' %}">Forum</a>
     {% if user.is_authenticated %}
     {# In djagno 5.0+ we need to use post to log out, we added the styling to make it see as a url #}
+    <div style="position: absolute; top: 10px; right: 10px;">
     <form method="POST" action="{% url 'logout' %}" style="display:inline;">
       {% csrf_token %}
       <button type="submit" style="background:none;border:none;color:blue;text-decoration:underline;cursor:pointer;">
@@ -44,9 +45,11 @@
       </button>
     </form>
     {% else %}
+    <div style="position: absolute; top: 10px; right: 10px;">
     <a href="{% url 'login' %}?next={% url 'home:home' %}">Iniciar sesión</a>
+    </div>
     {% endif %}
-
+    </div>
     {% load static %}
     <h1><a href="{% url 'home:home' %}"><img src="{% static 'home/logo.png' %}" alt="Logo de tuCuotaRD" width="100" height="100"></a></h1>
   </nav>

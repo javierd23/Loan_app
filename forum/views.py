@@ -1,4 +1,6 @@
 #import URL_path, and redirect...
+from keyword import kwlist
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 
@@ -40,7 +42,7 @@ class ForumDetailView(OwnerDetailView):
         context["ReplyForm"] = ReplyForm()
 
         #fetching replies for each comment, so I can do comment.replies.all().
-        # you use replies on the prefetching, bc that the relate_name in db
+        # I use replies on the prefetching, bc that the relate_name in db
         comments = Comment.objects.filter(forum=self.object).prefetch_related('replies').order_by('-created_at')
         #Doing a loop to get the pagination in the replies...
         for comment in comments:
@@ -65,11 +67,11 @@ class ForumDeleteView(OwnerDeleteView):
     success_url = reverse_lazy('forum:all')
 
 
-#Here we add the comment post, delete and update views
+#Here I add the comment post, delete and update views
 class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, pk):
 
-        # We need to get the forum id, since we need to redict to the same page with the right forum...
+        # I need to get the forum id, since we need to redict to the same page with the right forum...
         fq = get_object_or_404(Forum, pk=pk)
 
         form = CommentForm(request.POST) #wrap the post in the form
@@ -79,7 +81,7 @@ class CommentCreateView(LoginRequiredMixin, View):
             comment.forum = fq #here we get the forum_id for the comments to be fletch to the for forum id.
             comment.save()
 
-            #We redirect to the detail forum and take the ride forum id, so it does the fletch
+            #I redirect to the detail forum and take the ride forum id, so it does the fletch
             return redirect(reverse("forum:forum_detail", args=[pk]))
 
         #If the form is not valid, we are taking the context and the form back.
@@ -93,14 +95,14 @@ class CommentDeleteView(OwnerDeleteView):
     model = Comment
     template_name = "forum/comment_delete.html"
 
-    #We need to take aditional data to the template, since we're redirecting to detail with the cancel buttom. so we need to add the pk
+    #I need to take aditional data to the template, since we're redirecting to detail with the cancel buttom. so we need to add the pk
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["forum"] = Forum.objects.get(pk=self.object.forum_id)
         return context
 
     def get_success_url(self):
-        #We need to invoke this func since with need to redirect to a url with a pk as detailview requires it.
+        #I need to invoke this func since with need to redirect to a url with a pk as detailview requires it.
         return reverse_lazy('forum:forum_detail', args=[self.object.forum_id])
 
 
@@ -116,7 +118,7 @@ class CommentUpdateView(OwnerUpdateView):
         return context
 
     def get_success_url(self):
-        # we need to get the pk as well
+        # I need to get the pk as well
         return reverse_lazy('forum:forum_detail', args=[self.object.forum_id])
 
 
@@ -172,6 +174,68 @@ class ReplyDeleteView(OwnerDeleteView):
     def get_success_url(self):
         forum_id = self.object.comment.forum.id
         return reverse_lazy('forum:forum_detail', args=[forum_id])
+
+
+#builing a detail view for comment to prefetch replies.
+class CommentReplyDetailView(View):
+    template_name = "forum/comment_reply_detail.html"
+
+    def get(self, request, comment_pk):
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        replies = Reply.objects.filter(comment=comment).order_by('-created_at')
+
+        form = ReplyForm()
+        context = {"comment": comment, "pk": comment_pk, "form": form, "replies": replies}
+        return render(request, self.template_name, context)
+
+    def post(self, request, comment_pk):
+        comment = get_object_or_404(Comment, pk=comment_pk)
+
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.comment = comment
+            reply.owner = request.user
+            reply.save()
+            return redirect(reverse("forum:comment_reply_detail", args=[comment_pk]))
+
+        context = {"comment": comment, "pk": comment_pk, "form": form}
+        return render(request, self.template_name, context)
+
+
+class SingleRepyDeleteView(OwnerDeleteView):
+    model = Reply
+    template_name = "forum/single_reply_delete.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["comment"] = self.object.comment_id
+        return context
+
+    def get_success_url(self):
+        comment_id = self.object.comment.id
+        return reverse_lazy('forum:comment_reply_detail', args=[self.object.comment_id])
+
+
+class SingleReplyUpdateView(OwnerUpdateView):
+    model = Reply
+    form_class = ReplyForm
+    template_name = "forum/single_reply_update.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["comment"] = self.object.comment_id
+        return context
+
+    def get_success_url(self):
+        comment_id = self.object.comment.id
+        return reverse_lazy('forum:comment_reply_detail', args=[self.object.comment_id])
+
+
+
+
+
+
 
 
 
