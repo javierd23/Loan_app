@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="sidebar-left">
+    {# I need to add the link for setting for the pic #}
+    {% if profile.phote %}
+    <img src="{{ profile.photo.url }}" alt="profile picture" width="150" height="150">
+    {% else %}
+    <p>Aún no has agregado una foto.</p>
+    {% endif %}
+    <br>
+    <p>{{ user.username }}</p>
+
+    <div>
+      <h4>Redes sociales</h4>
+        <p>{{ user.email }}</p>
+
+        {% if profile.facebook %}
+          <p><a href="{{ profile.facebook }}" target="_blank">Facebook</a></p>
+        {% else %}
+        <p>No Facebook.</p>
+        {% endif %}
+
+      {% if profile.twitter %}
+          <p><a href="{{ profile.twitter }}" target="_blank">Twitter</a></p>
+        {% else %}
+        <p>No Twitter.</p>
+        {% endif %}
+
+      {% if profile.linkedin %}
+          <p><a href="{{ profile.linkedin }}" target="_blank">Linkedin</a></p>
+        {% else %}
+        <p>No Linkedin.</p>
+        {% endif %}
+
+      {% if profile.instagram %}
+          <p><a href="{{ profile.instagram }}" target="_blank">Instagram</a></p>
+        {% else %}
+        <p>No Instagram.</p>
+        {% endif %}
+
+      {% if profile.github %}
+          <p><a href="{{ profile.github }}" target="_blank">Github</a></p>
+        {% else %}
+        <p>No Github.</p>
+        {% endif %}
+
+
+    </div>
+  </div>
+  <div class="main-content">
+    <h2>Bienvenido {{ user.first_name }}</h2>
+    <h4>Aquí está la lista de tus préstamos registrados.</h4>
+  </div>
+
+  <div class="sidebar-right">
+    <h4>Sugerencias:</h4>
+    <p>Recuerda que puedes registrar tu préstamo aquí.</p> {# <-- add the link to add a new loan on here #}
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

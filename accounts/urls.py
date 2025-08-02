@@ -1,6 +1,8 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+
 from . import views
+from .views import ProfileView, ProfileCreateView
 
 app_name = "accounts"
 urlpatterns = [
@@ -26,5 +28,10 @@ urlpatterns = [
 
     path("reset/done/", auth_views.PasswordResetCompleteView.as_view
     (template_name="accounts/password_reset_complete.html"), name="password_reset_complete"),
+
+
+    #profile links
+    path("profile/<str:username>/", views.ProfileView.as_view(), name="profile"),
+    path("profile/<str:username>/settings/", views.ProfileCreateView.as_view(), name="settings"),
 
 ]
