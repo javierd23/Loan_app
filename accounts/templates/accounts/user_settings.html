@@ -3,15 +3,25 @@
 {% block title %}Settings{% endblock %}
 
 {% block content %}
-<form action="{% url 'accounts:settings' request.user.username %}" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Guardar">
-  <input type="hidden" name="next" value="{{ next }}">
-</form>
+<div class="container">
 
+  <div class="sidebar-left">
+  </div>
 
+  <div class="main-content">
+    <form action="{% url 'accounts:settings' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Guardar">
+      <input type="hidden" name="next" value="{{ next }}">
+    </form>
+  </div>
 
+  <div class="sidebar-right">
+
+  </div>
+
+</div>
 
 
 

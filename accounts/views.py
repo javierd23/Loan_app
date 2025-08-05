@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import login
 from rest_framework.reverse import reverse_lazy
 
@@ -38,39 +38,54 @@ class ProfileView(LoginRequiredMixin, View):
     template_name = "accounts/user_profile.html"
 
     def get(self, request, username):
-        user = get_object_or_404(User, username=username)
+        user_obj = get_object_or_404(User, username=username)
 
         try:
-            profile = UserProfile.objects.get(user=user)
-            context = {"user": user, "profile": profile}
+            profile = UserProfile.objects.get(user=user_obj)
+            context = {"user_obj": user_obj, "profile": profile}
             return render(request, self.template_name, context)
 
         except UserProfile.DoesNotExist:
             return redirect(reverse('accounts:settings', args=[username]))
 
 
-class ProfileCreateView(LoginRequiredMixin, CreateView):
-    model = UserProfile
+class ProfileUpdateOrCreateView(LoginRequiredMixin, View):
+    """
+        A view that handles creating a new UserProfile or updating an existing one.
+        This view is more flexible than using separate CreateView and UpdateView.
+    """
+
     template_name = "accounts/user_settings.html"
-    form_class = ProfileCreate
-    success_url = "accounts:profile"
-
-    def form_valid(self, form):
-        #adding the user to the profile
-        profile = form.save(commit=False)
-        profile.user = self.request.user
-        profile.save()
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('accounts:settings', args=[self.request.user.username])
 
 
+    def get(self, request, *args, **kwargs):
+
+        try:
+            profile = request.user.profiles
+            form = ProfileCreate(instance=profile)
+
+        except UserProfile.DoesNotExist:
+            form = ProfileCreate()
+
+        context = {'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            profile = request.user.profiles
+            form = ProfileCreate(request.POST, request.FILES, instance=profile)
+        except UserProfile.DoesNotExist:
+            form = ProfileCreate(request.POST, request.FILES)
 
 
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = request.user
+            form.save()
+            return redirect(reverse_lazy('accounts:profile', args=[request.user.username]))
 
-
-
+        context = {'form': form}
+        return render(request, self.template_name, context)
 
 
 

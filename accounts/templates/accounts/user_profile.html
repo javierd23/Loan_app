@@ -6,17 +6,17 @@
 <div class="container">
   <div class="sidebar-left">
     {# I need to add the link for setting for the pic #}
-    {% if profile.phote %}
-    <img src="{{ profile.photo.url }}" alt="profile picture" width="150" height="150">
+    {% if profile.photo %}
+    <img src="{{ profile.photo.url }}" alt="Profile picture" class="w-24 h-24 object-cover rounded-full shadow-lg" width="150" height="150">
     {% else %}
     <p>Aún no has agregado una foto.</p>
     {% endif %}
     <br>
-    <p>{{ user.username }}</p>
+    <p>{{ user_obj.username }}</p>
 
     <div>
-      <h4>Redes sociales</h4>
-        <p>{{ user.email }}</p>
+      <small style="color: gray; font-size: 90%;">Redes sociales</small>
+        <p>{{ user_obj.email }}</p>
 
         {% if profile.facebook %}
           <p><a href="{{ profile.facebook }}" target="_blank">Facebook</a></p>
@@ -48,11 +48,16 @@
         <p>No Github.</p>
         {% endif %}
 
-
+      <small style="color: gray; font-size: 90%;">Información personal</small>
+        <p>{{ profile.phone_number }}</p>
+        <br>
+        <p>{{ profile.birth_date }}</p>
+        <br>
+        <p>{{ profile.location }}</p>
     </div>
   </div>
   <div class="main-content">
-    <h2>Bienvenido {{ user.first_name }}</h2>
+    <h2>Bienvenido {{ user.first_name }} {{ user.last_name }}</h2>
     <h4>Aquí está la lista de tus préstamos registrados.</h4>
   </div>
 
@@ -62,15 +67,6 @@
 
   </div>
 </div>
-
-
-
-
-
-
-
-
-
 
 
 

@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from . import views
-from .views import ProfileView, ProfileCreateView
+from .views import ProfileView, ProfileUpdateOrCreateView
 
 app_name = "accounts"
 urlpatterns = [
@@ -32,6 +32,6 @@ urlpatterns = [
 
     #profile links
     path("profile/<str:username>/", views.ProfileView.as_view(), name="profile"),
-    path("profile/<str:username>/settings/", views.ProfileCreateView.as_view(), name="settings"),
+    path("settings/", views.ProfileUpdateOrCreateView.as_view(), name="settings"),
 
 ]
