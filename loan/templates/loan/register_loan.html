@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Register Loan{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <div class="sidebar-left">
+  </div>
+
+  <div class="main-content">
+    <h2>Registra tu préstamo</h2>
+    <p>Te ayudamos a llevar el control de tus préstamos
+    <strong>bancarios</strong> y <strong>no bancarios</strong>.</p>
+    <h4>¿Qué tipo de préstamo deseas registrar?</h4>
+    <br>
+    <nav>
+      <a href="{% url 'loan:create_nobank' %}">Préstamo No Bancarios</a>
+    </nav>
+  </div>
+
+</div>
+
+
+
+{% endblock content %}

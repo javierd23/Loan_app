@@ -2,11 +2,19 @@ import json
 from django.contrib import messages
 from http.client import responses, error
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
+from django.urls import reverse
+
 from django.views import View
-from .forms import LoanPaymentForm, BankForm
+from django.views.generic import CreateView, ListView
+
+from .models import NoBankLoan
+
+from .forms import LoanPaymentForm, BankForm, NobanForm
 from .tete import Bank, Loans
 
 class BankView(View):
@@ -37,7 +45,7 @@ class BankView(View):
             #Let's catch some tests on here. We do not want the user to enter more than 600 months,
             # 600 months is iqual to 50 years, this is enough not to kill the server. To avoid creative
             # enter of eg. 40,000, or something like that, it would kill the server for sure.
-            if months < 1 or months > 60:
+            if months < 1 or months > 600:
                 form.add_error(None, ('No mas de 600 meses y menos de 1 mes es permitido.'))  # Displaying error message...
                 return render(request, self.template_name, {'form': form})
 
@@ -94,6 +102,42 @@ class NoBankView(View):
 
         # If form is invalid in general
         return render(request, self.template_name, {'form': form})
+
+
+
+#register your loan view.
+class RegisterLoanView(LoginRequiredMixin, View):
+    """A simple view to select the type of loan."""
+
+    def get(self, request):
+        return render(request, 'loan/register_loan.html')
+
+#creating a No_bank loan...
+
+class NoBankGeristerCreateView(LoginRequiredMixin, CreateView):
+    template_name = "loan/nobank_loan.html"
+    form_class = NobanForm
+    model = NoBankLoan
+
+    def form_valid(self, form):
+        form = form.save(commit=False)
+        form.user = self.request.user
+        form.save()
+        return redirect(reverse_lazy('loan:no_bank_list'))
+
+class NoBankListView(LoginRequiredMixin, ListView):
+    template_name = "loan/nobank_list.html"
+    model = NoBankLoan
+    context_object_name = 'no_loans'
+
+    def queryset(self, **kwargs):
+        return NoBankLoan.objects.filter(user=self.request.user)
+
+
+
+
+
+
 
 
 

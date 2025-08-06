@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import login
-from rest_framework.reverse import reverse_lazy
+
 
 from .forms import SingUpForm
 
@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 from django.views import View
 

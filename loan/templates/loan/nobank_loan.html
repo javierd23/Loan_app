@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Register No Loan{% endblock title %}
+
+
+{% block content %}
+
+<div class="container">
+
+ <div class="sidebar-left">
+  <h4 style="color: gray; font-size: 90%;">Tipos de préstamos no bancarios.</h4>
+   <ul class="list-unstyled">
+     <li>Cooperativas de ahorro y crédito</li>
+     <li>Prestamistas privados</li>
+     <li>Plataformas fintech</li>
+     <li>Plataformas de préstamos entre personas (P2P)</li>
+     <li>Familiares o amigos</li>
+   </ul>
+
+ </div>
+
+  <div class="main-content">
+    <main>
+      <h4>Agrega un nuevo préstamo no bancario.</h4>
+      <p>Un préstamo no bancario es un préstamo otorgado por una entidad que no es un banco tradicional.
+        Estos préstamos provienen de prestamistas alternativos.</p>
+    </main>
+    <form action="{% url 'loan:create_nobank' %}" method="POST">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {{ form.as_p }}
+      <input type="submit" value="Register">
+    </form>
+
+  </div>
+
+</div>
+
+
+
+
+{% endblock content %}

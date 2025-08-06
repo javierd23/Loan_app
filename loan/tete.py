@@ -2,8 +2,6 @@
 import math
 
 
-
-
 class Loans:
 
     def __init__(self, loan, pays, rate):
