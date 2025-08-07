@@ -27,7 +27,15 @@
     </main>
     <form action="{% url 'loan:create_nobank' %}" method="POST">
       {% csrf_token %}
-      {{ form.non_field_errors }}
+
+      {% if form.non_field_errors %}
+      <div>
+        {% for error in form.non_field_errors %}
+          <p style="color: red;">{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
       {{ form.as_p }}
       <input type="submit" value="Register">
     </form>

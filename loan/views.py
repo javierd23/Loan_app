@@ -8,14 +8,15 @@ from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.views import View
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView
 
 from .models import NoBankLoan
 
 from .forms import LoanPaymentForm, BankForm, NobanForm
-from .tete import Bank, Loans
+from .tete import Bank, Loans, no_bank_desc_loan
 
 class BankView(View):
     template_name = "loan/bank.html"
@@ -120,6 +121,7 @@ class NoBankGeristerCreateView(LoginRequiredMixin, CreateView):
     model = NoBankLoan
 
     def form_valid(self, form):
+
         form = form.save(commit=False)
         form.user = self.request.user
         form.save()
@@ -132,6 +134,101 @@ class NoBankListView(LoginRequiredMixin, ListView):
 
     def queryset(self, **kwargs):
         return NoBankLoan.objects.filter(user=self.request.user)
+
+
+class NoBankDetailUpdateView(LoginRequiredMixin, View):
+    """A view that will display the details of the loan,
+       and it will also update the loan"""
+
+    template_name = "loan/no_bank_detail.html"
+
+
+    def get(self, request, pk):
+        no_bank = get_object_or_404(NoBankLoan, pk=pk)
+        form_bank = NobanForm(instance=no_bank, prefix='bank')
+        form = LoanPaymentForm(prefix='calculator')
+        result_json = request.session.pop('result', None)
+
+        try:
+            result = json.loads(result_json) if result_json else None
+        except json.JSONDecodeError:
+            result = None
+            messages.error(request, "Error al leer los resultados anteriores.")
+
+        context = {"no_bank": no_bank, "form": form, "form_bank": form_bank, "result": result}
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, pk):
+        no_bank = get_object_or_404(NoBankLoan, pk=pk)
+        form_bank = NobanForm(request.POST, instance=no_bank, prefix='bank')
+
+        form = LoanPaymentForm(request.POST, prefix='calculator')
+
+        context = {
+            "no_bank": no_bank,
+            "form_bank": form_bank,
+            "form": form
+        }
+
+        if "bank-submit" in request.POST:
+            if form_bank.is_valid():
+
+                name = form_bank.cleaned_data['name']
+                payment = float(form_bank.cleaned_data['monthly_payment'])
+                loan_interest = int(form_bank.cleaned_data['interest_rate'])
+                loan_amount = float(form_bank.cleaned_data['loan_amount'])
+
+                if payment < (loan_interest/100) * loan_amount:
+                    form_bank.add_error(None, ('El pago mensual es insuficiente, ya que es igual o menor '
+                                              'al interés generado. Esto provocaría una deuda interminable. '
+                                              'Intenta con un pago mensual mayor al interés del préstamo '
+                                              'para que se pueda finalizar el pago.'))
+
+                    return render(request, self.template_name, context)
+
+                new_loan = no_bank_desc_loan(payment, loan_interest, loan_amount)
+                result = json.dumps(new_loan)
+
+                no_bank = form_bank.save(commit=False)
+                no_bank.name = name
+                no_bank.interest_rate = loan_interest
+                no_bank.loan_amount = result
+                no_bank.save()
+
+                return redirect(reverse_lazy('loan:no_bank_detail', args=[pk]))
+
+            else:
+                return render(request, self.template_name, context)
+
+
+        elif "calculator-submit" in request.POST:
+            if form.is_valid():
+                loan_amount = float(form.cleaned_data['loan_amount'])
+                month_pay = float(form.cleaned_data['month_pay'])
+                loan_interest = float(form.cleaned_data['loan_interest'])
+
+                if loan_amount * (
+                        loan_interest / 100) >= month_pay:  # This is to avoid infinite loan, the interest*loan amount is more that the mon pay it will never ends
+                    # and this could kill the server.
+                    form.add_error(None, ('El pago mensual es insuficiente, ya que es igual o menor '
+                                          'al interés generado. Esto provocaría una deuda interminable. '
+                                          'Intenta con un pago mensual mayor al interés del préstamo para que se pueda '
+                                          'finalizar el pago.'))  # Displaying error message if pre applied
+
+                    return render(request, self.template_name, context)
+
+                else:
+                    data = Loans(loan_amount, month_pay, loan_interest)
+                    result = data.pay_loan_amount()  # This should be a list of dicts
+                    request.session['result'] = json.dumps(result)
+                    return redirect(reverse_lazy('loan:no_bank_detail', args=[pk]))
+
+
+            return render(request, self.template_name, context)
+
+        return render(request, self.template_name, context)
+
 
 
 

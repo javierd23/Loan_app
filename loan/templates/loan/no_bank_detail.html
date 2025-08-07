@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Register No Loan{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+
+    <div class="sidebar-left">
+
+  </div>
+
+    <div class="main-content">
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {% for error in form.non_field_errors %}
+            <p style="color: red;">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+      <div>
+        <form method="POST">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+              <p style="color: red;">{{ error }}</p>
+            {% endfor %}
+          </div>
+            {% endif %}
+
+          {{ form_bank.as_p }}
+          <input type="submit" name="bank-submit" value="Pagar">
+        </form>
+      </div>
+
+    </div>
+
+    <div class="main-content">
+      <form action="" method="POST">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {% for error in form.non_field_errors %}
+            <p style="color: red;">{{ error }}</p>
+          {% endfor %}
+        </div>
+          {% endif %}
+
+        {{ form.as_p }}
+        <input type="submit" name="calculator-submit" value="Calcular">
+      </form>
+    </div>
+
+    {% if result %}
+    <table>
+      <thead>
+        <tr>
+          <th>Mes</th>
+          <th>Pagos mensuales</th>
+          <th>Pago al capital</th>
+          <th>Pago al interés</th>
+          <th>Balance del préstamo</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for loan in result.schedule %}
+        <tr>
+          <td>{{ loan.month }}</td>
+          <td>${{ loan.monthly_pay | floatformat:2  }}</td>
+          <td>${{ loan.des_pay | floatformat:2 }}</td>
+          <td>${{ loan.des_int | floatformat:2 }}</td>
+          <td>${{ loan.loan_amount | floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+    {% endif %}
+</div>
+
+
+
+{% endblock content %}

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Register No Loan{% endblock title %}
+{% block title %}No bank detail{% endblock title %}
 
 
 {% block content %}
@@ -13,32 +13,25 @@
 
   <div class="main-content">
 
-    {% if form.non_field_errors %}
-      <div class="alert alert-danger">
-        {% for error in form.non_field_errors %}
-          <p style="color: red;">{{ error }}</p>
-        {% endfor %}
-      </div>
-    {% endif %}
-
     {% if no_loans %}
     <table>
       <thead>
         <tr>
           <th>Nombre</th>
           <th>Pagos mensuales</th>
-          <th>Monto del préstamo</th>
           <th>Intereses mensuales</th>
+          <th>Monto del préstamo</th>
         </tr>
       </thead>
 
       <tbody>
       {% for loan in no_loans %}
+
       <tr>
-        <td>{{ loan.name }}</td>
-        <td>{{ loan.monthly_payment }}</td>
-        <td>{{ loan.loan_amount }}</td>
-        <td>{{ loan.interest_rate }}</td>
+        <td><a href="{% url 'loan:no_bank_detail' loan.id %}">{{ loan.name }}</a></td>
+        <td>{{ loan.monthly_payment|floatformat:2 }}</td>
+        <td>{{ loan.interest_rate|floatformat:2 }}</td>
+        <td>{{ loan.loan_amount|floatformat:2 }}</td>
       </tr>
       {% endfor %}
       </tbody>

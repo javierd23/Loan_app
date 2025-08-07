@@ -97,6 +97,16 @@ class Bank:
 #print(result.bank_loan())
 
 
+def no_bank_desc_loan(payment, interest_rate, loan_amount):
+
+    desc_loan = (interest_rate / 100) * loan_amount
+
+    loan_desc = payment - desc_loan
+    new_loan_amount = round(loan_amount - loan_desc)
+
+    return new_loan_amount
+#Testing function...
+#print(no_bank_desc_loan(1000,5, 15000))
 
 
 
