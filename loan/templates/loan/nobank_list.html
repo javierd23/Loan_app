@@ -37,7 +37,36 @@
       </tbody>
     </table>
       {% else %}
-    <p>Aún no has registrado ningún préstamo.</p>
+    <p>Aún no has registrado ningún préstamo no bancario.</p>
+    {% endif %}
+  </div>
+
+  <div class="main-content">
+    {% if bank %}
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Pagos mensuales</th>
+          <th>Intereses mensuales</th>
+          <th>Monto del préstamo</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {% for loan in bank %}
+
+      <tr>
+        <td>{{ loan.name }}</td>
+        <td>{{ loan.monthly_payment|floatformat:2 }}</td>
+        <td>{{ loan.interest_rate|floatformat:2 }}</td>
+        <td>{{ loan.loan_amount|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+      {% else %}
+    <p>Aún no has registrado ningún préstamo bancario.</p>
     {% endif %}
   </div>
 

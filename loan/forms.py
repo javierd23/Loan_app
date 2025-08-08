@@ -1,5 +1,7 @@
 from django import forms
-from .models import NoBankLoan
+from .models import NoBankLoan, BankLoan
+
+
 
 class LoanPaymentForm(forms.Form):
     loan_amount = forms.DecimalField(label="Monto del Préstamo", max_digits=12)
@@ -17,4 +19,10 @@ class NobanForm(forms.ModelForm):
         model = NoBankLoan
         exclude = ['user']
 
+
+class BankLoanForm(forms.ModelForm):
+
+    class Meta:
+        model = BankLoan
+        exclude = ['user']
 

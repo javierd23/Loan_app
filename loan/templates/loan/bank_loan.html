@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Register No Loan{% endblock title %}
+
+
+{% block content %}
+
+<div class="container">
+
+ <div class="sidebar-left">
+  <h4 style="color: gray; font-size: 90%;">Los préstamos bancarios se
+                                            formaliza mediante un contrato que especifica:</h4>
+   <ul class="list-unstyled">
+     <li>El monto del préstamo</li>
+     <li>El plazo de devolución</li>
+     <li>La tasa de interés aplicable</li>
+     <li>Las condiciones de pago y posibles penalizaciones por incumplimiento</li>
+   </ul>
+
+ </div>
+
+  <div class="main-content">
+    <main>
+      <h4>Agrega un nuevo préstamo bancario.</h4>
+      <p>Un préstamo bancario es un producto financiero mediante el cual una entidad
+        bancaria entrega una cantidad de dinero a una persona o empresa, con el
+        compromiso de que dicha cantidad será devuelta en un
+        plazo determinado, junto con los intereses y comisiones pactadas.</p>
+    </main>
+    <form action="{% url 'loan:create_bank' %}" method="POST"> {# this needs to be changed #}
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div>
+        {% for error in form.non_field_errors %}
+          <p style="color: red;">{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {{ form.as_p }}
+      <input type="submit" value="Register">
+    </form>
+
+  </div>
+
+</div>
+
+
+
+
+{% endblock content %}

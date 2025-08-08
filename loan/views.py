@@ -13,9 +13,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import CreateView, ListView, DetailView
 
-from .models import NoBankLoan
+from .models import NoBankLoan, BankLoan
 
-from .forms import LoanPaymentForm, BankForm, NobanForm
+from .forms import LoanPaymentForm, BankForm, NobanForm, BankLoanForm
 from .tete import Bank, Loans, no_bank_desc_loan
 
 class BankView(View):
@@ -57,7 +57,6 @@ class BankView(View):
 
         messages.error(request, "Entrada incorrecta")
         return redirect(request.path)
-
 
 
 class NoBankView(View):
@@ -119,21 +118,27 @@ class NoBankGeristerCreateView(LoginRequiredMixin, CreateView):
     template_name = "loan/nobank_loan.html"
     form_class = NobanForm
     model = NoBankLoan
+    success_url = "loan/no_bank_list.html"
 
     def form_valid(self, form):
 
-        form = form.save(commit=False)
-        form.user = self.request.user
-        form.save()
-        return redirect(reverse_lazy('loan:no_bank_list'))
+        no_bank = form.save(commit=False)
+        no_bank.user = self.request.user
+        no_bank.save()
+        return super().form_valid(form)
 
-class NoBankListView(LoginRequiredMixin, ListView):
+
+class BankListView(LoginRequiredMixin, ListView):
     template_name = "loan/nobank_list.html"
-    model = NoBankLoan
     context_object_name = 'no_loans'
 
     def queryset(self, **kwargs):
         return NoBankLoan.objects.filter(user=self.request.user)
+
+    def context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["bank"] = BankLoan.objects.filter(user=self.request.user)
+        return context
 
 
 class NoBankDetailUpdateView(LoginRequiredMixin, View):
@@ -230,6 +235,18 @@ class NoBankDetailUpdateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 
+class BankGeristerCreateView(LoginRequiredMixin, CreateView):
+    model = BankLoan
+    success_url = "loan:nobank_list.html"
+    template_name = "loan/bank_loan.html"
+    form_class = BankLoanForm
+
+    def form_valid(self, form):
+
+        bank = form.save(commit=False)
+        bank.user = self.request.user
+        bank.save()
+        return super().form_valid(form)
 
 
 
