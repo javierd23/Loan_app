@@ -52,6 +52,11 @@
       background-color: #fff;
     }
 
+    .footer {
+    background-color: #f0f0f0;
+    padding: 15px;
+    }
+
     .sidebar-left {
       border-right: 1px solid #ddd;
     }
@@ -84,7 +89,7 @@
       <br>
       <a href="{% url 'loan:register_loan' %}">Añade un préstamo</a>
       <br>
-      <a href="{% url 'loan:no_bank_list' %}">Tus préstamos</a>
+      <a href="{% url 'loan:bank_list' %}">Tus préstamos</a>
       </div>
     {% else %}
     <div style="position: absolute; top: 10px; right: 10px;">

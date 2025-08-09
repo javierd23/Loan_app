@@ -13,10 +13,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import CreateView, ListView, DetailView
 
-from .models import NoBankLoan, BankLoan
+from .models import NoBankLoan, BankLoan, BankLoanDetail
 
 from .forms import LoanPaymentForm, BankForm, NobanForm, BankLoanForm
-from .tete import Bank, Loans, no_bank_desc_loan
+from .tete import Bank, Loans, no_bank_desc_loan, BankLoanUser
 
 class BankView(View):
     template_name = "loan/bank.html"
@@ -47,7 +47,7 @@ class BankView(View):
             # 600 months is iqual to 50 years, this is enough not to kill the server. To avoid creative
             # enter of eg. 40,000, or something like that, it would kill the server for sure.
             if months < 1 or months > 600:
-                form.add_error(None, ('No mas de 600 meses y menos de 1 mes es permitido.'))  # Displaying error message...
+                form.add_error(None, 'No mas de 600 meses y menos de 1 mes es permitido.')  # Displaying error message...
                 return render(request, self.template_name, {'form': form})
 
             data = Bank(loan_amount, int_rate, months)
@@ -105,20 +105,20 @@ class NoBankView(View):
 
 
 
-#register your loan view.
+#register your loans view.
 class RegisterLoanView(LoginRequiredMixin, View):
     """A simple view to select the type of loan."""
 
     def get(self, request):
         return render(request, 'loan/register_loan.html')
 
-#creating a No_bank loan...
 
-class NoBankGeristerCreateView(LoginRequiredMixin, CreateView):
+
+class NoBankCreateView(LoginRequiredMixin, CreateView):
     template_name = "loan/nobank_loan.html"
     form_class = NobanForm
     model = NoBankLoan
-    success_url = "loan/no_bank_list.html"
+    success_url = "loan/bank_list.html"
 
     def form_valid(self, form):
 
@@ -129,15 +129,15 @@ class NoBankGeristerCreateView(LoginRequiredMixin, CreateView):
 
 
 class BankListView(LoginRequiredMixin, ListView):
-    template_name = "loan/nobank_list.html"
-    context_object_name = 'no_loans'
+    template_name = "loan/banks_list.html"
+    context_object_name = 'no_bank_loans'
 
-    def queryset(self, **kwargs):
+    def get_queryset(self, **kwargs):
         return NoBankLoan.objects.filter(user=self.request.user)
 
-    def context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["bank"] = BankLoan.objects.filter(user=self.request.user)
+        context["bank_loans"] = BankLoan.objects.filter(user=self.request.user)
         return context
 
 
@@ -235,18 +235,104 @@ class NoBankDetailUpdateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 
-class BankGeristerCreateView(LoginRequiredMixin, CreateView):
-    model = BankLoan
-    success_url = "loan:nobank_list.html"
+class BankCreateView(LoginRequiredMixin, View):
+    """This view will create the Bank loan and its payments
+        that it will be then displayed in the detail view."""
     template_name = "loan/bank_loan.html"
-    form_class = BankLoanForm
 
-    def form_valid(self, form):
+    def get(self, request):
 
-        bank = form.save(commit=False)
-        bank.user = self.request.user
-        bank.save()
-        return super().form_valid(form)
+        form_loan = BankLoanForm(prefix='loan')
+        form = BankForm(prefix='calculator')
+        result_json = request.session.pop('result', None)
+
+        try:
+            result = json.loads(result_json) if result_json else None
+        except json.JSONDecodeError:
+            result = None
+            messages.error(request, "Error al leer los resultados anteriores.")
+
+        context = {"form_loan": form_loan, "form": form, "result": result}
+
+        return render(request, self.template_name, context)
+
+
+    def post(self, request):
+        form_loan = BankLoanForm(request.POST, prefix='loan')
+        form = BankForm(request.POST, prefix='calculator')
+
+        context = {"form_loan": form_loan, "form": form}
+
+        if "calculator-submit" in request.POST:
+
+            if form.is_valid():
+                loan_amount = float(form.cleaned_data['loan_amount'])
+                int_rate = int(form.cleaned_data['int_rate'])
+                months =  int(form.cleaned_data['months'])
+
+                if months < 1 or months > 600:
+                    form_loan.add_error(None, (
+                        'No mas de 600 meses y menos de 1 mes es permitido.'))  # Displaying error message...
+                    return render(request, self.template_name, context)
+
+                data = Bank(loan_amount, int_rate, months)
+                result = data.bank_loan()  # This should be a list of dicts
+                request.session['result'] = json.dumps(result)
+                return redirect(request.path)
+
+            return render(request, self.template_name, context)
+
+        elif "loan-submit" in request.POST:
+
+            if form_loan.is_valid(): #Grabbing the data to create the detail of the payment.
+                monthly_payment = float(form_loan.cleaned_data['monthly_payment'])
+                interest_rate = int(form_loan.cleaned_data['interest_rate'])
+                loan_amount = float(form_loan.cleaned_data['loan_amount'])
+                months = int(form_loan.cleaned_data['months'])
+                month_paid = int(form_loan.cleaned_data['month_paid'])
+
+                if months < 1 or months > 600: #No more than 600 months, to avoid issues with the server.
+                    form.add_error(None, "No mas de 600 meses y menos de 1 mes es permitido.")
+                    return render(request, self.template_name, context)
+
+                loan_bank = form_loan.save(commit=False)
+                loan_bank.user = self.request.user
+                loan_bank.save()
+
+                loan = BankLoanUser(monthly_payment, loan_amount, interest_rate, months)
+                loan_result = loan.bank_loan() #This is a list of dicts...
+
+
+                # if the user's loan has been paid form months, I get the data from that month and on...
+                if month_paid == 0:
+                    loan_data = loan_result[:]  # if there is no month paid yet, I get all the data.
+                else:
+                    loan_data = loan_result[month_paid:]
+
+                BankLoanDetail.objects.bulk_create(
+                    [
+                        BankLoanDetail(
+                            months=json.dumps(item["month"]),
+                            payment=json.dumps(item["monthly_payment"]),
+                            principal=json.dumps(item["principal"]),
+                            interest_rate=json.dumps(item["interest"]),
+                            remaining=json.dumps(item["remaining_balance"]),
+                            bankloan = loan_bank
+                                        )
+                            for item in loan_data
+
+                    ]
+
+                )
+
+                return redirect(reverse_lazy('loan:bank_list'))
+
+        return render(request, self.template_name, context)
+
+
+
+
+
 
 
 

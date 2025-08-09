@@ -109,6 +109,55 @@ def no_bank_desc_loan(payment, interest_rate, loan_amount):
 #print(no_bank_desc_loan(1000,5, 15000))
 
 
+#This class will get the payments for a bank loan,
+# instead of calculating the monthly payment, it will take it as input.
+
+class BankLoanUser:
+    def __init__(self,monthly_payment, loan, rate, months):
+        self.monthly_payment = monthly_payment
+        self.loan_amount = loan
+        self.months = months
+        self.loan_interest = rate
+        self.interest_rate = rate / 100
+
+    def bank_loan(self):
+        loan_amount = self.loan_amount
+        interest_rat = self.interest_rate / 12
+        rate_int = interest_rat * (1 + interest_rat) ** self.months
+        rate_down = (1 + interest_rat) ** self.months - 1
+        month_pay = self.loan_amount * rate_int / rate_down
+
+        if month_pay != self.monthly_payment:
+            month_pay = self.monthly_payment
+
+        total = []
+        months_count = 0
+        while True:
+            dec_pay = month_pay - (self.loan_amount * interest_rat)
+            desc_amount = self.loan_amount - dec_pay
+            self.loan_amount = desc_amount
+            desc_pay = interest_rat * self.loan_amount
+            pay_month = month_pay - desc_pay
+            months_count += 1
+
+            total.append(
+            {"month": months_count,
+             "monthly_payment": round(month_pay, 2),
+             "principal": round(pay_month, 2),
+             "interest": round(desc_pay, 2),
+             "remaining_balance": round(max(self.loan_amount, 0), 2)}
+                    )
+
+            if self.loan_amount <= 0: break
+        return total
+
+#testing BankLoanUser class...
+loan_1 = BankLoanUser(1300,15000,5, 12)
+result = loan_1.bank_loan()
+
+
+data = [ item for item in result ]
+
 
 
 

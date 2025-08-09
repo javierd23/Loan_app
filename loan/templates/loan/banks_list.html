@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block title %}No bank detail{% endblock title %}
 
@@ -13,7 +14,7 @@
 
   <div class="main-content">
 
-    {% if no_loans %}
+    {% if no_bank_loans %}
     <table>
       <thead>
         <tr>
@@ -25,13 +26,13 @@
       </thead>
 
       <tbody>
-      {% for loan in no_loans %}
+      {% for loan in no_bank_loans %}
 
       <tr>
         <td><a href="{% url 'loan:no_bank_detail' loan.id %}">{{ loan.name }}</a></td>
-        <td>{{ loan.monthly_payment|floatformat:2 }}</td>
-        <td>{{ loan.interest_rate|floatformat:2 }}</td>
-        <td>{{ loan.loan_amount|floatformat:2 }}</td>
+        <td>${{ loan.monthly_payment|intcomma }}</td>
+        <td>{{ loan.interest_rate }}%</td>
+        <td>${{ loan.loan_amount|intcomma }}</td>
       </tr>
       {% endfor %}
       </tbody>
@@ -42,7 +43,7 @@
   </div>
 
   <div class="main-content">
-    {% if bank %}
+    {% if bank_loans %}
     <table>
       <thead>
         <tr>
@@ -50,17 +51,19 @@
           <th>Pagos mensuales</th>
           <th>Intereses mensuales</th>
           <th>Monto del préstamo</th>
+          <th>Meses pagos</th>
         </tr>
       </thead>
 
       <tbody>
-      {% for loan in bank %}
+      {% for loan in bank_loans %}
 
       <tr>
         <td>{{ loan.name }}</td>
-        <td>{{ loan.monthly_payment|floatformat:2 }}</td>
-        <td>{{ loan.interest_rate|floatformat:2 }}</td>
-        <td>{{ loan.loan_amount|floatformat:2 }}</td>
+        <td>${{ loan.monthly_payment|intcomma }}</td>
+        <td>{{ loan.interest_rate }}%</td>
+        <td>${{ loan.loan_amount|intcomma }}</td>
+        <td>{{ loan.month_paid }}</td>
       </tr>
       {% endfor %}
       </tbody>

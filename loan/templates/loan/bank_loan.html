@@ -27,7 +27,26 @@
         compromiso de que dicha cantidad será devuelta en un
         plazo determinado, junto con los intereses y comisiones pactadas.</p>
     </main>
-    <form action="{% url 'loan:create_bank' %}" method="POST"> {# this needs to be changed #}
+    <form action="{% url 'loan:create_bank' %}" method="POST">
+      {% csrf_token %}
+
+      {% if form_loan.non_field_errors %}
+      <div>
+        {% for error in form_loan.non_field_errors %}
+          <p style="color: red;">{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {{ form_loan.as_p }}
+      <input type="submit" name="loan-submit" value="Register">
+    </form>
+
+  </div>
+
+  <div class="main-content">
+
+    <form action="" method="POST">
       {% csrf_token %}
 
       {% if form.non_field_errors %}
@@ -39,9 +58,47 @@
       {% endif %}
 
       {{ form.as_p }}
-      <input type="submit" value="Register">
+      <input type="submit" name="calculator-submit" value="Calcular">
     </form>
+    {% if result %}
+    <div class="summary">
+        <h3>Resultado:</h3>
+        <p>
+          La cuota mensual sería de:<br>
+          <strong>${{ result.month_pay|floatformat:2 }}</strong>
+          Considerando un monto de <strong>${{ result.loan_amount_total |floatformat:2 }}</strong>
+          a una tasa de interés de <strong>{{ result.interest_rate }}%</strong>
+          por un plazo de <strong>{{ result.months }}</strong> meses.
+        </p>
 
+
+      <table>
+          <thead>
+              <tr>
+                  <th>Mes</th>
+                  <th>Pago</th>
+                  <th>Principal</th>
+                  <th>Interés</th>
+                  <th>Balance</th>
+              </tr>
+          </thead>
+          {% for row in result.schedule %}
+          <tbody>
+
+              <tr>
+                  <td>{{ row.month }}</td>
+                  <td>${{ row.monthly_payment }}</td>
+                  <td>${{ row.principal }}</td>
+                  <td>${{ row.interest }}</td>
+                  <td>${{ row.remaining_balance }}</td>
+              </tr>
+
+          </tbody>
+        {% endfor %}
+      </table>
+
+      {% endif %}
+    </div>
   </div>
 
 </div>
