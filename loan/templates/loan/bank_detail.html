@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Bank detail{% endblock title %}
+
+{% block content %}
+<div class="container">
+
+  <div class="sidebar-left">
+    <h3>Aqui puedes:</h3>
+    <a href="{% url 'loan:bank_delete' bank_detail.id %}">D</a>
+  </div>
+
+  <div class="main-content">
+
+    <div class="summary">
+      <h3>Préstamos bancarios {{ bank_detail.name}}:</h3>
+        <table>
+          <thead>
+              <tr>
+                  <th>Mes</th>
+                  <th>Pago</th>
+                  <th>Aporte</th>
+                  <th>Interés</th>
+                  <th>Balance</th>
+              </tr>
+          </thead>
+          {% for row in loan_details %}
+          <tbody>
+              <tr>
+                  <td>{{ row.months }}</td>
+                  <td>${{ row.payment }}</td>
+                  <td>${{ row.principal }}</td>
+                  <td>${{ row.interest_rate }}</td>
+                  <td>${{ row.remaining }}</td>
+              </tr>
+
+          </tbody>
+          {% endfor %}
+         </table>
+
+    </div>
+  </div>
+
+</div>
+{% endblock content %}

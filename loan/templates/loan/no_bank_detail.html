@@ -7,8 +7,9 @@
 <div class="container">
 
     <div class="sidebar-left">
-
-  </div>
+      <h3>Aqui puedes:</h3>
+      <a href="{% url 'loan:no_bank_delete' no_bank.id %}">Eliminar</a>
+    </div>
 
     <div class="main-content">
       {% if form.non_field_errors %}

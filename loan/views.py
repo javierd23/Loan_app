@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.views import View
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, DeleteView
 
 from .models import NoBankLoan, BankLoan, BankLoanDetail
 
@@ -235,6 +235,13 @@ class NoBankDetailUpdateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 
+class NoBankLoanDeleteView(LoginRequiredMixin, DeleteView):
+    model = NoBankLoan
+    context_object_name = 'no_bank'
+    template_name = 'loan/no_bank_delete.html'
+    success_url = reverse_lazy('loan:bank_list')
+
+
 class BankCreateView(LoginRequiredMixin, View):
     """This view will create the Bank loan and its payments
         that it will be then displayed in the detail view."""
@@ -330,12 +337,22 @@ class BankCreateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 
+class BankLoanDetailView(LoginRequiredMixin, DetailView):
+    model = BankLoan
+    template_name = "loan/bank_detail.html"
+    context_object_name = "bank_detail"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["loan_details"] = BankLoanDetail.objects.filter(bankloan=self.object)
+        return context
 
 
-
-
-
-
+class BankLoanDeleteView(LoginRequiredMixin, DeleteView):
+    model = BankLoan
+    template_name = "loan/bank_delete.html"
+    context_object_name = "bank_loan"
+    success_url = reverse_lazy('loan:bank_list')
 
 
 

@@ -59,7 +59,7 @@
       {% for loan in bank_loans %}
 
       <tr>
-        <td>{{ loan.name }}</td>
+        <td><a href="{% url 'loan:bank_detail' loan.id %}">{{ loan.name }}</a></td>
         <td>${{ loan.monthly_payment|intcomma }}</td>
         <td>{{ loan.interest_rate }}%</td>
         <td>${{ loan.loan_amount|intcomma }}</td>

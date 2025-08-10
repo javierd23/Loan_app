@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete{% endblock %}
+
+{% block content %}
+
+<h2>Eliminar esta préstamo:</h2>
+
+<p>Estás seguro de querer eliminar esta respuesta?<br>
+  <span>{{ no_bank.name }}</span>
+</p>
+
+<form action="" method="POST" onsubmit="return confirmDelete();">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+  <input type="button" value="Cancel" onclick="window.location.href='{% url 'loan:no_bank_detail' no_bank.id %}';">
+</form>
+
+{% endblock %}
