@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.views import View
-from django.views.generic import CreateView, ListView, DetailView, DeleteView
+from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView
 
 from .models import NoBankLoan, BankLoan, BankLoanDetail
 
@@ -279,7 +279,7 @@ class BankCreateView(LoginRequiredMixin, View):
 
                 if months < 1 or months > 600:
                     form_loan.add_error(None, (
-                        'No mas de 600 meses y menos de 1 mes es permitido.'))  # Displaying error message...
+                        'No mas de 600 meses y menos de 1 mes es permitido.'))  
                     return render(request, self.template_name, context)
 
                 data = Bank(loan_amount, int_rate, months)
@@ -292,7 +292,7 @@ class BankCreateView(LoginRequiredMixin, View):
         elif "loan-submit" in request.POST:
 
             if form_loan.is_valid(): #Grabbing the data to create the detail of the payment.
-                monthly_payment = float(form_loan.cleaned_data['monthly_payment'])
+
                 interest_rate = int(form_loan.cleaned_data['interest_rate'])
                 loan_amount = float(form_loan.cleaned_data['loan_amount'])
                 months = int(form_loan.cleaned_data['months'])
@@ -306,7 +306,7 @@ class BankCreateView(LoginRequiredMixin, View):
                 loan_bank.user = self.request.user
                 loan_bank.save()
 
-                loan = BankLoanUser(monthly_payment, loan_amount, interest_rate, months)
+                loan = BankLoanUser(loan_amount, interest_rate, months)
                 loan_result = loan.bank_loan() #This is a list of dicts...
 
 
@@ -331,7 +331,7 @@ class BankCreateView(LoginRequiredMixin, View):
                     ]
 
                 )
-
+                messages.success(request, f'¡El préstamo "{loan_bank.name}" se registró correctamente! ')
                 return redirect(reverse_lazy('loan:bank_list'))
 
         return render(request, self.template_name, context)
@@ -353,6 +353,39 @@ class BankLoanDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "loan/bank_delete.html"
     context_object_name = "bank_loan"
     success_url = reverse_lazy('loan:bank_list')
+
+
+class BankLoanDetailPay(LoginRequiredMixin, View):
+    """This view will delete each payment detail of the bank loan.
+        And it will also update the loan amount on the BankLoan model"""
+
+    model = BankLoanDetail
+    template_name = "loan/bank_detail_pay.html"
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        bank_detail = get_object_or_404(BankLoanDetail, pk=pk)
+        bank_loan = bank_detail.bankloan
+        context = {"bank_loan": bank_loan, "bank_detail": bank_detail}
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        bank_detail = get_object_or_404(BankLoanDetail, pk=pk)
+        bank_loan = bank_detail.bankloan
+
+        bank_loan.loan_amount = bank_detail.remaining
+        bank_loan.save()
+
+        bank_detail.delete()
+
+        messages.success(
+            request,
+            f"Tu pago fue completado y tu préstamo ha sido actualizado. "
+            f"Tu nuevo balance es de {bank_loan.loan_amount}."
+        )
+        return redirect(reverse_lazy('loan:bank_list'))
 
 
 

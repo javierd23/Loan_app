@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
   <meta charset="UTF-8">
   <title>{% block title %}Nosotros{% endblock %}</title>
+
   <style>
     /* Basic styling for readability */
     body { font-family: sans-serif; margin: 20px; line-height: 1.5; }
@@ -100,6 +102,50 @@
     {% load static %}
     <h1><a href="{% url 'home:home' %}"><img src="{% static 'home/logo.png' %}" alt="Logo de tuCuotaRD" width="100" height="100"></a></h1>
   </nav>
+  {# error messages #}
+
+    {% if messages %}
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-4">
+        {% for message in messages %}
+            <div class="p-4 text-sm rounded-lg shadow-lg border transform transition-all duration-500 ease-in-out translate-x-full opacity-0
+                {% if message.tags == 'success' %}
+                    bg-green-100 text-green-700 border-green-300
+                {% elif message.tags == 'error' %}
+                    bg-red-100 text-red-700 border-red-300
+                {% else %}
+                    bg-blue-100 text-blue-700 border-blue-300
+                {% endif %}">
+                <span class="font-medium capitalize"></span> {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Slide in animation
+        document.addEventListener("DOMContentLoaded", () => {
+            const toasts = document.querySelectorAll("#toast-container > div");
+            toasts.forEach((toast, index) => {
+                setTimeout(() => {
+                    toast.classList.remove("translate-x-full", "opacity-0");
+                    toast.classList.add("translate-x-0", "opacity-100");
+                }, index * 100); // stagger if multiple
+            });
+
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                toasts.forEach((toast, index) => {
+                    setTimeout(() => {
+                        toast.classList.remove("translate-x-0", "opacity-100");
+                        toast.classList.add("translate-x-full", "opacity-0");
+                        setTimeout(() => toast.remove(), 1000); // remove after animation
+                    }, index * 100); // stagger hide
+                });
+            }, 3000);
+        });
+    </script>
+    {% endif %}
+
+
 <main id="content">
   {% block content %} {% endblock %}
   {% block sidebar %} {% endblock %}

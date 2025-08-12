@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load humanize %}
 {% block title %}Bank detail{% endblock title %}
 
 {% block content %}
@@ -22,20 +22,25 @@
                   <th>Aporte</th>
                   <th>Interés</th>
                   <th>Balance</th>
+                  <th>Acción</th>
               </tr>
           </thead>
-          {% for row in loan_details %}
           <tbody>
+          {% for row in loan_details %}
               <tr>
                   <td>{{ row.months }}</td>
-                  <td>${{ row.payment }}</td>
-                  <td>${{ row.principal }}</td>
+                  <td>${{ row.payment|intcomma }}</td>
+                  <td>${{ row.principal|intcomma }}</td>
                   <td>${{ row.interest_rate }}</td>
-                  <td>${{ row.remaining }}</td>
-              </tr>
+                  <td>${{ row.remaining|intcomma }}</td>
 
-          </tbody>
+
+              </tr>
           {% endfor %}
+          </tbody>
+        <div class="sidebar-right">
+          <a href="{% url 'loan:bank_detail_pay' loan_details.0.id %}">Pagar</a>
+        </div>
          </table>
 
     </div>

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Delete{% endblock %}
+
+{% block content %}
+
+<h3>Usted está realizando su pago del préstamo <strong>{{ bank_loan.name }}</strong></h3>
+<p>
+  Este pago será por la suma de <strong>{{ bank_detail.payment|intcomma }}</strong>,
+  para un aporte al capital de <strong>{{ bank_detail.principal|intcomma }}</strong>,
+  para un balance restante de <strong>{{ bank_detail.remaining|intcomma }}</strong>.
+</p>
+
+<form action="" method="POST" onsubmit="return confirmDelete();">
+  {% csrf_token %}
+  <input type="submit" value="Pagar">
+  <input type="button" value="Cancel" onclick="window.location.href='{% url 'loan:bank_detail' bank_loan.id %}';">
+</form>
+
+{% endblock %}

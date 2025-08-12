@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load humanize %}
 {% block title %}No Bank{% endblock title %}
 
 {% block content %}
@@ -42,7 +42,7 @@
   {% if result %}
   <div class="summery no bank">
     <h3>Resultado del préstamo:</h3>
-      <p>Usted pagaría aproximadamente <strong>${{ result.schedule.0.monthly_pay|floatformat:2 }}</strong> cada mes,
+      <p>Usted pagaría aproximadamente <strong>${{ result.schedule.0.monthly_pay|intcomma }}</strong> cada mes,
         durante un período estimado de <strong>{{ result.schedule|length }} meses</strong>.
         Este cálculo asume que mantendrá un compromiso constante con los pagos y que no añadirá nuevos préstamos al balance existente.
       </p>
@@ -62,10 +62,10 @@
         {% for loan in result.schedule %}
         <tr>
           <td>{{ loan.month }}</td>
-          <td>${{ loan.monthly_pay | floatformat:2  }}</td>
-          <td>${{ loan.des_pay | floatformat:2 }}</td>
-          <td>${{ loan.des_int | floatformat:2 }}</td>
-          <td>${{ loan.loan_amount | floatformat:2 }}</td>
+          <td>${{ loan.monthly_pay|intcomma }}</td>
+          <td>${{ loan.des_pay|intcomma }}</td>
+          <td>${{ loan.des_int|intcomma}}</td>
+          <td>${{ loan.loan_amount|intcomma}}</td>
         </tr>
         {% endfor %}
       </tbody>

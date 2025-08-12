@@ -1,7 +1,9 @@
 from django.urls import path
 
 from .views import BankView, NoBankView, RegisterLoanView, NoBankCreateView, BankListView, \
-    NoBankDetailUpdateView, BankCreateView, BankLoanDetailView, BankLoanDeleteView, NoBankLoanDeleteView
+    NoBankDetailUpdateView, BankCreateView, BankLoanDetailView, BankLoanDeleteView, NoBankLoanDeleteView, \
+    BankLoanDetailPay
+
 
 app_name = "loan"
 urlpatterns = [
@@ -17,6 +19,7 @@ urlpatterns = [
     #bank loan details...
     path("bank/<int:pk>", BankLoanDetailView.as_view(), name="bank_detail"),
     path("bank/<int:pk>/delete", BankLoanDeleteView.as_view(), name="bank_delete"),
+    path("bank/detail/pay/<int:pk>", BankLoanDetailPay.as_view(), name="bank_detail_pay"),
 
     #no_loan details and update...
     path("no_bank/<int:pk>", NoBankDetailUpdateView.as_view(), name="no_bank_detail"),

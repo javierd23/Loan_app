@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load humanize %}
 {% block title %}Register No Loan{% endblock title %}
 
 
@@ -71,10 +71,10 @@
         {% for loan in result.schedule %}
         <tr>
           <td>{{ loan.month }}</td>
-          <td>${{ loan.monthly_pay | floatformat:2  }}</td>
-          <td>${{ loan.des_pay | floatformat:2 }}</td>
-          <td>${{ loan.des_int | floatformat:2 }}</td>
-          <td>${{ loan.loan_amount | floatformat:2 }}</td>
+          <td>${{ loan.monthly_pay | intcomma  }}</td>
+          <td>${{ loan.des_pay | intcomma}}</td>
+          <td>${{ loan.des_int | intcomma}}</td>
+          <td>${{ loan.loan_amount | intcomma}}</td>
         </tr>
         {% endfor %}
       </tbody>

@@ -56,9 +56,9 @@
         <tr>
             <td>{{ row.month }}</td>
             <td>${{ row.monthly_payment }}</td>
-            <td>${{ row.principal }}</td>
+            <td>${{ row.principal|intcomma }}</td>
             <td>${{ row.interest }}</td>
-            <td>${{ row.remaining_balance }}</td>
+            <td>${{ row.remaining_balance|intcomma }}</td>
         </tr>
 
     </tbody>
@@ -90,9 +90,6 @@
           </li>
         </ul>
     </section>
-
-
-
 
 
 {% endblock  %}
