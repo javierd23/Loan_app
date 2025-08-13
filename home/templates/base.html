@@ -1,156 +1,165 @@
+{% load static tailwind_tags %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
+    {% tailwind_css %}
+    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+    <meta charset="utf-8">
 
-  <meta charset="UTF-8">
-  <title>{% block title %}Nosotros{% endblock %}</title>
-
-  <style>
-    /* Basic styling for readability */
-    body { font-family: sans-serif; margin: 20px; line-height: 1.5; }
-    .forum-container, .comment-container, .reply-container {
-      border: 1.0px solid #ddd;
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 2px;
-    }
-    .forum-container h1 { color: #333; }
-    .comment-container { background-color: #f9f9f9; margin-left: 10px; }
-    .reply-container { background-color: #f0f0f0; margin-left: 40px; border-left: 3px solid #ccc; padding-left: 10px; }
-    .meta { font-size: 0.9em; color: #666; margin-top: 5px; }
-    form { margin-top: 15px; padding: 10px; border: 1px dashed #ccc; border-radius: 5px; background-color: #fff; }
-    form input[type="submit"], form input[type="button"] {
-      padding: 8px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-right: 10px;
-    }
-    form input[type="submit"] { background-color: #007bff; color: white; }
-    form input[type="button"] { background-color: #6c757d; color: white; }
-    .errorlist { color: red; list-style-type: none; padding: 0; margin: 0; }
-  </style>
-  <style>
-    /* Simple internal CSS (no external file needed) */
-    body {
-      margin: 0;
-      font-family: sans-serif;
-    }
-
-    .container {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    .sidebar-left, .sidebar-right {
-      width: 20%;
-      background-color: #f5f5f5;
-      padding: 20px;
-    }
-
-    .main-content {
-      flex: 1;
-      padding: 30px;
-      background-color: #fff;
-    }
-
-    .footer {
-    background-color: #f0f0f0;
-    padding: 15px;
-    }
-
-    .sidebar-left {
-      border-right: 1px solid #ddd;
-    }
-
-    .sidebar-right {
-      border-left: 1px solid #ddd;
-    }
-  </style>
+    <title>{% block title %}Nosotros{% endblock %}</title>
 </head>
-<body>
-  <nav>
-    <a href="{% url 'home:about_page' %}">Nosotros</a>
-    <a href="{% url 'home:more_page' %}">Mas+</a>
-    <a href="{% url 'home:contact_page' %}">Contactos</a>
-    <a href="{% url 'forum:all' %}">Forum</a>
+<body class="bg-gray-100 bg-white dark:bg-gray-800 text-black dark:text-white">
 
-    {% if user.is_authenticated %}
-    <div style="position: absolute; top: 10px; right: 10px;">
-      <form method="POST" action="{% url 'logout' %}" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit" style="background:none;border:none;color:blue;text-decoration:underline;cursor:pointer;">
-          Cerrar sesión
-        </button>
-      </form>
-        <br>
-        {# on here add the profile and the setting so far #}
-        <a href="{% url 'accounts:profile' request.user.username %}">Perfil</a>
-      <br>
-      <a href="{% url 'accounts:settings' %}">Editar perfil</a>
-      <br>
-      <a href="{% url 'loan:register_loan' %}">Añade un préstamo</a>
-      <br>
-      <a href="{% url 'loan:bank_list' %}">Tus préstamos</a>
-      </div>
-    {% else %}
-    <div style="position: absolute; top: 10px; right: 10px;">
-    <a href="{% url 'login' %}?next={% url 'home:home' %}">Iniciar sesión</a>
-    {% endif %}
-    </div>
+<nav class="bg-white shadow-md fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
 
-    {% load static %}
-    <h1><a href="{% url 'home:home' %}"><img src="{% static 'home/logo.png' %}" alt="Logo de tuCuotaRD" width="100" height="100"></a></h1>
-  </nav>
-  {# error messages #}
-
-    {% if messages %}
-    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-4">
-        {% for message in messages %}
-            <div class="p-4 text-sm rounded-lg shadow-lg border transform transition-all duration-500 ease-in-out translate-x-full opacity-0
-                {% if message.tags == 'success' %}
-                    bg-green-100 text-green-700 border-green-300
-                {% elif message.tags == 'error' %}
-                    bg-red-100 text-red-700 border-red-300
-                {% else %}
-                    bg-blue-100 text-blue-700 border-blue-300
-                {% endif %}">
-                <span class="font-medium capitalize"></span> {{ message }}
+            <!-- Left: Logo and desktop links -->
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'home:home' %}" class="flex items-center">
+                    <img src="{% static 'home/logo.png' %}" alt="Logo" class="h-10 w-10">
+                    <span class="ml-2 text-xl font-bold text-gray-800">tuCuotaRD</span>
+                </a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="{% url 'home:about_page' %}" class="text-gray-700 hover:text-blue-500">Nosotros</a>
+                    <a href="{% url 'home:more_page' %}" class="text-gray-700 hover:text-blue-500">Mas+</a>
+                    <a href="{% url 'home:contact_page' %}" class="text-gray-700 hover:text-blue-500">Contactos</a>
+                    <a href="{% url 'forum:all' %}" class="text-gray-700 hover:text-blue-500">Forum</a>
+                </div>
             </div>
-        {% endfor %}
+
+            {# Right: Auth links and user menu #}
+            <div class="flex items-center space-x-4">
+
+                {% if user.is_authenticated %}
+                <!-- Desktop user dropdown -->
+                <div class="hidden md:block relative group">
+                    <button class="flex items-center text-gray-700 hover:text-blue-500 focus:outline-none">
+                        <span class="mr-2">{{ user.username }}</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div
+                        class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg hidden group-hover:block z-50">
+                        <a href="{% url 'accounts:profile' request.user.username %}"
+                           class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Perfil</a>
+                        <a href="{% url 'accounts:settings' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Editar
+                            perfil</a>
+                        <a href="{% url 'loan:register_loan' %}"
+                           class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Añade un préstamo</a>
+                        <a href="{% url 'loan:bank_list' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Tus
+                            préstamos</a>
+                        <form method="POST" action="{% url 'logout' %}" class="block">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">Cerrar sesión
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Mobile hamburger button -->
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+
+                {% else %}
+                <a href="{% url 'login' %}?next={% url 'home:home' %}"
+                   class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Iniciar sesión</a>
+
+                <!-- Mobile hamburger button for non-auth users -->
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                {% endif %}
+            </div>
+        </div>
     </div>
 
-    <script>
-        // Slide in animation
-        document.addEventListener("DOMContentLoaded", () => {
-            const toasts = document.querySelectorAll("#toast-container > div");
+    <!-- Mobile menu, hidden by default -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+        <div class="px-4 pt-4 pb-2 space-y-1">
+            <a href="{% url 'home:about_page' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Nosotros</a>
+            <a href="{% url 'home:more_page' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Mas+</a>
+            <a href="{% url 'home:contact_page' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Contactos</a>
+            <a href="{% url 'forum:all' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Forum</a>
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'accounts:profile' request.user.username %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Perfil</a>
+            <a href="{% url 'accounts:settings' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Editar perfil</a>
+            <a href="{% url 'loan:register_loan' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Añade un préstamo</a>
+            <a href="{% url 'loan:bank_list' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Tus préstamos</a>
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="w-full text-left px-3 py-2 text-red-600 hover:bg-gray-100 rounded-md">Cerrar sesión</button>
+            </form>
+            {% else %}
+            <a href="{% url 'login' %}?next={% url 'home:home' %}" class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:bg-blue-100">Iniciar sesión</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+
+<div class="pt-20">
+    {% block content %}{% endblock %}
+</div>
+
+
+{% if messages %}
+<div id="toast-container" class="fixed top-4 right-4 z-50 space-y-4">
+    {% for message in messages %}
+    <div class="p-4 text-sm rounded-lg shadow-lg border transform transition-all duration-500 ease-in-out translate-x-full opacity-0
+        {% if message.tags == 'success' %}
+            bg-green-100 text-green-700 border-green-300
+        {% elif message.tags == 'error' %}
+            bg-red-100 text-red-700 border-red-300
+        {% else %}
+            bg-blue-100 text-blue-700 border-blue-300
+        {% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toasts = document.querySelectorAll("#toast-container > div");
+        toasts.forEach((toast, index) => {
+            setTimeout(() => {
+                toast.classList.remove("translate-x-full", "opacity-0");
+                toast.classList.add("translate-x-0", "opacity-100");
+            }, index * 100);
+        });
+        setTimeout(() => {
             toasts.forEach((toast, index) => {
                 setTimeout(() => {
-                    toast.classList.remove("translate-x-full", "opacity-0");
-                    toast.classList.add("translate-x-0", "opacity-100");
-                }, index * 100); // stagger if multiple
+                    toast.classList.remove("translate-x-0", "opacity-100");
+                    toast.classList.add("translate-x-full", "opacity-0");
+                    setTimeout(() => toast.remove(), 1000);
+                }, index * 100);
             });
+        }, 3000);
+    });
 
-            // Auto-hide after 3 seconds
-            setTimeout(() => {
-                toasts.forEach((toast, index) => {
-                    setTimeout(() => {
-                        toast.classList.remove("translate-x-0", "opacity-100");
-                        toast.classList.add("translate-x-full", "opacity-0");
-                        setTimeout(() => toast.remove(), 1000); // remove after animation
-                    }, index * 100); // stagger hide
-                });
-            }, 3000);
-        });
-    </script>
-    {% endif %}
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
 
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>
+{% endif %}
 
-<main id="content">
-  {% block content %} {% endblock %}
-  {% block sidebar %} {% endblock %}
-  {% block navbar %} {% endblock %}
-  {% block footer %} {% endblock %}
-</main>
 </body>
 </html>

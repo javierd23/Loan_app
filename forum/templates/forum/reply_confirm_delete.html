@@ -1,19 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}Delete{% endblock %}
+{% block title %}Eliminar Respuesta{% endblock %}
 
 {% block content %}
 
 <h2>Eliminar esta respuesta:</h2>
 
-<p>Estás seguro de querer eliminar esta respuesta?<br>
-  <span>{{ reply.text }}</span>
+<p>¿Estás seguro de querer eliminar esta respuesta?<br>
+  <span class="font-semibold text-red-600">{{ reply.text }}</span>
 </p>
 
 <form action="" method="POST" onsubmit="return confirmDelete();">
   {% csrf_token %}
-  <input type="submit" value="Yes, delete.">
-  <input type="button" value="Cancel" onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}';">
+  <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded mr-4">
+    Sí, eliminar
+  </button>
+  <button type="button" onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}';"
+          class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
+    Cancelar
+  </button>
 </form>
+
+<script>
+  function confirmDelete() {
+    return confirm('¿Confirmas que quieres eliminar esta respuesta? Esta acción no se puede deshacer.');
+  }
+</script>
 
 {% endblock %}

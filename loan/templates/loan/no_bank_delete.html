@@ -1,19 +1,40 @@
 {% extends 'base.html' %}
 
-{% block title %}Delete{% endblock %}
+{% block title %}Eliminar Préstamo{% endblock %}
 
 {% block content %}
+<div class="max-w-md mx-auto mt-16 p-8 bg-white rounded-lg shadow-lg text-center">
 
-<h2>Eliminar esta préstamo:</h2>
+  <h2 class="text-3xl font-bold mb-6 text-black-600">Eliminar este préstamo</h2>
 
-<p>Estás seguro de querer eliminar esta respuesta?<br>
-  <span>{{ no_bank.name }}</span>
-</p>
+  <p class="mb-6 text-gray-700 text-lg">
+    ¿Estás seguro de querer eliminar esta respuesta?<br>
+    <span class="font-semibold text-gray-900">{{ no_bank.name }}</span>
+  </p>
 
-<form action="" method="POST" onsubmit="return confirmDelete();">
-  {% csrf_token %}
-  <input type="submit" value="Yes, delete.">
-  <input type="button" value="Cancel" onclick="window.location.href='{% url 'loan:no_bank_detail' no_bank.id %}';">
-</form>
+  <form action="" method="POST" onsubmit="return confirmDelete();" class="space-y-4">
+    {% csrf_token %}
 
+    <button
+      type="submit"
+      class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300"
+    >
+      Sí, eliminar
+    </button>
+
+    <button
+      type="button"
+      onclick="window.location.href='{% url 'loan:no_bank_detail' no_bank.id %}';"
+      class="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 rounded-lg transition duration-300"
+    >
+      Cancelar
+    </button>
+  </form>
+</div>
+
+<script>
+  function confirmDelete() {
+    return confirm('¿Confirmas que quieres eliminar esta respuesta? Esta acción no se puede deshacer.');
+  }
+</script>
 {% endblock %}

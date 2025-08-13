@@ -1,20 +1,41 @@
 {% extends 'base.html' %}
 {% load humanize %}
-{% block title %}Delete{% endblock %}
+{% block title %}Confirmar Pago{% endblock %}
 
 {% block content %}
+<div class="container mx-auto max-w-lg p-6 bg-white rounded-lg shadow mt-10">
 
-<h3>Usted está realizando su pago del préstamo <strong>{{ bank_loan.name }}</strong></h3>
-<p>
-  Este pago será por la suma de <strong>{{ bank_detail.payment|intcomma }}</strong>,
-  para un aporte al capital de <strong>{{ bank_detail.principal|intcomma }}</strong>,
-  para un balance restante de <strong>{{ bank_detail.remaining|intcomma }}</strong>.
-</p>
+  <h3 class="text-xl font-semibold mb-4">
+    Usted está realizando su pago del préstamo <strong>{{ bank_loan.name }}</strong>
+  </h3>
 
-<form action="" method="POST" onsubmit="return confirmDelete();">
-  {% csrf_token %}
-  <input type="submit" value="Pagar">
-  <input type="button" value="Cancel" onclick="window.location.href='{% url 'loan:bank_detail' bank_loan.id %}';">
-</form>
+  <p class="mb-6 text-gray-700">
+    Este pago será por la suma de
+    <strong>${{ bank_detail.payment|intcomma }}</strong>,<br>
+    para un aporte al capital de <strong>${{ bank_detail.principal|intcomma }}</strong>,<br>
+    para un balance restante de <strong>${{ bank_detail.remaining|intcomma }}</strong>.
+  </p>
 
+  <form action="" method="POST" onsubmit="return confirmPay();">
+    {% csrf_token %}
+    <div class="flex gap-4 justify-center">
+      <button type="submit"
+              class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">
+        Pagar
+      </button>
+      <button type="button"
+              onclick="window.location.href='{% url 'loan:bank_detail' bank_loan.id %}';"
+              class="bg-gray-300 px-6 py-2 rounded hover:bg-gray-400 transition">
+        Cancelar
+      </button>
+    </div>
+  </form>
+
+</div>
+
+<script>
+  function confirmPay() {
+    return confirm('¿Confirmas que quieres realizar este pago?');
+  }
+</script>
 {% endblock %}

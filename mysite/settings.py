@@ -48,8 +48,16 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'forum.apps.ForumConfig',
     'accounts.apps.AccountsConfig',
+    'tailwind',
+    'theme',
+    'django_browser_reload',
+
 
 ]
+TAILWIND_APP_NAME = 'theme'
+
+
+
 
 #api config
 REST_FRAMEWORK = {
@@ -98,6 +106,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 
 ]
 

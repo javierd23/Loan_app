@@ -1,51 +1,80 @@
 {% extends 'base.html' %}
-
-{% block title %}About{% endblock title %}
+{% block title %}About{% endblock %}
 
 {% block content %}
-  <div>
-    <h1>Nosotros:</h1>
-    <ul>
-      <li><a href="#we">¿Qué somos?</a></li>
-      <li><a href="#why">¿Para qué estamos aquí contigo?</a></li>
-      <li><a href="#not">¿Por qué no?</a></li>
+<div class="max-w-4xl mx-auto px-4 py-12 space-y-8 dark:bg-gray-900 dark:text-white">
+
+  <div class="bg-white dark:bg-gray-800  p-6 rounded-lg shadow">
+    <h1 class="text-3xl font-bold mb-4 dark:text-white text-gray-800">Nosotros:</h1>
+    <ul class="list-disc list-inside space-y-2 text-blue-600">
+      <li><a href="#we" class="hover:underline">¿Qué somos?</a></li>
+      <li><a href="#why" class="hover:underline">¿Para qué estamos aquí contigo?</a></li>
+      <li><a href="#not" class="hover:underline">¿Por qué no?</a></li>
     </ul>
   </div>
 
-  <h2 id="we">¿Qué somos?</h2>
-  <p>TuCuotaRD es una página web diseñada para ayudar a los usuarios a calcular, registrar y hacer
-    seguimiento de sus préstamos.</p>
+  <section id="we" class="bg-white p-6 dark:bg-gray-800  rounded-lg shadow space-y-4">
+    <h2 class="text-2xl font-semibold dark:text-white text-gray-800">¿Qué somos?</h2>
+    <p class="text-gray-700 dark:text-white leading-relaxed">
+      TuCuotaRD es una página web diseñada para ayudar a los usuarios a calcular, registrar y hacer
+      seguimiento de sus préstamos.
+    </p>
 
-  <h4>Calcular:</h4>
-  <p>Con un acceso rápido a nuestra plataforma, podrás ingresar la información de tu préstamo y obtener un
-    resumen detallado sin necesidad de registrarte.</p>
+    <div class="space-y-3">
+      <h4 class="text-lg font-semibold dark:text-white text-gray-700">Calcular:</h4>
+      <p class="text-gray-600 dark:text-white leading-relaxed">
+        Con un acceso rápido a nuestra plataforma, podrás ingresar la información de tu préstamo y obtener un
+        resumen detallado sin necesidad de registrarte.
+      </p>
 
-  <h4>Registrar:</h4>
-  <p>TuCuotaRD te ofrece la posibilidad de registrarte para guardar y gestionar todos tus préstamos.
-    Una vez registrado, podrás utilizar diversas herramientas que te ayudarán a visualizar y planificar de forma más
-    efectiva tus pagos, abonos y otras acciones relacionadas.</p>
+      <h4 class="text-lg font-semibold dark:text-white text-gray-700">Registrar:</h4>
+      <p class="text-gray-600 dark:text-white leading-relaxed">
+        TuCuotaRD te ofrece la posibilidad de registrarte para guardar y gestionar todos tus préstamos.
+        Una vez registrado, podrás utilizar diversas herramientas que te ayudarán a visualizar y planificar de forma más
+        efectiva tus pagos, abonos y otras acciones relacionadas.
+      </p>
 
-  <h4>Hacer:</h4>
-  <p>Podrás hacer seguimiento de tus préstamos para tener una idea clara de cuándo debes pagar,
-    cuánto de tu pago se destina al capital, cuánto a los intereses y otros detalles importantes.</p>
+      <h4 class="text-lg font-semibold dark:text-white text-gray-700">Hacer:</h4>
+      <p class="text-gray-600 dark:text-white leading-relaxed">
+        Podrás hacer seguimiento de tus préstamos para tener una idea clara de cuándo debes pagar,
+        cuánto de tu pago se destina al capital, cuánto a los intereses y otros detalles importantes.
+      </p>
+    </div>
+  </section>
 
-  <h2 id="why">¿Para qué estamos aquí contigo?</h2>
-  <p>En TuCuotaRD, estamos aquí para ayudarte a tomar el control de tus préstamos y finanzas personales.</p>
-  <p>Sabemos que manejar pagos, intereses y abonos puede ser complicado,
-    por eso te ofrecemos una plataforma simple y accesible que te permite:</p>
-  <ul>
-    <li>Calcular tus pagos de forma rápida.</li>
-    <li>Registrar y seguir cada uno de tus préstamos.</li>
-    <li>Entender cómo se divide cada pago entre capital e intereses.</li>
-    <li>Explorar distintas formas de pago y abono para tomar mejores decisiones financieras.</li>
-  </ul>
+  <section id="why" class="bg-white p-6 dark:bg-gray-800 rounded-lg shadow space-y-4">
+    <h2 class="text-2xl font-semibold dark:text-white text-gray-800">¿Para qué estamos aquí contigo?</h2>
+    <p class="text-gray-700 dark:text-white leading-relaxed">
+      En TuCuotaRD, estamos aquí para ayudarte a tomar el control de tus préstamos y finanzas personales.
+    </p>
+    <p class="text-gray-700 dark:text-white leading-relaxed">
+      Sabemos que manejar pagos, intereses y abonos puede ser complicado,
+      por eso te ofrecemos una plataforma simple y accesible que te permite:
+    </p>
+    <ul class="list-disc list-inside dark:text-white space-y-2 text-gray-600">
+      <li>Calcular tus pagos de forma rápida.</li>
+      <li>Registrar y seguir cada uno de tus préstamos.</li>
+      <li>Entender cómo se divide cada pago entre capital e intereses.</li>
+      <li>Explorar distintas formas de pago y abono para tomar mejores decisiones financieras.</li>
+    </ul>
+  </section>
 
-  <h2 id="not">¿Por qué no?</h2>
-  <h4>Regístrate en TuCuotaRD y déjanos ayudarte a organizar tus préstamos</h4>
-  <p>Sabemos lo difícil que puede ser manejar múltiples responsabilidades, y entendemos que tus
-    préstamos son solo una más entre muchas.
-    Por eso, en TuCuotaRD estamos aquí para ofrecerte la organización financiera que necesitas.</p>
-  <p>Con tu registro, podrás gestionar tus préstamos de forma ordenada, clara y sencilla,
-    para que puedas enfocarte en lo que realmente importa.</p>
+  <section id="not" class="bg-white dark:bg-gray-800  p-6 rounded-lg shadow space-y-4">
+    <h2 class="text-2xl font-semibold dark:text-white text-gray-800">¿Por qué no?</h2>
+    <h4 class="text-lg dark:text-white font-semibold text-gray-700">
+      Regístrate en TuCuotaRD y déjanos ayudarte a organizar tus préstamos
+    </h4>
+    <p class="text-gray-600 dark:text-white leading-relaxed">
+      Sabemos lo difícil que puede ser manejar múltiples responsabilidades, y entendemos que tus
+      préstamos son solo una más entre muchas.
+      Por eso, en TuCuotaRD estamos aquí para ofrecerte la organización financiera que necesitas.
+    </p>
+    <p class="text-gray-600 dark:text-white leading-relaxed">
+      Con tu registro, podrás gestionar tus préstamos de forma ordenada, clara y sencilla,
+      para que puedas enfocarte en lo que realmente importa.
+    </p>
+  </section>
+
+</div>
 {% endblock %}
 

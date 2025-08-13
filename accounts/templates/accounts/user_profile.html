@@ -1,76 +1,166 @@
 {% extends "base.html" %}
-
-{% block title %}Profile{% endblock %}
+{% load humanize %}
+{% block title %}Perfil{% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="sidebar-left">
-    {# I need to add the link for setting for the pic #}
-    {% if profile.photo %}
-    <img src="{{ profile.photo.url }}" alt="Profile picture" class="w-24 h-24 object-cover rounded-full shadow-lg" width="150" height="150">
-    {% else %}
-    <p>Aún no has agregado una foto.</p>
-    {% endif %}
-    <br>
-    <p>{{ user_obj.username }}</p>
+<div class="container mx-auto px-4 py-8">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 
-    <div>
-      <small style="color: gray; font-size: 90%;">Redes sociales</small>
-        <p>{{ user_obj.email }}</p>
+    <!-- Left Sidebar -->
+    <aside class="col-span-1 bg-white shadow rounded-lg p-6">
+      <div class="flex flex-col items-center">
+        {% if profile.photo %}
+          <img src="{{ profile.photo.url }}" alt="Foto de perfil" class="w-32 h-32 rounded-full object-cover shadow-md mb-4">
+          <a href="{% url 'accounts:settings' %}" class="text-sm text-blue-600 hover:underline">Cambiar foto</a>
+        {% else %}
+          <div class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 mb-4">
+            Sin foto
+          </div>
+          <a href="{% url 'accounts:settings' %}" class="text-sm text-blue-600 hover:underline">Agregar foto</a>
+        {% endif %}
+      </div>
+
+      <h3 class="text-lg font-semibold mt-6 mb-2 text-center">{{ user_obj.username }}</h3>
+      <p class="text-gray-600 text-center mb-6">{{ user_obj.email }}</p>
+
+      <div class="space-y-2">
+        <h4 class="text-sm font-semibold text-gray-500 uppercase mb-2">Redes sociales</h4>
 
         {% if profile.facebook %}
-          <p><a href="{{ profile.facebook }}" target="_blank">Facebook</a></p>
+          <p><a href="{{ profile.facebook }}" target="_blank" class="text-blue-600 hover:underline">Facebook</a></p>
         {% else %}
-        <p>No Facebook.</p>
+          <p class="text-gray-400 italic text-sm">No Facebook.</p>
         {% endif %}
 
-      {% if profile.twitter %}
-          <p><a href="{{ profile.twitter }}" target="_blank">Twitter</a></p>
+        {% if profile.twitter %}
+          <p><a href="{{ profile.twitter }}" target="_blank" class="text-blue-600 hover:underline">Twitter</a></p>
         {% else %}
-        <p>No Twitter.</p>
+          <p class="text-gray-400 italic text-sm">No Twitter.</p>
         {% endif %}
 
-      {% if profile.linkedin %}
-          <p><a href="{{ profile.linkedin }}" target="_blank">Linkedin</a></p>
+        {% if profile.linkedin %}
+          <p><a href="{{ profile.linkedin }}" target="_blank" class="text-blue-600 hover:underline">LinkedIn</a></p>
         {% else %}
-        <p>No Linkedin.</p>
+          <p class="text-gray-400 italic text-sm">No LinkedIn.</p>
         {% endif %}
 
-      {% if profile.instagram %}
-          <p><a href="{{ profile.instagram }}" target="_blank">Instagram</a></p>
+        {% if profile.instagram %}
+          <p><a href="{{ profile.instagram }}" target="_blank" class="text-blue-600 hover:underline">Instagram</a></p>
         {% else %}
-        <p>No Instagram.</p>
+          <p class="text-gray-400 italic text-sm">No Instagram.</p>
         {% endif %}
 
-      {% if profile.github %}
-          <p><a href="{{ profile.github }}" target="_blank">Github</a></p>
+        {% if profile.github %}
+          <p><a href="{{ profile.github }}" target="_blank" class="text-blue-600 hover:underline">GitHub</a></p>
         {% else %}
-        <p>No Github.</p>
+          <p class="text-gray-400 italic text-sm">No GitHub.</p>
         {% endif %}
+      </div>
 
-      <small style="color: gray; font-size: 90%;">Información personal</small>
-        <p>{{ profile.phone_number }}</p>
-        <br>
-        <p>{{ profile.birth_date }}</p>
-        <br>
-        <p>{{ profile.location }}</p>
-    </div>
-  </div>
-  <div class="main-content">
-    <h2>Bienvenido {{ user.first_name }} {{ user.last_name }}</h2>
-    <h4>Aquí está la lista de tus préstamos registrados.</h4>
-  </div>
+      <div class="mt-6 border-t pt-4 text-center">
+        <h4 class="text-sm font-semibold text-gray-500 uppercase mb-2">Información personal</h4>
+        <p class="text-gray-700">{{ profile.phone_number|default:"No registrado" }}</p>
+        <p class="text-gray-700">{{ profile.birth_date|date:"d M, Y"|default:"No registrado" }}</p>
+        <p class="text-gray-700">{{ profile.location|default:"No registrado" }}</p>
+      </div>
+    </aside>
 
-  <div class="sidebar-right">
-    <h4>Sugerencias:</h4>
-    <p>Recuerda que puedes registrar tu préstamo aquí.</p> {# <-- add the link to add a new loan on here #}
+    <!-- Main Content -->
+    <main class="col-span-1 md:col-span-2 bg-white shadow rounded-lg p-6">
+      <h2 class="text-2xl font-semibold mb-4">Bienvenido, {{ user.first_name }} {{ user.last_name }}</h2>
+      <p class="mb-6 text-gray-700">Aquí está la lista de tus préstamos registrados.</p>
+
+      {% block loans_list %}
+
+      <!-- Bancarios -->
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold mb-3">Préstamos bancarios:</h3>
+
+        {% if bank_loan and bank_loan|length > 0 %}
+          <div class="overflow-x-auto">
+            <table class="min-w-full table-auto border-collapse border border-gray-200">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="border border-gray-300 px-4 py-2 text-left">Nombre</th>
+                  <th class="border border-gray-300 px-4 py-2 text-right">Pagos mensuales</th>
+                  <th class="border border-gray-300 px-4 py-2 text-right">Intereses mensuales</th>
+                  <th class="border border-gray-300 px-4 py-2 text-right">Monto del préstamo</th>
+                  <th class="border border-gray-300 px-4 py-2 text-center">Meses pagados</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for loan in bank_loan %}
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-gray-300 px-4 py-2">
+                    <a href="{% url 'loan:bank_detail' loan.id %}" class="text-blue-600 hover:underline">
+                      {{ loan.name }}
+                    </a>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.monthly_payment|intcomma }}</td>
+                  <td class="border border-gray-300 px-4 py-2 text-right">{{ loan.interest_rate }}%</td>
+                  <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.loan_amount|intcomma }}</td>
+                  <td class="border border-gray-300 px-4 py-2 text-center">{{ loan.month_paid }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p class="text-gray-500 italic">No hay préstamos bancarios registrados aún.</p>
+        {% endif %}
+      </section>
+
+      <!-- No Bancarios -->
+      <section>
+        <h3 class="text-xl font-semibold mb-3">Préstamos no bancarios:</h3>
+
+        {% if no_bank and no_bank|length > 0 %}
+          <div class="overflow-x-auto">
+            <table class="min-w-full table-auto border-collapse border border-gray-200">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="border border-gray-300 px-4 py-2 text-left">Nombre</th>
+                  <th class="border border-gray-300 px-4 py-2 text-right">Pagos mensuales</th>
+                  <th class="border border-gray-300 px-4 py-2 text-right">Intereses mensuales</th>
+                  <th class="border border-gray-300 px-4 py-2 text-right">Monto del préstamo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for loan in no_bank %}
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-gray-300 px-4 py-2">
+                    <a href="{% url 'loan:no_bank_detail' loan.id %}" class="text-blue-600 hover:underline">
+                      {{ loan.name }}
+                    </a>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.monthly_payment|intcomma }}</td>
+                  <td class="border border-gray-300 px-4 py-2 text-right">{{ loan.interest_rate }}%</td>
+                  <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.loan_amount|intcomma }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p class="text-gray-500 italic">No hay préstamos no bancarios registrados aún.</p>
+        {% endif %}
+      </section>
+
+      {% endblock %}
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="col-span-1 bg-white shadow rounded-lg p-6">
+      <h3 class="text-lg font-semibold mb-4">Sugerencias</h3>
+      <p class="mb-4 text-gray-700">Recuerda que puedes registrar tu préstamo aquí.</p>
+      <a href="{% url 'loan:register_loan' %}" class="block bg-blue-600 text-white text-center py-2 rounded hover:bg-blue-700 transition">
+        Añadir nuevo préstamo
+      </a>
+    </aside>
 
   </div>
 </div>
-
-
-
-
-
-
 {% endblock %}
+
+
+

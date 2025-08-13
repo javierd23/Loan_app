@@ -1,52 +1,60 @@
 {% extends 'base.html' %}
 {% load humanize %}
-{% block title %}Comments and replies{% endblock %}
+{% block title %}Comments and Replies{% endblock %}
 
 {% block content %}
-<nav aria-label="breadcrumb">
-  <a class="breadcrumb-item active" href="{% url 'forum:all' %}">Forums</a>
+<nav aria-label="breadcrumb" class="mb-4 text-sm text-blue-600">
+  <a href="{% url 'forum:all' %}" class="hover:underline">Forums</a>
 </nav>
-<br>
-<div class="comment-container">
-  <h4>{{ comment.text | capfirst }}</h4>
-</div>
-<div class="reply-container">
+
+<div class="bg-white rounded-lg shadow p-6 max-w-3xl mx-auto space-y-6">
+
+  <div class="comment-container border-b pb-4">
+    <h4 class="text-xl font-semibold text-gray-800">{{ comment.text|capfirst }}</h4>
+  </div>
+
   {% if user.is_authenticated %}
-  <form action="{% url 'forum:comment_reply_detail' comment.id %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-    <input onclick="window.location.href='{% url 'forum:all' %}'" type="button" value="Cancel">
-  </form>
-  {% endif %}
-</div>
-<div class="reply-container">
-  {% if comment.replies.all %}
-  {% for reply in replies %}
-  <p>{{ reply.text }}</p>
-  <small>{{ reply.owner.username }}</small> |
-  <small style="color: gray;">{{ reply.created_at | naturaltime }}</small>
-  {% if reply.owner == request.user %}
-  <div>
-  <a href="{% url 'forum:single_reply_delete' reply.id %}">D</a> |
-  <a href="{% url 'forum:single_reply_update' reply.id %}">E</a>
+  <div class="reply-form">
+    <form action="{% url 'forum:comment_reply_detail' comment.id %}" method="post" class="space-y-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="flex gap-4">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold transition">
+          Submit
+        </button>
+        <button type="button"
+                onclick="window.location.href='{% url 'forum:all' %}'"
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded font-semibold transition">
+          Cancel
+        </button>
+      </div>
+    </form>
   </div>
   {% endif %}
-  {% endfor %}
-  {% endif %}
+
+  <div class="reply-list space-y-4">
+    {% if replies %}
+      {% for reply in replies %}
+      <div class="p-4 bg-gray-50 rounded shadow-sm">
+        <p class="text-gray-800">{{ reply.text }}</p>
+        <div class="text-xs text-gray-500 mt-1 flex items-center gap-2">
+          <span>{{ reply.owner.username }}</span> |
+          <time datetime="{{ reply.created_at }}">{{ reply.created_at|naturaltime }}</time>
+        </div>
+        {% if reply.owner == request.user %}
+        <div class="mt-2 space-x-3 text-sm">
+          <a href="{% url 'forum:single_reply_delete' reply.id %}" class="text-red-600 hover:underline">Eliminar</a>
+          <a href="{% url 'forum:single_reply_update' reply.id %}" class="text-blue-600 hover:underline">Editar</a>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-gray-500 italic">No hay respuestas aún.</p>
+    {% endif %}
+  </div>
+
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
 {% endblock %}
 
 

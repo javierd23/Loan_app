@@ -1,87 +1,92 @@
 {% extends 'base.html' %}
 {% load humanize %}
-{% block title %}Register No Loan{% endblock title %}
 
+{% block title %}Register No Loan{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
 
-    <div class="sidebar-left">
-      <h3>Aqui puedes:</h3>
-      <a href="{% url 'loan:no_bank_delete' no_bank.id %}">Eliminar</a>
-    </div>
+  <!-- Sidebar -->
+  <aside class="md:col-span-1 bg-gray-100 p-6 rounded-lg shadow">
+    <h3 class="text-xl font-semibold mb-4 text-gray-700">Aquí puedes:</h3>
+    <a href="{% url 'loan:no_bank_delete' no_bank.id %}"
+       class="block text-red-600 hover:text-red-800 font-medium transition">
+      Eliminar
+    </a>
+  </aside>
 
-    <div class="main-content">
-      {% if form.non_field_errors %}
-        <div class="alert alert-danger">
-          {% for error in form.non_field_errors %}
-            <p style="color: red;">{{ error }}</p>
+  <!-- Main content: Forms -->
+  <section class="md:col-span-3 space-y-10">
+
+    <!-- Form 1: Bank payment form -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      {% if form_bank.non_field_errors %}
+        <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+          {% for error in form_bank.non_field_errors %}
+            <p>{{ error }}</p>
           {% endfor %}
         </div>
       {% endif %}
-      <div>
-        <form method="POST">
-          {% csrf_token %}
 
-          {% if form.non_field_errors %}
-          <div class="alert alert-danger">
-            {% for error in form.non_field_errors %}
-              <p style="color: red;">{{ error }}</p>
-            {% endfor %}
-          </div>
-            {% endif %}
-
-          {{ form_bank.as_p }}
-          <input type="submit" name="bank-submit" value="Pagar">
-        </form>
-      </div>
-
-    </div>
-
-    <div class="main-content">
-      <form action="" method="POST">
+      <form method="POST" class="space-y-6">
         {% csrf_token %}
-
-        {% if form.non_field_errors %}
-        <div class="alert alert-danger">
-          {% for error in form.non_field_errors %}
-            <p style="color: red;">{{ error }}</p>
-          {% endfor %}
-        </div>
-          {% endif %}
-
-        {{ form.as_p }}
-        <input type="submit" name="calculator-submit" value="Calcular">
+        {{ form_bank.as_p }}
+        <button type="submit"
+                name="bank-submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
+          Pagar
+        </button>
       </form>
     </div>
 
+    <!-- Form 2: Calculator form -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      {% if form.non_field_errors %}
+        <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="POST" class="space-y-6">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"
+                name="calculator-submit"
+                class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition">
+          Calcular
+        </button>
+      </form>
+    </div>
+
+    <!-- Result Table -->
     {% if result %}
-    <table>
-      <thead>
-        <tr>
-          <th>Mes</th>
-          <th>Pagos mensuales</th>
-          <th>Pago al capital</th>
-          <th>Pago al interés</th>
-          <th>Balance del préstamo</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {% for loan in result.schedule %}
-        <tr>
-          <td>{{ loan.month }}</td>
-          <td>${{ loan.monthly_pay | intcomma  }}</td>
-          <td>${{ loan.des_pay | intcomma}}</td>
-          <td>${{ loan.des_int | intcomma}}</td>
-          <td>${{ loan.loan_amount | intcomma}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      </table>
+      <div class="overflow-x-auto bg-white rounded-lg shadow mt-6">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              {% for header in headers %}
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {{ header }}
+                </th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {% for loan in result.schedule %}
+              <tr class="hover:bg-gray-100 transition">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ loan.month }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ loan.monthly_pay|intcomma }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ loan.des_pay|intcomma }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ loan.des_int|intcomma }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ loan.loan_amount|intcomma }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     {% endif %}
+  </section>
 </div>
-
-
-
-{% endblock content %}
+{% endblock %}

@@ -1,26 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %}Register Loan{% endblock title %}
+{% block title %}Registrar Préstamo{% endblock title %}
 
 {% block content %}
-<div class="container">
-  <div class="sidebar-left">
-  </div>
+<div class="container mx-auto px-4 py-12">
+  <div class="max-w-3xl mx-auto bg-white rounded-lg shadow p-8">
+    <h2 class="text-3xl font-bold mb-4 text-gray-800">Registra tu préstamo</h2>
+    <p class="mb-6 text-gray-700">
+      Te ayudamos a llevar el control de tus préstamos
+      <strong class="font-semibold">bancarios</strong> y <strong class="font-semibold">no bancarios</strong>.
+    </p>
+    <h4 class="text-xl font-semibold mb-6 text-gray-800">¿Qué tipo de préstamo deseas registrar?</h4>
 
-  <div class="main-content">
-    <h2>Registra tu préstamo</h2>
-    <p>Te ayudamos a llevar el control de tus préstamos
-    <strong>bancarios</strong> y <strong>no bancarios</strong>.</p>
-    <h4>¿Qué tipo de préstamo deseas registrar?</h4>
-    <br>
-    <nav>
-      <a href="{% url 'loan:create_nobank' %}">Préstamo no Bancarios</a> |
-      <a href="{% url 'loan:create_bank' %}">Préstamo Bancarios</a>
+    <nav class="space-x-6">
+      <a href="{% url 'loan:create_nobank' %}"
+         class="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">
+         Préstamo no Bancario
+      </a>
+      <a href="{% url 'loan:create_bank' %}"
+         class="inline-block bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition">
+         Préstamo Bancario
+      </a>
     </nav>
   </div>
-
 </div>
-
-
-
 {% endblock content %}

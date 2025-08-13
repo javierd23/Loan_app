@@ -148,13 +148,13 @@ class BankLoanUser:
         return total
 
 #testing BankLoanUser class...
-loan_1 = BankLoanUser(40000,10,12)
-result = loan_1.bank_loan()
+#loan_1 = BankLoanUser(40000,10,12)
+#result = loan_1.bank_loan()
 
 
-data = [ item for item in result ]
+#data = [ item for item in result ]
 
-print(data)
+#print(data)
 
 
 

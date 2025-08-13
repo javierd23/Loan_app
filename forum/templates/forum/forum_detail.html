@@ -1,86 +1,104 @@
 {% extends 'base.html' %}
 {% load humanize %}
-{% block title %}Details{% endblock %}
+{% block title %}Detalles{% endblock %}
 
 {% block content %}
-<nav aria-label="breadcrumb">
-  <a class="breadcrumb-item active" href="{% url 'forum:all' %}">Forums</a>
+<nav aria-label="breadcrumb" class="mb-6 text-m dark:bg-black text-blue-600">
+  <a href="{% url 'forum:all' %}" class="hover:underline">Forums</a>
 </nav>
-<br>
-<div class="forum-container">
-  <h3>{{forum.title | capfirst }}</h3>
-  <small class="meta">{{ forum.owner.username }}</small> |
-  <small class="meta">{{forum.updated_at| naturaltime }}</small>
-</div>
-<aside>
-  {% if forum.owner == request.user %}
-  <div style="margin-top: 10px;">
-    <a href="{% url 'forum:forum_update' forum.id %}">E</i></a> |
-    <a href="{% url 'forum:forum_delete' forum.id %}">D</a>
+
+<div class="max-w-4xl mx-auto space-y-6">
+
+  <!-- Forum header -->
+  <div class="forum-container dark:bg-gray-900 bg-white p-6 rounded-lg shadow">
+    <h3 class="text-2xl dark:text-white font-semibold text-gray-800">{{ forum.title|capfirst }}</h3>
+    <p class="text-sm text-gray-500 dark:text-gray-400 ark:text-gray-400 mt-1">
+      <span>{{ forum.owner.username }}</span> &bull;
+      <time datetime="{{ forum.updated_at }}">{{ forum.updated_at|naturaltime }}</time>
+    </p>
+
+    {% if forum.owner == request.user %}
+    <div class="mt-4 space-x-4 text-sm">
+      <a href="{% url 'forum:forum_update' forum.id %}" class="text-blue-600 hover:underline">Editar</a>
+      <a href="{% url 'forum:forum_delete' forum.id %}" class="text-red-600 hover:underline">Eliminar</a>
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
-</aside>
 
-  <h4>
-    Comentarios:
-  </h4>
+  <!-- New Comment Form -->
+  <section class="bg-white p-6 dark:bg-gray-900 rounded-lg shadow space-y-4">
+    <h4 class="text-lg dark:text-white font-semibold text-gray-700">Comentarios:</h4>
+    <form action="{% url 'forum:comment_create' forum.id %}" method="post" class="space-y-4">
+      {% csrf_token %}
+      {{ CommentForm.as_p }}
+      <div class="flex gap-4">
+        <button type="submit" class="bg-green-600 hover:bg-green-800 text-white py-2 px-4 rounded font-semibold transition">Comentar</button>
+        <button type="button" onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}'" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded font-semibold transition">Cancelar</button>
+      </div>
+    </form>
+  </section>
 
-<form action="{% url 'forum:comment_create' forum.id %}" method="post">
-  {% csrf_token %}
-  {{ CommentForm.as_p }}
-  <input type="submit" value="Submit">
-  <input onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}'" type="button" value="Cancel">
-</form>
-<br>
-<div class="comment-container">
-  {% if comments %}
-  {% for comment in comments %}
-      <div>
-        <p>{{ comment.text | capfirst }}</p>
-        <p class="meta">
-          {{ comment.owner.username }} - {{ comment.created_at|naturaltime }}
+  <!-- Comments List -->
+  <section class="space-y-6">
+    {% if comments %}
+      {% for comment in comments %}
+      <div class="bg-gray-50 p-4 dark:bg-gray-900 rounded-lg shadow-sm">
+        <p class="text-gray-800 dark:text-white">{{ comment.text|capfirst }}</p>
+        <p class="text-xs dark:text-gray-400 text-gray-500 mt-1">
+          {{ comment.owner.username }} &bull;
+          <time datetime="{{ comment.created_at }}">{{ comment.created_at|naturaltime }}</time>
         </p>
 
-        {# Display replies to this specific comment #}
-        <div class="reply-container">
+        <!-- Replies -->
+        <div class="ml-6 mt-4 space-y-3">
           {% if comment.replies.all %}
             {% for reply in comment.top_replies %}
-            <p>{{ reply.text }}</p>
-            <p class="meta">
-              Reply by {{ reply.owner.username }} on {{ reply.created_at| naturaltime }}
-            </p>
-          {% if reply.owner == request.user %}
-            <div>
-              <a href="{% url 'forum:reply_update' forum.id reply.id %}">E</a> |
-              <a href="{% url 'forum:reply_delete' forum.id reply.id %}">D</a>
+            <div class="bg-white p-3 dark:bg-gray-800 rounded border border-gray-200">
+              <p class="text-gray-700 dark:text-white">{{ reply.text }}</p>
+              <p class="text-xs dark:text-gray-400 text-gray-500 mt-1">
+                Reply by {{ reply.owner.username }} &bull;
+                <time datetime="{{ reply.created_at }}">{{ reply.created_at|naturaltime }}</time>
+              </p>
+              {% if reply.owner == request.user %}
+              <div class="mt-2 space-x-3 text-sm">
+                <a href="{% url 'forum:reply_update' forum.id reply.id %}" class="text-blue-600 hover:underline">Editar</a>
+                <a href="{% url 'forum:reply_delete' forum.id reply.id %}" class="text-red-600 hover:underline">Eliminar</a>
+              </div>
+              {% endif %}
             </div>
+            {% endfor %}
           {% endif %}
-          {% endfor %}
-          {% endif %}
-          <br>
+
           {% if comment.replies.count > 4 %}
-          <a href="{% url 'forum:comment_reply_detail' comment.id %}">Repuestas</a>
+          <a href="{% url 'forum:comment_reply_detail' comment.id %}" class="text-blue-600 hover:underline text-sm">Ver más respuestas</a>
           {% endif %}
         </div>
-        <div>
-          <form action="{% url 'forum:reply_create' forum.id comment.id %}" method="post">
+
+        <!-- Reply Form -->
+        <div class="ml-6 mt-4">
+          <form action="{% url 'forum:reply_create' forum.id comment.id %}" method="post" class="space-y-3">
             {% csrf_token %}
             {{ ReplyForm.as_p }}
-            <input type="submit" value="Submit">
-            <input onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}'" type="button" value="Cancel">
+            <div class="flex gap-4">
+              <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-1 px-4 rounded font-semibold transition">Responder</button>
+              <button type="button" onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}'" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-1 px-4 rounded font-semibold transition">Cancelar</button>
+            </div>
           </form>
         </div>
+
+        <!-- Comment owner controls -->
         {% if comment.owner == request.user %}
-        <div style="margin-top: 10px;">
-          <a href="{% url 'forum:comment_update' comment.id %}">E</a>
-          <a href="{% url 'forum:comment_delete' comment.id %}">D</a>
+        <div class="mt-3 space-x-4 text-sm">
+          <a href="{% url 'forum:comment_update' comment.id %}" class="text-blue-600 hover:underline">Editar</a>
+          <a href="{% url 'forum:comment_delete' comment.id %}" class="text-red-600 hover:underline">Eliminar</a>
         </div>
         {% endif %}
       </div>
-  {% endfor %}
-  {% else %}
-    <p>No hay comentarios todavía.</p>
-  {% endif %}
+      {% endfor %}
+    {% else %}
+      <p class="text-gray-500 italic">No hay comentarios todavía.</p>
+    {% endif %}
+  </section>
 </div>
 
 {% endblock %}

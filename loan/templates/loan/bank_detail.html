@@ -1,50 +1,56 @@
 {% extends 'base.html' %}
 {% load humanize %}
-{% block title %}Bank detail{% endblock title %}
+{% block title %}Detalle Préstamo Bancario{% endblock title %}
 
 {% block content %}
-<div class="container">
+<div class="container mx-auto px-4 py-8 max-w-5xl grid grid-cols-1 md:grid-cols-4 gap-8">
 
-  <div class="sidebar-left">
-    <h3>Aqui puedes:</h3>
-    <a href="{% url 'loan:bank_delete' bank_detail.id %}">D</a>
-  </div>
-
-  <div class="main-content">
-
-    <div class="summary">
-      <h3>Préstamos bancarios {{ bank_detail.name}}:</h3>
-        <table>
-          <thead>
-              <tr>
-                  <th>Mes</th>
-                  <th>Pago</th>
-                  <th>Aporte</th>
-                  <th>Interés</th>
-                  <th>Balance</th>
-                  <th>Acción</th>
-              </tr>
-          </thead>
-          <tbody>
-          {% for row in loan_details %}
-              <tr>
-                  <td>{{ row.months }}</td>
-                  <td>${{ row.payment|intcomma }}</td>
-                  <td>${{ row.principal|intcomma }}</td>
-                  <td>${{ row.interest_rate }}</td>
-                  <td>${{ row.remaining|intcomma }}</td>
-
-
-              </tr>
-          {% endfor %}
-          </tbody>
-        <div class="sidebar-right">
-          <a href="{% url 'loan:bank_detail_pay' loan_details.0.id %}">Pagar</a>
-        </div>
-         </table>
-
+  <!-- Sidebar Right -->
+  <aside class="col-span-1 bg-white rounded-lg shadow p-6 space-y-4">
+    <h3 class="text-lg font-semibold">Aquí puedes:</h3>
+    <div class="flex flex-col space-y-2">
+      <a href="{% url 'loan:bank_delete' bank_detail.id %}"
+         class="text-red-600 hover:text-red-800 font-semibold">
+        Eliminar préstamo
+      </a>
+      {% if loan_details %}
+      <a href="{% url 'loan:bank_detail_pay' loan_details.0.id %}"
+         class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-center">
+        Pagar
+      </a>
+      {% endif %}
     </div>
-  </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="col-span-1 md:col-span-3 bg-white rounded-lg shadow p-6">
+    <h3 class="text-2xl font-semibold mb-6">Préstamo bancario: {{ bank_detail.name }}</h3>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full border-collapse border border-gray-300 text-center">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="border border-gray-300 px-4 py-2">Mes</th>
+            <th class="border border-gray-300 px-4 py-2">Pago</th>
+            <th class="border border-gray-300 px-4 py-2">Aporte</th>
+            <th class="border border-gray-300 px-4 py-2">Interés</th>
+            <th class="border border-gray-300 px-4 py-2">Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in loan_details %}
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-2">{{ row.months }}</td>
+            <td class="border border-gray-300 px-4 py-2">${{ row.payment|intcomma }}</td>
+            <td class="border border-gray-300 px-4 py-2">${{ row.principal|intcomma }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ row.interest_rate }}%</td>
+            <td class="border border-gray-300 px-4 py-2">${{ row.remaining|intcomma }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
 
 </div>
 {% endblock content %}

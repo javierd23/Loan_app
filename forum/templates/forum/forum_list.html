@@ -1,36 +1,33 @@
 {% extends 'base.html' %}
 {% load humanize %}
-{% block title %}Forum{% endblock %}
+{% block title %}Foros{% endblock %}
 
 {% block content %}
+<div class="max-w-3xl mx-auto mt-10 space-y-6">
 
-{% if forum_list %}
-<ul class="list-group" style="padding-left: 0;">
-  {% for forum in forum_list %}
-  <li class="list-group-item" style="margin-bottom: 1rem; padding: 1rem; border-left: 5px solid #007bff; border-radius: 4px; background-color: #f8f9fa;">
+  <nav aria-label="Page navigation" class="mt-8 text-center">
+    <a href="{% url 'forum:forum_create' %}" class="inline-block bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded transition">
+      Crear un foro
+    </a>
+  </nav>
 
-    <div style="margin-bottom: 0.25rem; font-size: 0.9rem; color: #555;">
-      <strong>{{ forum.owner.username }}</strong> &nbsp;|&nbsp;
-      {{ forum.updated_at|naturaltime }}
-    </div>
+  {% if forum_list %}
+  <ul class="divide-y divide-gray-200">
+    {% for forum in forum_list %}
+    <li class="bg-gray-50 p-4 rounded-lg dark:bg-gray-900 shadow-sm border-l-4 border-blue-600">
+      <div class="text-sm dark:text-gray-400 text-gray-600 mb-1">
+        <strong>{{ forum.owner.username }}</strong> &nbsp;|&nbsp;
+        <time datetime="{{ forum.updated_at }}">{{ forum.updated_at|naturaltime }}</time>
+      </div>
+      <h3 class="text-lg font-semibold text-blue-600 hover:underline">
+        <a href="{% url 'forum:forum_detail' forum.id %}">{{ forum.title }}</a>
+      </h3>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="text-gray-500 italic text-center">No hay foros disponibles aún.</p>
+  {% endif %}
 
-    <h3 style="margin: 0; font-size: 1.2rem;">
-      <a href="{% url 'forum:forum_detail' forum.id %}" style="text-decoration: none; color: #007bff;">
-        {{ forum.title }}
-      </a>
-    </h3>
-
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-  <p>No hay foros disponibles aún.</p>
-{% endif %}
-
-<nav aria-label="Page navigation">
-  <a href="{% url 'forum:forum_create' %}">Crear un forum</a>
-
-</nav>
-
+</div>
 {% endblock %}
-

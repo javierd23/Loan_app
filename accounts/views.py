@@ -14,6 +14,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 
+from loan.models import BankLoan, NoBankLoan
 from django.views import View
 
 
@@ -41,8 +42,11 @@ class ProfileView(LoginRequiredMixin, View):
         user_obj = get_object_or_404(User, username=username)
 
         try:
+            no_bank = NoBankLoan.objects.filter(user=user_obj)
+            bank_loan = BankLoan.objects.filter(user=user_obj)
             profile = UserProfile.objects.get(user=user_obj)
-            context = {"user_obj": user_obj, "profile": profile}
+            context = {"user_obj": user_obj, "profile": profile,
+                       "no_bank": no_bank, "bank_loan": bank_loan}
             return render(request, self.template_name, context)
 
         except UserProfile.DoesNotExist:

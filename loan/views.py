@@ -153,6 +153,8 @@ class NoBankDetailUpdateView(LoginRequiredMixin, View):
         form_bank = NobanForm(instance=no_bank, prefix='bank')
         form = LoanPaymentForm(prefix='calculator')
         result_json = request.session.pop('result', None)
+        headers = ["Mes", "Pagos mensuales", "Pago al capital",
+                   "Pago al interés", "Balance del préstamo"]
 
         try:
             result = json.loads(result_json) if result_json else None
@@ -160,7 +162,7 @@ class NoBankDetailUpdateView(LoginRequiredMixin, View):
             result = None
             messages.error(request, "Error al leer los resultados anteriores.")
 
-        context = {"no_bank": no_bank, "form": form, "form_bank": form_bank, "result": result}
+        context = {'headers': headers,"no_bank": no_bank, "form": form, "form_bank": form_bank, "result": result}
 
         return render(request, self.template_name, context)
 
@@ -376,6 +378,7 @@ class BankLoanDetailPay(LoginRequiredMixin, View):
         bank_loan = bank_detail.bankloan
 
         bank_loan.loan_amount = bank_detail.remaining
+        bank_loan.month_paid = bank_detail.months
         bank_loan.save()
 
         bank_detail.delete()
