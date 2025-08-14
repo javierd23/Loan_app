@@ -76,6 +76,17 @@
       <p class="text-gray-500 italic">Aún no has registrado ningún préstamo bancario.</p>
       {% endif %}
     </section>
+    <h4 class="text-xl flex justify-center dark:text-white font-semibold mb-6 text-gray-800">¿Qué tipo de préstamo deseas registrar?</h4>
+    <nav class="flex justify-center space-x-6">
+      <a href="{% url 'loan:create_nobank' %}"
+         class="inline-block bg-blue-600 text-white dark:text-white px-6 py-3 rounded hover:bg-blue-700 transition">
+         Préstamo no Bancario
+      </a>
+      <a href="{% url 'loan:create_bank' %}"
+         class="inline-block bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition">
+         Préstamo Bancario
+      </a>
+    </nav>
 
   </div>
 </div>

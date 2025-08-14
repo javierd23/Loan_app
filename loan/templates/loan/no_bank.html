@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load tailwind_filters %}
 {% load humanize %}
 {% block title %}Préstamos No Bancarios{% endblock title %}
 
@@ -42,7 +43,7 @@
         </div>
       {% endif %}
 
-      {{ form.as_p }}
+      {{ form|crispy }}
 
       <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
         Calcular

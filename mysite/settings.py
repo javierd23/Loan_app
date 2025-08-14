@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'rest_framework', #api app
     'rest_framework.authtoken', #api app token
     'django_filters', #api filter app
+    'crispy_forms',
+    'crispy_tailwind',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -52,8 +54,13 @@ INSTALLED_APPS = [
     'theme',
     'django_browser_reload',
 
-
 ]
+#crispy...
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+
+CRISPY_TEMPLATE_PACK = "tailwind"
+
+#tailwind stuff...
 TAILWIND_APP_NAME = 'theme'
 
 

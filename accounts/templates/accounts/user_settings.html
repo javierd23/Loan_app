@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load tailwind_filters %}
 {% block title %}Configuración{% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
       <h2 class="text-2xl font-semibold mb-6">Configuración de perfil</h2>
       <form action="{% url 'accounts:settings' %}" method="post" enctype="multipart/form-data" class="space-y-6">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <div>
           <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
             Guardar

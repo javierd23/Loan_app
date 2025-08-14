@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load tailwind_filters %}
 {% load humanize %}
 
 {% block title %}Detalles{% endblock %}
@@ -56,7 +57,7 @@
     <h4 class="text-lg dark:text-white font-semibold text-gray-700">Comentarios:</h4>
     <form action="{% url 'forum:comment_create' forum.id %}" method="post" class="space-y-4">
       {% csrf_token %}
-      {{ CommentForm.as_p }}
+      {{ CommentForm|crispy }}
       <div class="flex gap-4">
         <button type="submit" class="bg-green-600 hover:bg-green-800 text-white py-2 px-4 rounded font-semibold transition">Comentar</button>
         <button type="button" onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}'" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded font-semibold transition">Cancelar</button>
@@ -154,7 +155,7 @@
         <div class="ml-6 mt-4">
           <form action="{% url 'forum:reply_create' forum.id comment.id %}" method="post" class="space-y-3">
             {% csrf_token %}
-            {{ ReplyForm.as_p }}
+            {{ ReplyForm|crispy }}
             <div class="flex gap-4">
               <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-1 px-4 rounded font-semibold transition">Responder</button>
               <button type="button" onclick="window.location.href='{% url 'forum:forum_detail' forum.id %}'" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-1 px-4 rounded font-semibold transition">Cancelar</button>

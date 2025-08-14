@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load tailwind_filters %}
 {% block title %}Registrar Préstamo No Bancario{% endblock title %}
 
 {% block content %}
@@ -37,7 +37,7 @@
         </div>
         {% endif %}
 
-        {{ form.as_p }}
+        {{ form|crispy }}
 
         <div>
           <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load tailwind_filters %}
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
   <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -26,7 +26,7 @@
 
     <form method="post" action="{% url 'login' %}" class="space-y-4">
       {% csrf_token %}
-      {{ form.as_p }}
+      {{ form|crispy }}
 
       <input type="hidden" name="next" value="{{ next }}">
 

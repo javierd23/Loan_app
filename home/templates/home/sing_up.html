@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load tailwind_filters %}
 {% block title %}Registrarse{% endblock %}
 
 {% block content %}
@@ -11,9 +11,9 @@
       Crea tu cuenta llenando el siguiente formulario.
     </p>
 
-    <form action="" method="post" class="space-y-5 dark:bg-gray-800">
+    <form action="" method="post" class="space-y-5">
       {% csrf_token %}
-      {{ form.as_p|safe }}
+      {{ form|crispy }}
 
       <input
         type="submit"
