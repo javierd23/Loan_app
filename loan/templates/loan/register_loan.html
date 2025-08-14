@@ -3,18 +3,18 @@
 {% block title %}Registrar Préstamo{% endblock title %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-12">
-  <div class="max-w-3xl mx-auto bg-white rounded-lg shadow p-8">
-    <h2 class="text-3xl font-bold mb-4 text-gray-800">Registra tu préstamo</h2>
-    <p class="mb-6 text-gray-700">
+<div class="container  mx-auto px-4 py-12">
+  <div class="max-w-3xl mx-auto bg-white dark:bg-gray-900 rounded-lg shadow p-8">
+    <h2 class="text-3xl font-bold dark:text-white mb-4 text-gray-800">Registra tu préstamo</h2>
+    <p class="mb-6 dark:text-gray-400 text-gray-700">
       Te ayudamos a llevar el control de tus préstamos
       <strong class="font-semibold">bancarios</strong> y <strong class="font-semibold">no bancarios</strong>.
     </p>
-    <h4 class="text-xl font-semibold mb-6 text-gray-800">¿Qué tipo de préstamo deseas registrar?</h4>
+    <h4 class="text-xl dark:text-white font-semibold mb-6 text-gray-800">¿Qué tipo de préstamo deseas registrar?</h4>
 
     <nav class="space-x-6">
       <a href="{% url 'loan:create_nobank' %}"
-         class="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">
+         class="inline-block bg-blue-600 text-white dark:text-white px-6 py-3 rounded hover:bg-blue-700 transition">
          Préstamo no Bancario
       </a>
       <a href="{% url 'loan:create_bank' %}"

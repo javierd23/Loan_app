@@ -3,11 +3,11 @@
 {% block title %}Perfil{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="w-full min-h-screen px-2 py-8">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
     <!-- Left Sidebar -->
-    <aside class="col-span-1 bg-white shadow rounded-lg p-6">
+    <aside class="col-span-1 dark:bg-gray-900 bg-white shadow rounded-lg p-6">
       <div class="flex flex-col items-center">
         {% if profile.photo %}
           <img src="{{ profile.photo.url }}" alt="Foto de perfil" class="w-32 h-32 rounded-full object-cover shadow-md mb-4">
@@ -21,7 +21,7 @@
       </div>
 
       <h3 class="text-lg font-semibold mt-6 mb-2 text-center">{{ user_obj.username }}</h3>
-      <p class="text-gray-600 text-center mb-6">{{ user_obj.email }}</p>
+      <p class="text-gray-600 text-sm text-center mb-6">{{ user_obj.email }}</p>
 
       <div class="space-y-2">
         <h4 class="text-sm font-semibold text-gray-500 uppercase mb-2">Redes sociales</h4>
@@ -66,7 +66,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="col-span-1 md:col-span-2 bg-white shadow rounded-lg p-6">
+    <main class="col-span-1 md:col-span-2 bg-white dark:bg-gray-900 shadow rounded-lg p-6">
       <h2 class="text-2xl font-semibold mb-4">Bienvenido, {{ user.first_name }} {{ user.last_name }}</h2>
       <p class="mb-6 text-gray-700">Aquí está la lista de tus préstamos registrados.</p>
 
@@ -77,10 +77,10 @@
         <h3 class="text-xl font-semibold mb-3">Préstamos bancarios:</h3>
 
         {% if bank_loan and bank_loan|length > 0 %}
-          <div class="overflow-x-auto">
-            <table class="min-w-full table-auto border-collapse border border-gray-200">
+          <div class="overflow-x-auto dark:bg-gray-900">
+            <table class="min-w-full dark:bg-gray-800 table-auto border-collapse border border-gray-200">
               <thead>
-                <tr class="bg-gray-100">
+                <tr class="bg-gray-100 dark:bg-gray-800">
                   <th class="border border-gray-300 px-4 py-2 text-left">Nombre</th>
                   <th class="border border-gray-300 px-4 py-2 text-right">Pagos mensuales</th>
                   <th class="border border-gray-300 px-4 py-2 text-right">Intereses mensuales</th>
@@ -90,7 +90,7 @@
               </thead>
               <tbody>
                 {% for loan in bank_loan %}
-                <tr class="hover:bg-gray-50">
+                <tr class="hover:bg-gray-50 dark:bg-gray-900">
                   <td class="border border-gray-300 px-4 py-2">
                     <a href="{% url 'loan:bank_detail' loan.id %}" class="text-blue-600 hover:underline">
                       {{ loan.name }}
@@ -150,7 +150,7 @@
     </main>
 
     <!-- Right Sidebar -->
-    <aside class="col-span-1 bg-white shadow rounded-lg p-6">
+    <aside class="col-span-1 dark:bg-gray-900 bg-white shadow rounded-lg p-6">
       <h3 class="text-lg font-semibold mb-4">Sugerencias</h3>
       <p class="mb-4 text-gray-700">Recuerda que puedes registrar tu préstamo aquí.</p>
       <a href="{% url 'loan:register_loan' %}" class="block bg-blue-600 text-white text-center py-2 rounded hover:bg-blue-700 transition">

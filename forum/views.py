@@ -209,7 +209,7 @@ class SingleRepyDeleteView(OwnerDeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["comment"] = self.object.comment_id
+        context["comment"] = self.object.comment
         return context
 
     def get_success_url(self):
@@ -224,7 +224,7 @@ class SingleReplyUpdateView(OwnerUpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["comment"] = self.object.comment_id
+        context["comment"] = self.object.comment
         return context
 
     def get_success_url(self):

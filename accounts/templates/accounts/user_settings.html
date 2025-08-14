@@ -3,14 +3,14 @@
 {% block title %}Configuración{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
+<div class="w-full min-h-screen px-2 py-8">
   <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 
     <!-- Left Sidebar (empty for now) -->
-    <aside class="hidden md:block col-span-1"></aside>
+    <aside class="hidden dark:bg-gray-900 md:block col-span-1"></aside>
 
     <!-- Main Content: Settings Form -->
-    <main class="col-span-1 md:col-span-2 bg-white shadow rounded-lg p-6">
+    <main class="col-span-1 md:col-span-2 dark:bg-gray-900 bg-white shadow rounded-lg p-6">
       <h2 class="text-2xl font-semibold mb-6">Configuración de perfil</h2>
       <form action="{% url 'accounts:settings' %}" method="post" enctype="multipart/form-data" class="space-y-6">
         {% csrf_token %}
@@ -25,7 +25,7 @@
     </main>
 
     <!-- Right Sidebar: Change Password -->
-    <aside class="col-span-1 bg-white shadow rounded-lg p-6">
+    <aside class="col-span-1 bg-white dark:bg-gray-900 shadow rounded-lg p-6">
       <h3 class="text-gray-600 text-sm font-semibold mb-4 uppercase tracking-wide">Cambiar contraseña</h3>
       <a href="{% url 'accounts:password_change' %}" class="text-blue-600 hover:underline">
         Ir a cambiar contraseña

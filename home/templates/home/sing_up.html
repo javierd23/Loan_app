@@ -1,14 +1,31 @@
 {% extends "base.html" %}
 
+{% block title %}Registrarse{% endblock %}
 
 {% block content %}
-<h2>Registrate</h2>
-<form action="" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Registrar">
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-100 via-yellow-100 to-pink-100">
+  <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-2xl border border-gray-200">
 
-</form>
+    <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">📝 Regístrate</h2>
+    <p class="text-gray-500 mb-6 text-center">
+      Crea tu cuenta llenando el siguiente formulario.
+    </p>
 
+    <form action="" method="post" class="space-y-5 dark:bg-gray-800">
+      {% csrf_token %}
+      {{ form.as_p|safe }}
 
+      <input
+        type="submit"
+        value="Registrar"
+        class="w-full py-3 bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold rounded-xl shadow-lg hover:from-green-500 hover:to-blue-600 transition-all duration-300 cursor-pointer"
+      >
+    </form>
+
+    <p class="mt-6 text-center text-gray-400 text-sm">
+      ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-blue-500 hover:underline">Inicia sesión</a>
+    </p>
+
+  </div>
+</div>
 {% endblock %}

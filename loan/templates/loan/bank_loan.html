@@ -6,11 +6,11 @@
 <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
 
   <!-- Sidebar info -->
-  <aside class="md:col-span-1 bg-gray-100 p-6 rounded-lg shadow">
-    <h4 class="text-gray-600 text-sm mb-4 font-semibold">
+  <aside class="md:col-span-1 dark:bg-gray-900 bg-gray-100 p-6 rounded-lg shadow">
+    <h4 class="text-gray-600 dark:text-white text-sm mb-4 font-semibold">
       Los préstamos bancarios se formalizan mediante un contrato que especifica:
     </h4>
-    <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+    <ul class="list-disc list-inside dark:text-gray-300 text-gray-700 space-y-1 text-sm">
       <li>El monto del préstamo</li>
       <li>El plazo de devolución</li>
       <li>La tasa de interés aplicable</li>
@@ -22,9 +22,9 @@
   <section class="md:col-span-3 space-y-12">
 
     <!-- Loan registration form -->
-    <div class="bg-white p-8 rounded-lg shadow">
+    <div class="bg-white dark:bg-gray-900 p-8 rounded-lg shadow">
       <h4 class="text-xl font-semibold mb-4">Agrega un nuevo préstamo bancario</h4>
-      <p class="mb-6 text-gray-700 leading-relaxed">
+      <p class="mb-6 dark:text-gray-300  text-gray-700 leading-relaxed">
         Un préstamo bancario es un producto financiero mediante el cual una entidad bancaria entrega una cantidad de dinero a una persona o empresa,
         con el compromiso de que dicha cantidad será devuelta en un plazo determinado, junto con los intereses y comisiones pactadas.
       </p>
@@ -47,7 +47,7 @@
     </div>
 
     <!-- Calculator form -->
-    <div class="bg-white p-8 rounded-lg shadow">
+    <div class="bg-white p-8 dark:bg-gray-900 rounded-lg shadow">
       <form action="" method="POST" class="space-y-6">
         {% csrf_token %}
         {% if form.non_field_errors %}
@@ -65,9 +65,9 @@
       </form>
 
       {% if result %}
-        <div class="mt-10 bg-gray-50 p-6 rounded-lg shadow">
-          <h3 class="text-lg font-semibold mb-4">Resultado:</h3>
-          <p class="mb-6 text-gray-800">
+        <div class="mt-10 dark:bg-gray-800 bg-gray-50 p-6 rounded-lg shadow">
+          <h3 class="text-lg dark:text-white font-semibold mb-4">Resultado:</h3>
+          <p class="dark:text-white mb-6 text-gray-800">
             La cuota mensual sería de:<br>
             <strong>${{ result.month_pay|floatformat:2 }}</strong><br>
             Considerando un monto de <strong>${{ result.loan_amount_total|floatformat:2 }}</strong>
@@ -75,9 +75,9 @@
             por un plazo de <strong>{{ result.months }}</strong> meses.
           </p>
 
-          <div class="overflow-x-auto">
+          <div class="dark:bg-gray-900 overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-300 bg-white rounded-lg">
-              <thead class="bg-gray-100">
+              <thead class="dark:text-white dark:bg-gray-900 bg-gray-100">
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mes</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pago</th>
@@ -86,7 +86,7 @@
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-gray-200">
+              <tbody class="divide-y dark:text-white divide-gray-200">
                 {% for row in result.schedule %}
                 <tr class="hover:bg-gray-50">
                   <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900">{{ row.month }}</td>

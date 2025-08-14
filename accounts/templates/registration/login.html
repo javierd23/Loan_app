@@ -1,34 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
+  <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
 
-{# Django provides its own views and URL path for log in, you need to provide an error and the form. #}
+    <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">Iniciar sesión</h2>
 
-{% if form.errors %}
-  <p>Tu nombre de usuario y contraseña no coinciden. Por favor, inténtalo de nuevo.</p>
-{% endif %}
-
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Tu cuenta no tiene acceso a esta página. Para continuar, inicia sesión con una cuenta que tenga acceso.</p>
-    {% else %}
-    <p>Por favor, inicia sesión para ver esta página.</p>
+    {% if form.errors %}
+      <div class="mb-4 p-3 rounded bg-red-100 text-red-700 text-sm">
+        Tu nombre de usuario y contraseña no coinciden. Por favor, inténtalo de nuevo.
+      </div>
     {% endif %}
-{% endif %}
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-<div>
-    <p>¿Olvidaste tu contraseña?</p>
-    <a href="{% url 'password_reset' %}">Recuperar contraseña</a>
-</div>
-<div>
-    <h3>¿Todavía no tienes una cuenta?</h3>
-    <p><a href="{% url 'accounts:sing_up' %}">Registrate</a></p>
-</div>
+    {% if next %}
+      {% if user.is_authenticated %}
+        <div class="mb-4 p-3 rounded bg-yellow-100 text-yellow-700 text-sm">
+          Tu cuenta no tiene acceso a esta página. Inicia sesión con una cuenta que tenga acceso.
+        </div>
+      {% else %}
+        <div class="mb-4 p-3 rounded bg-blue-100 text-blue-700 text-sm">
+          Por favor, inicia sesión para ver esta página.
+        </div>
+      {% endif %}
+    {% endif %}
 
+    <form method="post" action="{% url 'login' %}" class="space-y-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <button type="submit"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+        Iniciar sesión
+      </button>
+    </form>
+
+    <div class="mt-6 text-center">
+      <p class="text-sm text-gray-600 dark:text-gray-300">
+        ¿Olvidaste tu contraseña?
+        <a href="{% url 'password_reset' %}" class="text-blue-600 hover:underline">Recuperar contraseña</a>
+      </p>
+    </div>
+
+    <div class="mt-4 text-center">
+      <h3 class="text-gray-800 dark:text-white font-semibold">¿Todavía no tienes una cuenta?</h3>
+      <a href="{% url 'accounts:sing_up' %}" class="text-blue-600 hover:underline">Regístrate</a>
+    </div>
+
+  </div>
+</div>
 {% endblock %}

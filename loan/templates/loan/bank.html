@@ -28,7 +28,7 @@
     </ul>
   </section>
 
-  <section id="bank_form" class="bg-white p-6 rounded-lg shadow-md">
+  <section id="bank_form" class="bg-white p-6 dark:bg-gray-900 rounded-lg shadow-md">
     <form method="POST" class="space-y-6">
       {% csrf_token %}
       {{ form.as_p }}
@@ -39,7 +39,7 @@
   </section>
 
   {% if result %}
-  <section class="bg-green-50 border border-green-300 rounded p-6 space-y-4">
+  <section class="bg-green-50 border dark:bg-gray-900 border-green-300 rounded p-6 space-y-4">
     <h3 class="text-xl font-semibold">Resultado:</h3>
     <p>
       La cuota mensual sería de:<br>
@@ -50,9 +50,9 @@
     </p>
   </section>
 
-  <div class="overflow-x-auto rounded-lg shadow-md">
+  <div class="overflow-x-auto dark:bg-gray-900 rounded-lg shadow-md">
     <table class="min-w-full border-collapse border border-gray-300 text-center">
-      <thead class="bg-gray-100">
+      <thead class="bg-gray-100 dark:bg-gray-800 ">
         <tr>
           <th class="border border-gray-300 px-4 py-2">Mes</th>
           <th class="border border-gray-300 px-4 py-2">Pago</th>
