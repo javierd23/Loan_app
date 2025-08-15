@@ -63,7 +63,7 @@
   </div>
 
   <!-- New Comment Form -->
-  <section class="bg-white p-6 dark:bg-gray-900 rounded-lg shadow space-y-4">
+  <section class="bg-white p-6 dark:bg-gray-900 rounded-lg shadow space-y-4 transition-transform transform hover:scale-[1.01]">
     <h4 class="text-lg dark:text-white font-semibold text-gray-700">Comentarios:</h4>
     <form action="{% url 'forum:comment_create' forum.id %}" method="post" class="space-y-4">
       {% csrf_token %}
@@ -79,7 +79,7 @@
   <section class="space-y-6">
     {% if comments %}
       {% for comment in comments %}
-      <div class="relative bg-gray-50 p-4 dark:bg-gray-900 rounded-lg shadow-sm">
+      <div class="relative bg-gray-50 p-4 dark:bg-gray-900 rounded-lg shadow-sm transition-transform transform hover:scale-[1.01]">
         <!-- Comment owner controls -->
         {% if comment.owner == request.user %}
         <div class="absolute top-3 right-3 flex space-x-3">

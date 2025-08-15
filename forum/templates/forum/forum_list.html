@@ -14,7 +14,7 @@
   {% if forum_list %}
   <ul class="divide-y divide-gray-200">
     {% for forum in forum_list %}
-    <li class="bg-gray-50 p-4 rounded-lg dark:bg-gray-900 shadow-sm border-l-4 border-blue-600">
+    <li class="bg-gray-50 p-4 rounded-lg dark:bg-gray-900 shadow-sm border-l-4 border-blue-600 transition-transform transform hover:scale-[1.01]">
       <div class="text-sm dark:text-gray-400 text-gray-600 mb-1">
         <strong>{{ forum.owner.username }}</strong> &nbsp;|&nbsp;
         <time datetime="{{ forum.updated_at }}">{{ forum.updated_at|naturaltime }}</time>

@@ -22,19 +22,47 @@
   <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 
     <!-- Sidebar Left -->
-    <aside class="col-span-1 bg-white dark:bg-gray-900 rounded-lg shadow p-6">
-      <h4 class="text-gray-600 text-sm font-semibold dark:text-white uppercase mb-4">Tipos de préstamos no bancarios</h4>
-      <ul class="list-disc list-inside dark:text-gray-400 space-y-1 text-gray-700">
-        <li>Cooperativas de ahorro y crédito</li>
-        <li>Prestamistas privados</li>
-        <li>Plataformas fintech</li>
-        <li>Plataformas de préstamos entre personas (P2P)</li>
-        <li>Familiares o amigos</li>
-      </ul>
-    </aside>
+  <aside class="col-span-1 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 transition-transform transform hover:scale-[1.01]">
+
+    <!-- Section 1 -->
+    <div class="mb-6 flex items-start space-x-3">
+      <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+        <svg class="w-5 h-5 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+        </svg>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold text-gray-700 dark:text-white uppercase mb-1">
+          Dale un nombre a tu préstamo
+        </h4>
+        <p class="text-gray-600 dark:text-gray-300 text-sm">
+          Esto te ayudará a identificarlo entre los demás.
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="flex items-start space-x-3">
+      <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
+        <svg class="w-5 h-5 text-green-600 dark:text-green-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 1.343-3 3v4h6v-4c0-1.657-1.343-3-3-3z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+        </svg>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold text-gray-700 dark:text-white uppercase mb-1">
+          Registra tu préstamo con pagos mensuales
+        </h4>
+        <p class="text-gray-600 dark:text-gray-300 text-sm">
+          Puedes iniciar con un solo pago y modificarlo después para simular pagos mensuales.
+        </p>
+      </div>
+    </div>
+
+  </aside>
 
     <!-- Main Content -->
-    <main class="col-span-1 md:col-span-3 dark:bg-gray-900 bg-white rounded-lg shadow p-6">
+    <main class="col-span-1 md:col-span-3 dark:bg-gray-900 bg-white rounded-lg shadow p-6 transition-transform transform hover:scale-[1.01]">
       <h4 class="text-xl font-semibold mb-3 dark:text-white text-gray-800">Agrega un nuevo préstamo no bancario</h4>
       <p class="mb-6 dark:text-gray-400 text-gray-700">
         Un préstamo no bancario es un préstamo otorgado por una entidad que no es un banco tradicional.

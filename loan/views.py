@@ -118,15 +118,16 @@ class NoBankCreateView(LoginRequiredMixin, CreateView):
     template_name = "loan/nobank_loan.html"
     form_class = NobanForm
     model = NoBankLoan
-    success_url = "loan/bank_list.html"
 
     def form_valid(self, form):
 
         no_bank = form.save(commit=False)
         no_bank.user = self.request.user
         no_bank.save()
-        return super().form_valid(form)
+        return super(NoBankCreateView, self).form_valid(form)
 
+    def get_success_url(self):
+        return reverse_lazy('loan:bank_list')
 
 class BankListView(LoginRequiredMixin, ListView):
     template_name = "loan/banks_list.html"
