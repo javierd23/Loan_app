@@ -4,11 +4,26 @@
 {% block title %}Register No Loan{% endblock %}
 
 {% block content %}
+
+<nav class="mb-6" aria-label="breadcrumb">
+  <ul class="breadcrumb text-sm">
+    <li>
+      <a href="{% url 'loan:bank_list' %}" class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
+        <!-- in case I want to add a narrow -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m-6-6l6 6-6 6" />
+        </svg>
+        Volver a lista
+      </a>
+    </li>
+  </ul>
+</nav>
+
 <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
 
   <!-- Sidebar -->
-  <aside class="md:col-span-1 bg-gray-100 p-6 rounded-lg shadow">
-    <h3 class="text-xl font-semibold mb-4 text-gray-700">Aquí puedes:</h3>
+  <aside class="md:col-span-1 dark:bg-gray-900 bg-gray-100 p-6 rounded-lg shadow">
+    <h3 class="text-xl font-semibold dark:text-white mb-4 text-gray-700">Aquí puedes:</h3>
     <a href="{% url 'loan:no_bank_delete' no_bank.id %}"
        class="block text-red-600 hover:text-red-800 font-medium transition">
       Eliminar
@@ -19,7 +34,7 @@
   <section class="md:col-span-3 space-y-10">
 
     <!-- Form 1: Bank payment form -->
-    <div class="bg-white p-6 rounded-lg shadow">
+    <div class="bg-white p-6 dark:bg-gray-900 rounded-lg shadow">
       {% if form_bank.non_field_errors %}
         <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
           {% for error in form_bank.non_field_errors %}
@@ -40,7 +55,7 @@
     </div>
 
     <!-- Form 2: Calculator form -->
-    <div class="bg-white p-6 rounded-lg shadow">
+    <div class="bg-white p-6 rounded-lg dark:bg-gray-900 shadow">
       {% if form.non_field_errors %}
         <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
           {% for error in form.non_field_errors %}
@@ -63,8 +78,8 @@
     <!-- Result Table -->
     {% if result %}
       <div class="overflow-x-auto bg-white rounded-lg shadow mt-6">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y dark:bg-gray-900 divide-gray-200">
+          <thead class=" dark:bg-gray-900 bg-gray-50">
             <tr>
               {% for header in headers %}
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -75,7 +90,7 @@
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             {% for loan in result.schedule %}
-              <tr class="hover:bg-gray-100 transition">
+              <tr class="hover:bg-gray-100 dark:text-white transition">
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ loan.month }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ loan.monthly_pay|intcomma }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ loan.des_pay|intcomma }}</td>

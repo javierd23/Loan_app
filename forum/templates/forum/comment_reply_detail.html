@@ -4,9 +4,21 @@
 {% block title %}Comments and Replies{% endblock %}
 
 {% block content %}
-<nav aria-label="breadcrumb" class="mb-4 dark:bg-black text-m text-blue-600">
-  <a href="{% url 'forum:all' %}" class="hover:underline">Forums</a>
+
+<nav class="mb-6" aria-label="breadcrumb">
+  <ul class="breadcrumb text-sm">
+    <li>
+      <a href="{% url 'forum:forum_detail' comment.forum_id %}" class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
+        <!-- in case I want to add a narrow -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m-6-6l6 6-6 6" />
+        </svg>
+        Volver a comentarios
+      </a>
+    </li>
+  </ul>
 </nav>
+
 
 <div class="bg-white rounded-lg dark:bg-gray-900 shadow p-6 max-w-3xl mx-auto space-y-6">
 

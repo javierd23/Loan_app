@@ -3,13 +3,13 @@
 {% block title %}Eliminar Préstamo{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto mt-16 p-8 bg-white rounded-lg shadow-lg text-center">
+<div class="max-w-md mx-auto mt-16 p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg text-center">
 
-  <h2 class="text-3xl font-bold mb-6 text-black-600">Eliminar este préstamo</h2>
+  <h2 class="text-3xl font-bold dark:text-white mb-6 text-black-600">Eliminar este préstamo</h2>
 
-  <p class="mb-6 text-gray-700 text-lg">
+  <p class="mb-6 dark:text-gray-400 text-gray-700 text-lg">
     ¿Estás seguro de querer eliminar esta respuesta?<br>
-    <span class="font-semibold text-gray-900">{{ no_bank.name }}</span>
+    <span class="font-semibold dark:text-white text-gray-900">{{ no_bank.name }}</span>
   </p>
 
   <form action="" method="POST" onsubmit="return confirmDelete();" class="space-y-4">

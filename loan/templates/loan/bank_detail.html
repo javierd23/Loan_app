@@ -3,10 +3,25 @@
 {% block title %}Detalle Préstamo Bancario{% endblock title %}
 
 {% block content %}
+
+<nav class="mb-6" aria-label="breadcrumb">
+  <ul class="breadcrumb text-sm">
+    <li>
+      <a href="{% url 'loan:bank_list' %}" class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
+        <!-- in case I want to add a narrow -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m-6-6l6 6-6 6" />
+        </svg>
+        Volver a lista
+      </a>
+    </li>
+  </ul>
+</nav>
+
 <div class="container mx-auto px-4 py-8 max-w-5xl grid grid-cols-1 md:grid-cols-4 gap-8">
 
   <!-- Sidebar Right -->
-  <aside class="col-span-1 bg-white rounded-lg shadow p-6 space-y-4">
+  <aside class="col-span-1 bg-white dark:bg-gray-900 rounded-lg shadow p-6 space-y-4">
     <h3 class="text-lg font-semibold">Aquí puedes:</h3>
     <div class="flex flex-col space-y-2">
       <a href="{% url 'loan:bank_delete' bank_detail.id %}"
@@ -23,13 +38,13 @@
   </aside>
 
   <!-- Main Content -->
-  <main class="col-span-1 md:col-span-3 bg-white rounded-lg shadow p-6">
+  <main class="col-span-1 md:col-span-3 dark:bg-gray-900 bg-white rounded-lg shadow p-6">
     <h3 class="text-2xl font-semibold mb-6">Préstamo bancario: {{ bank_detail.name }}</h3>
 
     <div class="overflow-x-auto">
-      <table class="min-w-full border-collapse border border-gray-300 text-center">
+      <table class="min-w-full border-collapse dark:bg-gray-800 border border-gray-300 text-center">
         <thead>
-          <tr class="bg-gray-100">
+          <tr class="bg-gray-100 dark:bg-gray-900">
             <th class="border border-gray-300 px-4 py-2">Mes</th>
             <th class="border border-gray-300 px-4 py-2">Pago</th>
             <th class="border border-gray-300 px-4 py-2">Aporte</th>

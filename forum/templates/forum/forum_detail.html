@@ -5,8 +5,18 @@
 {% block title %}Detalles{% endblock %}
 
 {% block content %}
-<nav aria-label="breadcrumb" class="mb-6">
-  <a href="{% url 'forum:all' %}" class="text-blue-600 hover:underline">Forums</a>
+<nav class="mb-6" aria-label="breadcrumb">
+  <ul class="breadcrumb text-sm">
+    <li>
+      <a href="{% url 'forum:all' %}" class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
+        <!-- Optional Home/Arrow Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m-6-6l6 6-6 6" />
+        </svg>
+        Volver a Forums
+      </a>
+    </li>
+  </ul>
 </nav>
 
 <div class="relative max-w-4xl mx-auto space-y-6">

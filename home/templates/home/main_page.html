@@ -5,6 +5,7 @@
 {% block content %}
 {% load static %}
 
+
 <main class="max-w-4xl mx-auto px-6 py-12 dark:bg-gray-800">
   <h1 class="text-4xl font-extrabold text-center dark:text-white text-gray-900 mb-4">TuCuotaRD</h1>
   <p class="text-center dark:text-white text-gray-700 text-lg mb-12">
@@ -19,7 +20,7 @@
 
     <!-- Banco Card -->
     <a href="{% url 'loan:bank' %}"
-       class="group block bg-white rounded-lg dark:bg-gray-900 shadow-md hover:shadow-xl transition p-6 text-center cursor-pointer">
+       class="group block bg-gray-100 rounded-lg dark:bg-gray-900 shadow-md hover:shadow-xl transition p-6 text-center cursor-pointer">
       <img
         src="{% static 'home/bank.jpeg' %}"
         alt="Préstamos Bancarios"
@@ -30,7 +31,7 @@
 
     <!-- No banco card -->
     <a href="{% url 'loan:no_bank' %}"
-       class="group block bg-white rounded-lg dark:bg-gray-900 shadow-md hover:shadow-xl transition p-6 text-center cursor-pointer">
+       class="group block bg-gray-100 rounded-lg dark:bg-gray-900 shadow-md hover:shadow-xl transition p-6 text-center cursor-pointer">
       <img
         src="{% static 'home/nobank.jpeg' %}"
         alt="Préstamos no Bancarios"
@@ -41,5 +42,6 @@
 
   </div>
 </main>
+
 {% endblock content %}
 
