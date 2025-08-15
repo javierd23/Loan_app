@@ -22,11 +22,11 @@
   <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 
     <!-- Sidebar Left -->
-  <aside class="col-span-1 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 transition-transform transform hover:scale-[1.01]">
+  <aside class="col-span-1 bg-blue-100 dark:bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 transition-transform transform hover:scale-[1.01]">
 
     <!-- Section 1 -->
     <div class="mb-6 flex items-start space-x-3">
-      <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+      <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-200 dark:bg-blue-900 flex items-center justify-center">
         <svg class="w-5 h-5 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
         </svg>
@@ -62,32 +62,38 @@
   </aside>
 
     <!-- Main Content -->
-    <main class="col-span-1 md:col-span-3 dark:bg-gray-900 bg-white rounded-lg shadow p-6 transition-transform transform hover:scale-[1.01]">
-      <h4 class="text-xl font-semibold mb-3 dark:text-white text-gray-800">Agrega un nuevo préstamo no bancario</h4>
-      <p class="mb-6 dark:text-gray-400 text-gray-700">
-        Un préstamo no bancario es un préstamo otorgado por una entidad que no es un banco tradicional.
-        Estos préstamos provienen de prestamistas alternativos.
-      </p>
+    <main class="card bg-base-200 dark:bg-gray-900 shadow-lg hover:scale-[1.01] transition-transform col-span-1 md:col-span-3">
+      <div class="card-body">
+        <h4 class="card-title text-xl font-semibold">
+          Agrega un nuevo préstamo no bancario
+        </h4>
+        <p class="mb-6 text-base-content/80">
+          Un <strong>préstamo no bancario</strong> es otorgado por una entidad que no es un banco tradicional.
+          Estos préstamos provienen de prestamistas alternativos, y suelen tener mayor flexibilidad en requisitos y plazos.
+        </p>
 
-      <form action="{% url 'loan:create_nobank' %}" method="POST" class="space-y-6">
-        {% csrf_token %}
+        <form action="{% url 'loan:create_nobank' %}" method="POST" class="space-y-6">
+          {% csrf_token %}
 
-        {% if form.non_field_errors %}
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {% for error in form.non_field_errors %}
-            <p>{{ error }}</p>
-          {% endfor %}
-        </div>
-        {% endif %}
+          {% if form.non_field_errors %}
+          <div class="alert alert-error">
+            <span>
+              {% for error in form.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </span>
+          </div>
+          {% endif %}
 
-        {{ form|crispy }}
+          {{ form|crispy }}
 
-        <div>
-          <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-            Registrar
-          </button>
-        </div>
-      </form>
+          <div class="card-actions justify-end">
+            <button type="submit" class="btn btn-primary">
+              Registrar
+            </button>
+          </div>
+        </form>
+      </div>
     </main>
 
   </div>

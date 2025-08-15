@@ -4,90 +4,90 @@
 {% block title %}Detalle Préstamos{% endblock title %}
 
 {% block content %}
-<div class="w-full min-h-screen px-2 py-8">
-  <div class="grid grid-cols-1 md:grid-cols-1 gap-8">
+<div class="w-full min-h-screen px-4 py-10 space-y-10">
 
-    <!-- No Bank Loans Section -->
-    <section class="bg-white dark:bg-gray-900 rounded-lg shadow p-6">
-      <h2 class="text-xl dark:text-white font-semibold mb-4 text-gray-800">Préstamos no bancarios</h2>
+  <!-- No Bank Loans Section -->
+  <section class="card bg-base-100 dark:bg-gray-900 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title text-primary">💼 Préstamos no bancarios</h2>
 
       {% if no_bank_loans and no_bank_loans|length > 0 %}
       <div class="overflow-x-auto">
-        <table class="min-w-full border-collapse border border-gray-200">
-          <thead>
-            <tr class=" dark:bg-gray-800 bg-gray-100">
-              <th class="border border-gray-300 px-4 py-2 text-left">Nombre</th>
-              <th class="border border-gray-300 px-4 py-2 text-right">Pagos mensuales</th>
-              <th class="border border-gray-300 px-4 py-2 text-right">Intereses mensuales</th>
-              <th class="border border-gray-300 px-4 py-2 text-right">Monto del préstamo</th>
+        <table class="table table-zebra w-full">
+          <thead class="bg-base-200">
+            <tr>
+              <th>Nombre</th>
+              <th class="text-right">Pagos mensuales</th>
+              <th class="text-right">Intereses mensuales</th>
+              <th class="text-right">Monto del préstamo</th>
             </tr>
           </thead>
           <tbody>
             {% for loan in no_bank_loans %}
-            <tr class="hover:bg-gray-50 ">
-              <td class="border border-gray-300 px-4 py-2">
-                <a href="{% url 'loan:no_bank_detail' loan.id %}" class="text-blue-600 hover:underline">{{ loan.name }}</a>
+            <tr class="hover">
+              <td>
+                <a href="{% url 'loan:no_bank_detail' loan.id %}" class="link link-primary">{{ loan.name }}</a>
               </td>
-              <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.monthly_payment|intcomma }}</td>
-              <td class="border border-gray-300 px-4 py-2 text-right">{{ loan.interest_rate }}%</td>
-              <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.loan_amount|intcomma }}</td>
+              <td class="text-right">${{ loan.monthly_payment|intcomma }}</td>
+              <td class="text-right">{{ loan.interest_rate }}%</td>
+              <td class="text-right">${{ loan.loan_amount|intcomma }}</td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
       {% else %}
-      <p class="text-gray-500 dark:text-white italic">Aún no has registrado ningún préstamo no bancario.</p>
+      <p class="text-gray-500 dark:text-gray-300 italic">Aún no has registrado ningún préstamo no bancario.</p>
       {% endif %}
-    </section>
+    </div>
+  </section>
 
-    <!-- Bank Loans Section -->
-    <section class="bg-white dark:bg-gray-900 rounded-lg shadow p-6">
-      <h2 class="text-xl dark:text-white font-semibold mb-4 text-gray-800">Préstamos bancarios</h2>
+  <!-- Bank Loans Section -->
+  <section class="card bg-base-100 dark:bg-gray-900 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title text-accent">🏦 Préstamos bancarios</h2>
 
       {% if bank_loans and bank_loans|length > 0 %}
       <div class="overflow-x-auto">
-        <table class="min-w-full border-collapse dark:bg-gray-800 border border-gray-200">
-          <thead>
-            <tr class="bg-gray-100 dark:bg-gray-800">
-              <th class="border border-gray-300 px-4 py-2 text-left">Nombre</th>
-              <th class="border border-gray-300 px-4 py-2 text-right">Pagos mensuales</th>
-              <th class="border border-gray-300 px-4 py-2 text-right">Intereses mensuales</th>
-              <th class="border border-gray-300 px-4 py-2 text-right">Monto del préstamo</th>
-              <th class="border border-gray-300 px-4 py-2 text-center">Meses pagados</th>
+        <table class="table table-zebra w-full">
+          <thead class="bg-base-200">
+            <tr>
+              <th>Nombre</th>
+              <th class="text-right">Pagos mensuales</th>
+              <th class="text-right">Intereses mensuales</th>
+              <th class="text-right">Monto del préstamo</th>
+              <th class="text-center">Meses pagados</th>
             </tr>
           </thead>
           <tbody>
             {% for loan in bank_loans %}
-            <tr class="hover:bg-gray-50">
-              <td class="border border-gray-300 px-4 py-2">
-                <a href="{% url 'loan:bank_detail' loan.id %}" class="text-blue-600 hover:underline">{{ loan.name }}</a>
+            <tr class="hover">
+              <td>
+                <a href="{% url 'loan:bank_detail' loan.id %}" class="link text-accent">{{ loan.name }}</a>
               </td>
-              <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.monthly_payment|intcomma }}</td>
-              <td class="border border-gray-300 px-4 py-2 text-right">{{ loan.interest_rate }}%</td>
-              <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.loan_amount|intcomma }}</td>
-              <td class="border border-gray-300 px-4 py-2 text-center">{{ loan.month_paid }}</td>
+              <td class="text-right">${{ loan.monthly_payment|intcomma }}</td>
+              <td class="text-right">{{ loan.interest_rate }}%</td>
+              <td class="text-right">${{ loan.loan_amount|intcomma }}</td>
+              <td class="text-center">{{ loan.month_paid }}</td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
       {% else %}
-      <p class="text-gray-500 italic">Aún no has registrado ningún préstamo bancario.</p>
+      <p class="text-gray-500 dark:text-gray-300 italic">Aún no has registrado ningún préstamo bancario.</p>
       {% endif %}
-    </section>
-    <h4 class="text-xl flex justify-center dark:text-white font-semibold mb-6 text-gray-800">¿Qué tipo de préstamo deseas registrar?</h4>
-    <nav class="flex justify-center space-x-6">
-      <a href="{% url 'loan:create_nobank' %}"
-         class="inline-block bg-blue-600 text-white dark:text-white px-6 py-3 rounded hover:bg-blue-700 transition">
-         Préstamo no Bancario
-      </a>
-      <a href="{% url 'loan:create_bank' %}"
-         class="inline-block bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition">
-         Préstamo Bancario
-      </a>
-    </nav>
+    </div>
+  </section>
 
+  <!-- Add a new loan -->
+  <div class="text-center space-y-4">
+    <h4 class="text-2xl font-bold dark:text-white">¿Qué tipo de préstamo deseas registrar?</h4>
+    <div class="join">
+      <a href="{% url 'loan:create_nobank' %}" class="btn btn-primary join-item">Préstamo no Bancario</a>
+      <a href="{% url 'loan:create_bank' %}" class="btn btn-accent join-item">Préstamo Bancario</a>
+    </div>
   </div>
+
 </div>
 {% endblock %}

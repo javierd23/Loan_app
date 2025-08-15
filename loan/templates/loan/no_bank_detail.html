@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
-
+{% load tailwind_filters %}
 {% block title %}Register No Loan{% endblock %}
 
 {% block content %}
@@ -9,7 +9,6 @@
   <ul class="breadcrumb text-sm">
     <li>
       <a href="{% url 'loan:bank_list' %}" class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
-        <!-- in case I want to add a narrow -->
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m-6-6l6 6-6 6" />
         </svg>
@@ -19,57 +18,68 @@
   </ul>
 </nav>
 
+<div class="fixed top-12 right-12 z-50">
+  <div class="alert alert-info shadow-lg">
+    <span>Tu último pago fue <strong>{{ no_bank.updated_at|date:"d M Y H:i" }}</strong></span>
+  </div>
+</div>
+
 <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
 
   <!-- Sidebar -->
-  <aside class="md:col-span-1 dark:bg-gray-900 bg-gray-100 p-6 rounded-lg shadow">
-    <h3 class="text-xl font-semibold dark:text-white mb-4 text-gray-700">Aquí puedes:</h3>
+  <aside class="md:col-span-1 bg-base-200 p-6 rounded-lg shadow-lg">
+    <h3 class="text-xl font-semibold mb-4">Aquí puedes:</h3>
     <a href="{% url 'loan:no_bank_delete' no_bank.id %}"
-       class="block text-red-600 hover:text-red-800 font-medium transition">
+       class="btn btn-outline btn-error w-full mb-4">
       Eliminar
     </a>
+
+    <div class="space-y-2">
+      <h4 class="font-semibold">Simulación de pago</h4>
+      <p>Selecciona el monto que pagarás a tu préstamo. Recuerda que tus pagos deben ser mayores al interés mensual para finalizar el préstamo.</p>
+      <p>Este cálculo está basado en pagos mensuales. Si estás abonando al balance del préstamo, puedes editar el monto del préstamo para que el abono no se vea impactado por el interés.</p>
+      <p>Si el aporte al capital es el mismo día del pago, el cobro del interés debe efectuarse. Agrega el pago en el área de pago mensual en este caso.</p>
+      <h4 class="font-semibold">Calculadora de pagos</h4>
+      <p>Usa esta calculadora para calcular abonos, incrementos de pago y encontrar la mejor forma de saldar tu préstamo con el menor pago posible.</p>
+    </div>
   </aside>
 
   <!-- Main content: Forms -->
   <section class="md:col-span-3 space-y-10">
 
     <!-- Form 1: Bank payment form -->
-    <div class="bg-white p-6 dark:bg-gray-900 rounded-lg shadow">
+    <div class="card bg-base-100 shadow-xl p-6">
       {% if form_bank.non_field_errors %}
-        <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+        <div class="alert alert-error mb-4">
           {% for error in form_bank.non_field_errors %}
-            <p>{{ error }}</p>
+            <span>{{ error }}</span>
           {% endfor %}
         </div>
       {% endif %}
 
       <form method="POST" class="space-y-6">
         {% csrf_token %}
-        {{ form_bank.as_p }}
-        <button type="submit"
-                name="bank-submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
+        {{ form_bank|crispy }}
+        <button type="submit" name="bank-submit" class="btn btn-primary">
           Pagar
         </button>
       </form>
     </div>
 
     <!-- Form 2: Calculator form -->
-    <div class="bg-white p-6 rounded-lg dark:bg-gray-900 shadow">
+    <div class="card bg-base-100 shadow-xl p-6">
       {% if form.non_field_errors %}
-        <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+        <div class="alert alert-error mb-4">
           {% for error in form.non_field_errors %}
-            <p>{{ error }}</p>
+            <span>{{ error }}</span>
           {% endfor %}
         </div>
       {% endif %}
 
       <form method="POST" class="space-y-6">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit"
-                name="calculator-submit"
-                class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition">
+        {{ form|crispy }}
+        <button type="submit" name="calculator-submit" class="btn btn-success">
           Calcular
         </button>
       </form>
@@ -77,25 +87,23 @@
 
     <!-- Result Table -->
     {% if result %}
-      <div class="overflow-x-auto bg-white rounded-lg shadow mt-6">
-        <table class="min-w-full divide-y dark:bg-gray-900 divide-gray-200">
-          <thead class=" dark:bg-gray-900 bg-gray-50">
+      <div class="overflow-x-auto mt-6">
+        <table class="table table-zebra w-full">
+          <thead>
             <tr>
               {% for header in headers %}
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {{ header }}
-                </th>
+                <th>{{ header }}</th>
               {% endfor %}
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
+          <tbody>
             {% for loan in result.schedule %}
-              <tr class="hover:bg-gray-100 dark:text-white transition">
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ loan.month }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ loan.monthly_pay|intcomma }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ loan.des_pay|intcomma }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ loan.des_int|intcomma }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ loan.loan_amount|intcomma }}</td>
+              <tr class="hover">
+                <td>{{ loan.month }}</td>
+                <td>${{ loan.monthly_pay|intcomma }}</td>
+                <td>${{ loan.des_pay|intcomma }}</td>
+                <td>${{ loan.des_int|intcomma }}</td>
+                <td>${{ loan.loan_amount|intcomma }}</td>
               </tr>
             {% endfor %}
           </tbody>

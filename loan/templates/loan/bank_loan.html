@@ -20,101 +20,146 @@
 <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
 
   <!-- Sidebar info -->
-  <aside class="md:col-span-1 dark:bg-gray-900 bg-gray-100 p-6 rounded-lg shadow">
-    <h4 class="text-gray-600 dark:text-white text-sm mb-4 font-semibold">
-      Los préstamos bancarios se formalizan mediante un contrato que especifica:
-    </h4>
-    <ul class="list-disc list-inside dark:text-gray-300 text-gray-700 space-y-1 text-sm">
-      <li>El monto del préstamo</li>
-      <li>El plazo de devolución</li>
-      <li>La tasa de interés aplicable</li>
-      <li>Las condiciones de pago y posibles penalizaciones por incumplimiento</li>
-    </ul>
+  <aside class="md:col-span-1 transform hover:scale-[1.01]">
+    <div class="card bg-blue-200 dark:bg-gray-900 shadow-xl">
+      <div class="card-body space-y-6">
+
+        <!-- Nombre del préstamo -->
+        <div>
+          <h4 class="card-title text-sm uppercase tracking-wide text-gray-600 dark:text-white">
+            Dale un nombre a tu préstamo
+          </h4>
+          <p class="text-gray-700 dark:text-gray-300 text-sm">
+            Así podrás identificar tu préstamo entre los demás. Puedes utilizar el nombre del banco como referencia.
+          </p>
+        </div>
+
+        <!-- Cuotas -->
+        <div>
+          <h4 class="card-title text-sm uppercase tracking-wide text-gray-600 dark:text-white">
+            Cuotas
+          </h4>
+          <p class="text-gray-700 dark:text-gray-300 text-sm">
+            Las cuotas son los meses en los que pagarás tu préstamo.
+          </p>
+        </div>
+
+        <!-- Meses pagados -->
+        <div>
+          <h4 class="card-title text-sm uppercase tracking-wide text-gray-600 dark:text-white">
+            Meses pagados
+          </h4>
+          <p class="text-gray-700 dark:text-gray-300 text-sm">
+            Si ya has comenzado a pagar tu préstamo, puedes especificar los meses pagados para que solo se registren los meses restantes.
+          </p>
+        </div>
+
+      </div>
+    </div>
   </aside>
 
   <!-- Main content -->
   <section class="md:col-span-3 space-y-12">
 
     <!-- Loan registration form -->
-    <div class="bg-white dark:bg-gray-900 p-8 rounded-lg shadow">
-      <h4 class="text-xl font-semibold mb-4">Agrega un nuevo préstamo bancario</h4>
-      <p class="mb-6 dark:text-gray-300  text-gray-700 leading-relaxed">
-        Un préstamo bancario es un producto financiero mediante el cual una entidad bancaria entrega una cantidad de dinero a una persona o empresa,
-        con el compromiso de que dicha cantidad será devuelta en un plazo determinado, junto con los intereses y comisiones pactadas.
-      </p>
+    <div class="card bg-base-200 dark:bg-gray-900 shadow-lg">
+      <div class="card-body">
+        <h4 class="card-title text-xl font-semibold">Registrar un nuevo préstamo bancario</h4>
+        <p class="mb-6 text-base-content/80 leading-relaxed">
+          Un <strong>préstamo bancario</strong> es un acuerdo con una entidad financiera que te entrega una cantidad de dinero,
+          con la obligación de devolverlo en un plazo establecido, junto con los intereses y comisiones acordadas.
+          Este tipo de préstamo suele ofrecer tasas competitivas y mayor seguridad para ambas partes.
+        </p>
 
-      <form action="{% url 'loan:create_bank' %}" method="POST" class="space-y-6">
-        {% csrf_token %}
-        {% if form_loan.non_field_errors %}
-          <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-            {% for error in form_loan.non_field_errors %}
-              <p>{{ error }}</p>
-            {% endfor %}
+        <form action="{% url 'loan:create_bank' %}" method="POST" class="space-y-6">
+          {% csrf_token %}
+          {% if form_loan.non_field_errors %}
+            <div class="alert alert-error">
+              <span>
+                {% for error in form_loan.non_field_errors %}
+                  {{ error }}
+                {% endfor %}
+              </span>
+            </div>
+          {% endif %}
+          {{ form_loan|crispy }}
+          <div class="card-actions justify-end">
+            <button type="submit" name="loan-submit" class="btn btn-primary">
+              Registrar
+            </button>
           </div>
-        {% endif %}
-        {{ form_loan|crispy }}
-        <button type="submit" name="loan-submit"
-          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded transition">
-          Registrar
-        </button>
-      </form>
+        </form>
+      </div>
     </div>
 
     <!-- Calculator form -->
-    <div class="bg-white p-8 dark:bg-gray-900 rounded-lg shadow">
-      <form action="" method="POST" class="space-y-6">
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-          <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-            {% for error in form.non_field_errors %}
-              <p>{{ error }}</p>
-            {% endfor %}
+    <div class="card bg-base-200 dark:bg-base-300 shadow-xl">
+      <div class="card-body">
+        <h4 class="card-title text-lg font-bold">
+          💡 ¿Aún no has tomado tu préstamo?
+        </h4>
+        <p class="text-sm opacity-80">
+          Calcula cómo serían tus pagos antes de comprometerte.
+        </p>
+
+        <form action="" method="POST" class="space-y-4 mt-4">
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+            <div class="alert alert-error shadow-lg">
+              <div>
+                <span>
+                  {% for error in form.non_field_errors %}
+                    {{ error }}
+                  {% endfor %}
+                </span>
+              </div>
+            </div>
+          {% endif %}
+          {{ form|crispy }}
+
+          <button type="submit" name="calculator-submit" class="btn btn-success w-full">
+            Calcular
+          </button>
+        </form>
+
+        {% if result %}
+          <div class="mt-8">
+            <h3 class="text-lg font-semibold mb-3">📊 Resultado</h3>
+            <p class="text-sm mb-4">
+              La cuota mensual sería de:
+              <strong>${{ result.month_pay|floatformat:2 }}</strong><br>
+              Monto: <strong>${{ result.loan_amount_total|floatformat:2 }}</strong><br>
+              Tasa de interés: <strong>{{ result.interest_rate }}%</strong><br>
+              Plazo: <strong>{{ result.months }}</strong> meses
+            </p>
+
+            <div class="overflow-x-auto">
+              <table class="table table-zebra w-full">
+                <thead>
+                  <tr>
+                    <th>Mes</th>
+                    <th>Pago</th>
+                    <th>Principal</th>
+                    <th>Interés</th>
+                    <th>Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in result.schedule %}
+                  <tr>
+                    <td>{{ row.month }}</td>
+                    <td>${{ row.monthly_payment }}</td>
+                    <td>${{ row.principal }}</td>
+                    <td>${{ row.interest }}</td>
+                    <td>${{ row.remaining_balance }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
         {% endif %}
-        {{ form|crispy}}
-        <button type="submit" name="calculator-submit"
-          class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded transition">
-          Calcular
-        </button>
-      </form>
-
-      {% if result %}
-        <div class="mt-10 dark:bg-gray-800 bg-gray-50 p-6 rounded-lg shadow">
-          <h3 class="text-lg dark:text-white font-semibold mb-4">Resultado:</h3>
-          <p class="dark:text-white mb-6 text-gray-800">
-            La cuota mensual sería de:<br>
-            <strong>${{ result.month_pay|floatformat:2 }}</strong><br>
-            Considerando un monto de <strong>${{ result.loan_amount_total|floatformat:2 }}</strong>
-            a una tasa de interés de <strong>{{ result.interest_rate }}%</strong>
-            por un plazo de <strong>{{ result.months }}</strong> meses.
-          </p>
-
-          <div class="dark:bg-gray-900 overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-300 bg-white rounded-lg">
-              <thead class="dark:text-white dark:bg-gray-900 bg-gray-100">
-                <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mes</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pago</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Principal</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interés</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y dark:text-white divide-gray-200">
-                {% for row in result.schedule %}
-                <tr class="hover:bg-gray-50">
-                  <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900">{{ row.month }}</td>
-                  <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900">${{ row.monthly_payment }}</td>
-                  <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900">${{ row.principal }}</td>
-                  <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900">${{ row.interest }}</td>
-                  <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900">${{ row.remaining_balance }}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      {% endif %}
+      </div>
     </div>
 
   </section>
