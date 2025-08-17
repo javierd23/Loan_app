@@ -5,43 +5,75 @@
 {% block content %}
 {% load static %}
 
+<style>
+  /* Floating animation for SVGs */
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+  }
+  .float-slow {
+    animation: float 6s ease-in-out infinite;
+  }
+  .float-slower {
+    animation: float 10s ease-in-out infinite;
+  }
+</style>
 
-<main class="max-w-4xl mx-auto px-6 py-12 dark:bg-gray-800">
-  <h1 class="text-4xl font-extrabold text-center dark:text-white text-gray-900 mb-4">TuCuotaRD</h1>
-  <p class="text-center dark:text-white text-gray-700 text-lg mb-12">
-    Calcula tus préstamos de forma fácil y rápida con nosotros.
-  </p>
+<main class="max-w-6xl mx-auto px-4 py-16">
 
-  <h3 class="text-2xl dark:text-white font-semibold text-gray-800 mb-8 text-center">
-    Selecciona el tipo de préstamo que deseas calcular:
-  </h3>
+  <!-- Hero Section -->
+  <div class="hero relative bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white rounded-xl shadow-lg overflow-hidden">
+    <div class="hero-content text-center flex flex-col items-center justify-center py-16 px-6">
+      <h1 class="text-5xl sm:text-6xl font-extrabold mb-4">
+        <span class="text-green-600">Tu</span>Cuota<span class="text-blue-400">R</span><span class="text-red-600">D</span>
+      </h1>
+      <p class="max-w-2xl text-lg sm:text-xl mb-8">
+        Calcula tus préstamos de forma fácil y rápida. Elige entre préstamos bancarios o no bancarios y obtén tus cuotas en segundos.
+      </p>
+      <a href="#loan-options" class="btn btn-lg btn-primary hover:scale-105 transition-transform">Comenzar</a>
+    </div>
+  </div>
 
-  <div class="grid grid-cols-1 dark:bg-gray-800 sm:grid-cols-2 gap-8">
+  <!-- Loan Options -->
+  <section id="loan-options" class="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-10">
 
     <!-- Banco Card -->
-    <a href="{% url 'loan:bank' %}"
-       class="group block bg-gray-100 rounded-lg dark:bg-gray-900 shadow-md hover:shadow-xl transition p-6 text-center cursor-pointer transition-transform transform hover:scale-[1.01]">
-      <img
-        src="{% static 'home/bank.jpeg' %}"
-        alt="Préstamos Bancarios"
-        class="mx-auto mb-4 w-28 h-28 object-cover rounded-full border-4 border-blue-500 group-hover:border-blue-700 transition"
-      >
-      <h4 class="text-xl font-semibold text-blue-600 group-hover:text-blue-800">Préstamos Bancarios</h4>
+    <a href="{% url 'loan:bank' %}" class="relative card bg-white dark:bg-gray-900 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden">
+      <!-- Floating Background Illustration -->
+      <svg class="absolute top-0 right-0 w-32 h-32 opacity-10 rotate-45 float-slow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M3 10h18M3 14h18M5 6h14M5 18h14"></path>
+      </svg>
+      <figure class="px-10 pt-10">
+        <img src="{% static 'home/bank.jpeg' %}" alt="Préstamos Bancarios" class="rounded-full w-28 h-28 border-4 border-primary mx-auto">
+      </figure>
+      <div class="card-body items-center text-center relative z-10">
+        <h2 class="card-title text-primary text-2xl">Préstamos Bancarios</h2>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">Simula tu préstamo con interés bancario y obtén tu plan de pagos detallado.</p>
+        <div class="card-actions mt-6">
+          <button class="btn btn-primary btn-lg hover:scale-105 transition-transform">Calcular</button>
+        </div>
+      </div>
     </a>
 
-    <!-- No banco card -->
-    <a href="{% url 'loan:no_bank' %}"
-       class="group block bg-gray-100 rounded-lg dark:bg-gray-900 shadow-md hover:shadow-xl transition p-6 text-center cursor-pointer transition-transform transform hover:scale-[1.01]">
-      <img
-        src="{% static 'home/nobank.jpeg' %}"
-        alt="Préstamos no Bancarios"
-        class="mx-auto mb-4 w-28 h-28 object-cover rounded-full border-4 border-green-500 group-hover:border-green-700 transition"
-      >
-      <h4 class="text-xl font-semibold text-green-600 group-hover:text-green-800">Préstamos no Bancarios</h4>
+    <!-- No Banco Card -->
+    <a href="{% url 'loan:no_bank' %}" class="relative card bg-white dark:bg-gray-900 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden">
+      <!-- Floating Background Illustration -->
+      <svg class="absolute bottom-0 left-0 w-32 h-32 opacity-10 -rotate-12 float-slower" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M12 2l1.5 4.5H18l-3.75 2.75L15 12l-3-2.25L9 12l.75-2.75L6 6h4.5L12 2z"></path>
+      </svg>
+      <figure class="px-10 pt-10">
+        <img src="{% static 'home/nobank.jpeg' %}" alt="Préstamos no Bancarios" class="rounded-full w-28 h-28 border-4 border-green-800 mx-auto">
+      </figure>
+      <div class="card-body items-center text-center relative z-10">
+        <h2 class="card-title text-green-800 text-2xl">Préstamos no Bancarios</h2>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">Explora préstamos alternativos con condiciones más flexibles y rápidas.</p>
+        <div class="card-actions mt-6">
+          <button class="btn btn-success btn-lg hover:scale-105 transition-transform">Calcular</button>
+        </div>
+      </div>
     </a>
 
-  </div>
+  </section>
 </main>
 
 {% endblock content %}
-

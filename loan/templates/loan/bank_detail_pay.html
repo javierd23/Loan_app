@@ -3,35 +3,41 @@
 {% block title %}Confirmar Pago{% endblock %}
 
 {% block content %}
+<div class="container mx-auto max-w-lg mt-10">
+  <div class="card bg-base-100 dark:bg-base-200 shadow-xl">
+    <div class="card-body">
 
-<div class="container mx-auto dark:bg-gray-900 max-w-lg p-6 bg-white rounded-lg shadow mt-10">
+      <h3 class="card-title text-lg mb-4">
+        Confirmar Pago
+      </h3>
 
-  <h3 class="text-xl dark:text-white font-semibold mb-4">
-    Usted está realizando su pago del préstamo <strong>{{ bank_loan.name }}</strong>
-  </h3>
+      <div class="alert alert-info text-sm mb-6">
+        <span>
+          Estás a punto de realizar un pago del préstamo
+          <strong>{{ bank_loan.name }}</strong>.
+        </span>
+      </div>
 
-  <p class="mb-6 dark:text-gray-400 text-gray-700">
-    Este pago será por la suma de
-    <strong>${{ bank_detail.payment|intcomma }}</strong>,<br>
-    para un aporte al capital de <strong>${{ bank_detail.principal|intcomma }}</strong>,<br>
-    para un balance restante de <strong>${{ bank_detail.remaining|intcomma }}</strong>.
-  </p>
+      <ul class="text-sm mb-6 space-y-1">
+        <li>💵 Pago total: <strong>${{ bank_detail.payment|intcomma }}</strong></li>
+        <li>📉 Aporte al capital: <strong>${{ bank_detail.principal|intcomma }}</strong></li>
+        <li>🏦 Balance restante: <strong>${{ bank_detail.remaining|intcomma }}</strong></li>
+      </ul>
 
-  <form action="" method="POST" onsubmit="return confirmPay();">
-    {% csrf_token %}
-    <div class="flex gap-4 justify-center">
-      <button type="submit"
-              class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">
-        Pagar
-      </button>
-      <button type="button"
-              onclick="window.location.href='{% url 'loan:bank_detail' bank_loan.id %}';"
-              class="bg-gray-300 px-6 py-2 rounded hover:bg-gray-400 transition">
-        Cancelar
-      </button>
+      <form action="" method="POST" onsubmit="return confirmPay();">
+        {% csrf_token %}
+        <div class="flex gap-3 justify-center">
+          <button type="submit" class="btn btn-success w-32">
+            Pagar
+          </button>
+          <a href="{% url 'loan:bank_detail' bank_loan.id %}" class="btn btn-outline w-32">
+            Cancelar
+          </a>
+        </div>
+      </form>
+
     </div>
-  </form>
-
+  </div>
 </div>
 
 <script>

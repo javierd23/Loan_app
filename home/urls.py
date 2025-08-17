@@ -10,5 +10,6 @@ urlpatterns = [
     path("about/", views.about, name="about_page"),
     path("contact/", views.contact, name="contact_page"),
     path("more/", views.more, name="more_page"),
+    path("feedback/", views.FeedbackCreateView.as_view(), name="feedback"),
 
 ]

@@ -6,25 +6,16 @@
 {% block content %}
 
 <nav class="mb-6" aria-label="breadcrumb">
-  <ul class="breadcrumb text-sm">
-    <li>
-      <a href="{% url 'loan:bank_list' %}" class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m-6-6l6 6-6 6" />
-        </svg>
-        Volver a lista
-      </a>
-    </li>
-  </ul>
+  <a href="{% url 'loan:bank_list' %}" class="btn btn-sm btn-outline btn-primary gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    Lista de Préstamo
+  </a>
 </nav>
 
-<div class="fixed top-12 right-12 z-50">
-  <div class="alert alert-info shadow-lg">
-    <span>Tu último pago fue <strong>{{ no_bank.updated_at|date:"d M Y H:i" }}</strong></span>
-  </div>
-</div>
 
-<div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="max-w-7xl, relative mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
 
   <!-- Sidebar -->
   <aside class="md:col-span-1 bg-base-200 p-6 rounded-lg shadow-lg">
@@ -36,11 +27,11 @@
 
     <div class="space-y-2">
       <h4 class="font-semibold">Simulación de pago</h4>
-      <p>Selecciona el monto que pagarás a tu préstamo. Recuerda que tus pagos deben ser mayores al interés mensual para finalizar el préstamo.</p>
-      <p>Este cálculo está basado en pagos mensuales. Si estás abonando al balance del préstamo, puedes editar el monto del préstamo para que el abono no se vea impactado por el interés.</p>
-      <p>Si el aporte al capital es el mismo día del pago, el cobro del interés debe efectuarse. Agrega el pago en el área de pago mensual en este caso.</p>
+      <p class="text-gray-400">Selecciona el monto que pagarás a tu préstamo. Recuerda que tus pagos deben ser mayores al interés mensual para finalizar el préstamo.</p>
+      <p class="text-gray-400">Este cálculo está basado en pagos mensuales. Si estás abonando al balance del préstamo, puedes editar el monto del préstamo para que el abono no se vea impactado por el interés.</p>
+      <p class="text-gray-400">Si el aporte al capital es el mismo día del pago, el cobro del interés debe efectuarse. Agrega el pago en el área de pago mensual en este caso.</p>
       <h4 class="font-semibold">Calculadora de pagos</h4>
-      <p>Usa esta calculadora para calcular abonos, incrementos de pago y encontrar la mejor forma de saldar tu préstamo con el menor pago posible.</p>
+      <p class="text-gray-400">Usa esta calculadora para calcular abonos, incrementos de pago y encontrar la mejor forma de saldar tu préstamo con el menor pago posible.</p>
     </div>
   </aside>
 

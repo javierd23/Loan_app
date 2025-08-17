@@ -1,20 +1,16 @@
 {% extends 'base.html' %}
+{% load humanize %}
 {% load tailwind_filters %}
 {% block title %}Registrar Préstamo Bancario{% endblock %}
 
 {% block content %}
 <nav class="mb-6" aria-label="breadcrumb">
-  <ul class="breadcrumb text-sm">
-    <li>
-      <a href="{% url 'loan:register_loan' %}" class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
-        <!-- in case I want to add a narrow -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m-6-6l6 6-6 6" />
-        </svg>
-        Tipo de Préstamos
-      </a>
-    </li>
-  </ul>
+  <a href="{% url 'loan:register_loan' %}" class="btn btn-sm btn-outline btn-primary gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    Tipo de Préstamo
+  </a>
 </nav>
 
 <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -65,10 +61,18 @@
     <div class="card bg-base-200 dark:bg-gray-900 shadow-lg">
       <div class="card-body">
         <h4 class="card-title text-xl font-semibold">Registrar un nuevo préstamo bancario</h4>
+
         <p class="mb-6 text-base-content/80 leading-relaxed">
-          Un <strong>préstamo bancario</strong> es un acuerdo con una entidad financiera que te entrega una cantidad de dinero,
-          con la obligación de devolverlo en un plazo establecido, junto con los intereses y comisiones acordadas.
-          Este tipo de préstamo suele ofrecer tasas competitivas y mayor seguridad para ambas partes.
+          Al registrar este préstamo se generará un pago mensual calculado en función del monto solicitado,
+          la tasa de interés anual y la cantidad de cuotas acordadas.
+          El cálculo se realiza mediante la fórmula de amortización francesa, utilizada habitualmente por
+          los bancos en la República Dominicana.
+        </p>
+
+        <p class="mb-6 text-base-content/80 leading-relaxed">
+          El monto resultante podría diferir ligeramente del establecido por su banco.
+          En caso de notar una diferencia significativa, le recomendamos consultar con
+          su agente de préstamos para obtener una explicación detallada.
         </p>
 
         <form action="{% url 'loan:create_bank' %}" method="POST" class="space-y-6">
@@ -127,8 +131,8 @@
             <h3 class="text-lg font-semibold mb-3">📊 Resultado</h3>
             <p class="text-sm mb-4">
               La cuota mensual sería de:
-              <strong>${{ result.month_pay|floatformat:2 }}</strong><br>
-              Monto: <strong>${{ result.loan_amount_total|floatformat:2 }}</strong><br>
+              <strong>${{ result.month_pay|intcomma }}</strong><br>
+              Monto: <strong>${{ result.loan_amount_total|intcomma}}</strong><br>
               Tasa de interés: <strong>{{ result.interest_rate }}%</strong><br>
               Plazo: <strong>{{ result.months }}</strong> meses
             </p>
@@ -148,10 +152,10 @@
                   {% for row in result.schedule %}
                   <tr>
                     <td>{{ row.month }}</td>
-                    <td>${{ row.monthly_payment }}</td>
-                    <td>${{ row.principal }}</td>
-                    <td>${{ row.interest }}</td>
-                    <td>${{ row.remaining_balance }}</td>
+                    <td>${{ row.monthly_payment|intcomma }}</td>
+                    <td>${{ row.principal|intcomma }}</td>
+                    <td>${{ row.interest|intcomma }}</td>
+                    <td>${{ row.remaining_balance|intcomma }}</td>
                   </tr>
                   {% endfor %}
                 </tbody>

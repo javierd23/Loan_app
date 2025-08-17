@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load tailwind_filters %}
+{% block title %}Qué debo saber antes de tomar un préstamo{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 py-12 px-4">
+  <div class="max-w-xl w-full bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-10 space-y-8">
+
+    <!-- Heading -->
+    <div class="text-center space-y-2">
+      <h1 class="text-3xl font-extrabold text-gray-800 dark:text-white">
+        Queremos conocer tu opinión
+      </h1>
+      <p class="text-gray-600 dark:text-gray-300">
+        Completa el formulario y ayúdanos a mejorar.
+      </p>
+    </div>
+
+    <!-- Feedback Form -->
+    <form method="POST" class="space-y-6">
+      {% csrf_token %}
+      {{ form|crispy }}
+
+      <button type="submit"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg transform transition-transform hover:scale-105">
+        Enviar Feedback
+      </button>
+    </form>
+
+    <!-- Messages -->
+    {% if messages %}
+      <div class="mt-4 space-y-2">
+        {% for message in messages %}
+          <div class="p-4 rounded-lg text-white {{ message.tags|default:'bg-green-500' }} animate-fade-in">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<style>
+/* Simple fade-in animation for messages */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+</style>
+{% endblock %}

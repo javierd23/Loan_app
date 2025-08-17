@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 #for this view, I will not request a log in ot alter the view since it will do the work.
 class OwnerListView(ListView):
@@ -19,6 +20,7 @@ class OwnerCreateView(LoginRequiredMixin, CreateView):
         create = form.save(commit=False)
         create.owner = self.request.user
         create.save()
+
         return super(OwnerCreateView, self).form_valid(form)
 
 

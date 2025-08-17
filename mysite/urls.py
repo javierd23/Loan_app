@@ -19,11 +19,11 @@ from django.urls import include, path
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("admin_prv/", admin.site.urls),
     path("", include("home.urls")),
     path("loan/", include("loan.urls")),
     path("forum/", include("forum.urls")),
-    path("api/forum/", include("forum.api.urls")),
+    path("api_prv/forum/", include("forum.api.urls")),
     path("accounts/", include("accounts.urls")),
     path('accounts/', include('django.contrib.auth.urls')),
     path("__reload__/", include("django_browser_reload.urls")),

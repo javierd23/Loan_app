@@ -157,10 +157,17 @@ class BankLoanUser:
 #print(data)
 
 
+def bank_payment(months, interest_rate, loan_amount):
+    amount = loan_amount
+    interest = (interest_rate / 100) / 12
+    rate_int = interest * (1 + interest) ** months
+    rate_down = (1 + interest) ** months - 1
+    month_pay = loan_amount * rate_int / rate_down
 
-
-
-
+    return round(month_pay)
+#testing the func...
+#result = bank_payment(76,14,500000)
+#print(result)
 
 
 

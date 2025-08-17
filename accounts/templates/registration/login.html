@@ -2,50 +2,58 @@
 {% load tailwind_filters %}
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
-  <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+  <div class="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 p-10 rounded-2xl shadow-2xl w-full max-w-md">
 
-    <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">Iniciar sesión</h2>
+    <h2 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-8">
+      Iniciar sesión
+    </h2>
 
+    <!-- Feedback Messages -->
     {% if form.errors %}
-      <div class="mb-4 p-3 rounded bg-red-100 text-red-700 text-sm">
+      <div class="mb-4 p-4 rounded-lg bg-red-100 dark:bg-red-800 text-red-700 dark:text-red-200 flex items-center gap-2 text-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M12 2a10 10 0 1010 10A10 10 0 0012 2z" />
+        </svg>
         Tu nombre de usuario y contraseña no coinciden. Por favor, inténtalo de nuevo.
       </div>
     {% endif %}
 
     {% if next %}
       {% if user.is_authenticated %}
-        <div class="mb-4 p-3 rounded bg-yellow-100 text-yellow-700 text-sm">
-          Tu cuenta no tiene acceso a esta página. Inicia sesión con una cuenta que tenga acceso.
+        <div class="mb-4 p-4 rounded-lg bg-yellow-100 dark:bg-yellow-800 text-yellow-700 dark:text-yellow-200 flex items-center gap-2 text-sm">
+          ⚠ Tu cuenta no tiene acceso a esta página.
         </div>
       {% else %}
-        <div class="mb-4 p-3 rounded bg-blue-100 text-blue-700 text-sm">
-          Por favor, inicia sesión para ver esta página.
+        <div class="mb-4 p-4 rounded-lg bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-200 flex items-center gap-2 text-sm">
+          ℹ Por favor, inicia sesión para ver esta página.
         </div>
       {% endif %}
     {% endif %}
 
-    <form method="post" action="{% url 'login' %}" class="space-y-4">
+    <!-- Login Form -->
+    <form method="post" action="{% url 'login' %}" class="space-y-6">
       {% csrf_token %}
       {{ form|crispy }}
 
       <input type="hidden" name="next" value="{{ next }}">
 
       <button type="submit"
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
         Iniciar sesión
       </button>
     </form>
 
-    <div class="mt-6 text-center">
+    <!-- Links -->
+    <div class="mt-6 text-center space-y-3">
       <p class="text-sm text-gray-600 dark:text-gray-300">
         ¿Olvidaste tu contraseña?
-        <a href="{% url 'password_reset' %}" class="text-blue-600 hover:underline">Recuperar contraseña</a>
+        <a href="{% url 'password_reset' %}" class="text-blue-600 hover:underline font-medium">Recuperar contraseña</a>
       </p>
-    </div>
 
-    <div class="mt-4 text-center">
-      <h3 class="text-gray-800 dark:text-white font-semibold">¿Todavía no tienes una cuenta?</h3>
-      <a href="{% url 'accounts:sing_up' %}" class="text-blue-600 hover:underline">Regístrate</a>
+      <p class="text-gray-700 dark:text-gray-200 font-semibold">
+        ¿Todavía no tienes una cuenta?
+        <a href="{% url 'accounts:sing_up' %}" class="text-blue-600 hover:underline font-medium">Regístrate</a>
+      </p>
     </div>
 
   </div>

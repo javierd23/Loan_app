@@ -3,34 +3,49 @@
 {% block title %}Eliminar Préstamo{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-10 max-w-md bg-white rounded-lg shadow p-6 text-center">
+<div class="container mx-auto max-w-md mt-16">
+  <div class="card bg-base-100 dark:bg-base-200 shadow-xl">
+    <div class="card-body text-center">
 
-  <h2 class="text-2xl font-semibold mb-6">Eliminar este préstamo</h2>
+      <h2 class="card-title text-2xl font-bold justify-center mb-4">
+        Eliminar este préstamo
+      </h2>
 
-  <p class="mb-6 text-gray-700">
-    ¿Estás seguro de querer eliminar este préstamo?<br>
-    <span class="font-bold text-red-600">{{ bank_loan.name }}</span>
-  </p>
+      <div class="alert alert-warning mb-6">
+        <span>
+          ⚠️ ¿Estás seguro de querer eliminar este préstamo?<br>
+          <span class="font-bold text-red-600">{{ bank_loan.name }}</span><br>
+          <small>Esta acción no se puede deshacer.</small>
+        </span>
+      </div>
 
-  <form action="" method="POST" onsubmit="return confirmDelete();">
-    {% csrf_token %}
-    <div class="flex justify-center gap-4">
-      <button type="submit"
-              class="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 cursor-pointer transition">
+      <!-- Botón que abre el modal -->
+      <button onclick="my_modal.showModal()" class="btn btn-error w-full">
         Sí, eliminar
       </button>
-      <button type="button"
-              onclick="window.location.href='{% url 'loan:bank_detail' bank_loan.id %}';"
-              class="bg-gray-300 px-6 py-2 rounded hover:bg-gray-400 cursor-pointer transition">
+
+      <a href="{% url 'loan:bank_detail' bank_loan.id %}" class="btn btn-outline w-full mt-2">
         Cancelar
-      </button>
+      </a>
     </div>
-  </form>
+  </div>
 </div>
 
-<script>
-  function confirmDelete() {
-    return confirm('¿Confirmas que quieres eliminar este préstamo? Esta acción no se puede deshacer.');
-  }
-</script>
+<!-- Modal DaisyUI -->
+<dialog id="my_modal" class="modal">
+  <div class="modal-box text-center">
+    <h3 class="font-bold text-lg mb-4">Confirmar Eliminación</h3>
+    <p class="mb-6">¿Seguro que deseas eliminar este préstamo?<br>
+      <span class="font-bold text-red-600">{{ bank_loan.name }}</span>
+    </p>
+
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="flex justify-center gap-4">
+        <button type="submit" class="btn btn-error">Sí, eliminar</button>
+        <button type="button" onclick="my_modal.close()" class="btn">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</dialog>
 {% endblock %}

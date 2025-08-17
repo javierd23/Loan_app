@@ -1,80 +1,123 @@
 {% extends 'base.html' %}
-{% block title %}About{% endblock %}
+{% block title %}Nosotros - TuCuotaRD{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 py-12 space-y-8 dark:bg-gray-900 dark:text-white">
+<div class="relative max-w-5xl mx-auto px-4 py-12 flex flex-col lg:flex-row gap-8">
 
-  <div class="bg-white dark:bg-gray-800  p-6 rounded-lg shadow transition-transform transform hover:scale-[1.01]">
-    <h1 class="text-3xl font-bold mb-4 dark:text-white text-gray-800">Nosotros:</h1>
-    <ul class="list-disc list-inside space-y-2 text-blue-600">
-      <li><a href="#we" class="hover:underline">¿Qué somos?</a></li>
-      <li><a href="#why" class="hover:underline">¿Para qué estamos aquí contigo?</a></li>
-      <li><a href="#not" class="hover:underline">¿Por qué no?</a></li>
-    </ul>
-  </div>
+  <!-- Sticky Sidebar for large screens -->
+  <aside class="hidden lg:flex flex-col w-48 sticky top-24 self-start space-y-3">
+    <div class="bg-base-100 dark:bg-base-200 shadow rounded-lg p-4 space-y-2">
+      <h3 class="font-bold text-lg text-primary">Navegación</h3>
+      <ul class="space-y-1" id="sidebar-nav">
+        <li><a href="#we" class="btn btn-ghost btn-sm w-full justify-start scroll-link">¿Qué somos?</a></li>
+        <li><a href="#why" class="btn btn-ghost btn-sm w-full justify-start scroll-link">¿Para qué?</a></li>
+        <li><a href="#not" class="btn btn-ghost btn-sm w-full justify-start scroll-link">¿Por qué no?</a></li>
+      </ul>
+    </div>
+  </aside>
 
-  <section id="we" class="bg-white p-6 dark:bg-gray-800  rounded-lg shadow space-y-4 transition-transform transform hover:scale-[1.01]">
-    <h2 class="text-2xl font-semibold dark:text-white text-gray-800">¿Qué somos?</h2>
-    <p class="text-gray-700 dark:text-white leading-relaxed">
-      TuCuotaRD es una página web diseñada para ayudar a los usuarios a calcular, registrar y hacer
-      seguimiento de sus préstamos.
-    </p>
+  <!-- Main Content -->
+  <div class="flex-1 space-y-12">
 
-    <div class="space-y-3">
-      <h4 class="text-lg font-semibold dark:text-white text-gray-700">Calcular:</h4>
-      <p class="text-gray-600 dark:text-white leading-relaxed">
-        Con un acceso rápido a nuestra plataforma, podrás ingresar la información de tu préstamo y obtener un
-        resumen detallado sin necesidad de registrarte.
-      </p>
-
-      <h4 class="text-lg font-semibold dark:text-white text-gray-700">Registrar:</h4>
-      <p class="text-gray-600 dark:text-white leading-relaxed">
-        TuCuotaRD te ofrece la posibilidad de registrarte para guardar y gestionar todos tus préstamos.
-        Una vez registrado, podrás utilizar diversas herramientas que te ayudarán a visualizar y planificar de forma más
-        efectiva tus pagos, abonos y otras acciones relacionadas.
-      </p>
-
-      <h4 class="text-lg font-semibold dark:text-white text-gray-700">Hacer:</h4>
-      <p class="text-gray-600 dark:text-white leading-relaxed">
-        Podrás hacer seguimiento de tus préstamos para tener una idea clara de cuándo debes pagar,
-        cuánto de tu pago se destina al capital, cuánto a los intereses y otros detalles importantes.
+    <div class="text-center lg:text-left space-y-4">
+      <h1 class="text-4xl font-extrabold text-primary">Nosotros</h1>
+      <p class="text-lg text-base-content/70">
+        Conoce quiénes somos, por qué existimos y cómo podemos ayudarte a organizar tus préstamos.
       </p>
     </div>
-  </section>
 
-  <section id="why" class="bg-white p-6 dark:bg-gray-800 rounded-lg shadow space-y-4 transition-transform transform hover:scale-[1.01]">
-    <h2 class="text-2xl font-semibold dark:text-white text-gray-800">¿Para qué estamos aquí contigo?</h2>
-    <p class="text-gray-700 dark:text-white leading-relaxed">
-      En TuCuotaRD, estamos aquí para ayudarte a tomar el control de tus préstamos y finanzas personales.
-    </p>
-    <p class="text-gray-700 dark:text-white leading-relaxed">
-      Sabemos que manejar pagos, intereses y abonos puede ser complicado,
-      por eso te ofrecemos una plataforma simple y accesible que te permite:
-    </p>
-    <ul class="list-disc list-inside dark:text-white space-y-2 text-gray-600">
-      <li>Calcular tus pagos de forma rápida.</li>
-      <li>Registrar y seguir cada uno de tus préstamos.</li>
-      <li>Entender cómo se divide cada pago entre capital e intereses.</li>
-      <li>Explorar distintas formas de pago y abono para tomar mejores decisiones financieras.</li>
-    </ul>
-  </section>
+    <!-- Section 1 -->
+    <section id="we" class="card bg-base-100 shadow-xl p-6 space-y-4">
+      <h2 class="text-2xl font-bold text-primary">¿Qué somos?</h2>
+      <p class="text-base-content/80">
+        TuCuotaRD es una página web diseñada para ayudarte a calcular, registrar y hacer seguimiento de tus préstamos de forma simple y accesible.
+      </p>
+      <div class="collapse collapse-plus bg-base-200">
+        <input type="checkbox" />
+        <div class="collapse-title font-semibold">Calcular</div>
+        <div class="collapse-content text-base-content/70">
+          Ingresa la información de tu préstamo y obtén un resumen detallado sin necesidad de registrarte.
+        </div>
+      </div>
+      <div class="collapse collapse-plus bg-base-200">
+        <input type="checkbox" />
+        <div class="collapse-title font-semibold">Registrar</div>
+        <div class="collapse-content text-base-content/70">
+          Regístrate para guardar y gestionar todos tus préstamos con nuestras herramientas de planificación.
+        </div>
+      </div>
+      <div class="collapse collapse-plus bg-base-200">
+        <input type="checkbox" />
+        <div class="collapse-title font-semibold">Hacer</div>
+        <div class="collapse-content text-base-content/70">
+          Haz seguimiento de tus préstamos para conocer tus pagos, intereses y capital en detalle.
+        </div>
+      </div>
+    </section>
 
-  <section id="not" class="bg-white dark:bg-gray-800  p-6 rounded-lg shadow space-y-4 transition-transform transform hover:scale-[1.01]">
-    <h2 class="text-2xl font-semibold dark:text-white text-gray-800">¿Por qué no?</h2>
-    <h4 class="text-lg dark:text-white font-semibold text-gray-700">
-      Regístrate en TuCuotaRD y déjanos ayudarte a organizar tus préstamos
-    </h4>
-    <p class="text-gray-600 dark:text-white leading-relaxed">
-      Sabemos lo difícil que puede ser manejar múltiples responsabilidades, y entendemos que tus
-      préstamos son solo una más entre muchas.
-      Por eso, en TuCuotaRD estamos aquí para ofrecerte la organización financiera que necesitas.
-    </p>
-    <p class="text-gray-600 dark:text-white leading-relaxed">
-      Con tu registro, podrás gestionar tus préstamos de forma ordenada, clara y sencilla,
-      para que puedas enfocarte en lo que realmente importa.
-    </p>
-  </section>
+    <!-- Section 2 -->
+    <section id="why" class="card bg-base-100 shadow-xl p-6 space-y-4">
+      <h2 class="text-2xl font-bold text-blue-800">¿Para qué estamos aquí contigo?</h2>
+      <p class="text-base-content/80">
+        Queremos ayudarte a tomar el control de tus préstamos y finanzas personales con una plataforma simple y clara.
+      </p>
+      <ul class="steps steps-vertical lg:steps-horizontal mt-4">
+        <li class="step step-primary">Calcular</li>
+        <li class="step step-primary">Registrar</li>
+        <li class="step step-primary">Seguir</li>
+        <li class="step step-primary">Decidir mejor</li>
+      </ul>
+    </section>
 
+    <!-- Section 3 -->
+    <section id="not" class="card bg-base-100 shadow-xl p-6 space-y-4">
+      <h2 class="text-2xl font-bold text-accent">¿Por qué no?</h2>
+      <p class="text-base-content/80">
+        Manejar múltiples préstamos puede ser un desafío. Con TuCuotaRD, tendrás la organización financiera que necesitas.
+      </p>
+      <div class="alert alert-info shadow">
+        <div>
+          <span>💡 Regístrate y simplifica la gestión de tus préstamos.</span>
+        </div>
+      </div>
+      <a href="{% url 'loan:register_loan' %}" class="btn btn-accent w-full">
+        Crear mi cuenta ahora
+      </a>
+    </section>
+
+  </div>
 </div>
-{% endblock %}
 
+<!-- Mobile Floating Nav -->
+<div class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 lg:hidden flex gap-2 bg-base-100 dark:bg-base-200 rounded-full shadow p-2">
+  <a href="#we" class="btn btn-ghost btn-sm scroll-link">¿Qué somos?</a>
+  <a href="#why" class="btn btn-ghost btn-sm scroll-link">¿Para qué?</a>
+  <a href="#not" class="btn btn-ghost btn-sm scroll-link">¿Por qué no?</a>
+</div>
+
+<script>
+  // Scroll Spy
+  const sections = document.querySelectorAll('section');
+  const links = document.querySelectorAll('.scroll-link');
+
+  function activateLink() {
+    let index = sections.length;
+    while (--index && window.scrollY + 150 < sections[index].offsetTop) {}
+    links.forEach((link) => link.classList.remove('btn-active'));
+    links[index].classList.add('btn-active');
+  }
+
+  activateLink();
+  window.addEventListener('scroll', activateLink);
+
+  // Smooth scroll
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelector(link.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+  });
+</script>
+{% endblock %}

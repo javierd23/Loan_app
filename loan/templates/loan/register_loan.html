@@ -3,26 +3,44 @@
 {% block title %}Registrar Préstamo{% endblock title %}
 
 {% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 py-12">
 
-<div class="container  mx-auto px-4 py-12">
-  <div class="max-w-3xl  mx-auto bg-gray-200 dark:bg-gray-900 transform hover:scale-[1.01] rounded-lg shadow p-8">
-    <h2 class="text-3xl flex justify-center font-bold dark:text-white mb-4 text-gray-800">Registra tu préstamo</h2>
-    <p class="mb-6 flex justify-center dark:text-gray-400 text-gray-700">
-      Te ayudamos a llevar el control de tus préstamos
-      <strong class="font-semibold">bancarios</strong> y <strong class="font-semibold">no bancarios</strong>.
-    </p>
-    <h4 class="text-xl flex justify-center dark:text-white font-semibold mb-6 text-gray-800">¿Qué tipo de préstamo deseas registrar?</h4>
+  <div class="max-w-3xl w-full space-y-8">
 
-    <nav class="space-x-6 flex justify-center">
-      <a href="{% url 'loan:create_bank' %}"
-         class="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition transform hover:scale-[1.01]">
-         Préstamo Bancario
+    <!-- Header -->
+    <div class="text-center space-y-4">
+      <h2 class="text-4xl font-bold dark:text-white text-gray-800">Registra tu préstamo</h2>
+      <p class="text-lg dark:text-gray-400 text-gray-700">
+        Te ayudamos a llevar el control de tus préstamos
+        <strong class="font-semibold">bancarios</strong> y
+        <strong class="font-semibold">no bancarios</strong>.
+      </p>
+      <h4 class="text-xl font-semibold dark:text-white text-gray-800">¿Qué tipo de préstamo deseas registrar?</h4>
+    </div>
+
+    <!-- Options -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- Banco Card -->
+      <a href="{% url 'loan:create_bank' %}" class="card bg-white dark:bg-gray-900 shadow-xl rounded-xl border border-gray-200 dark:border-gray-700 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:ring-2 hover:ring-blue-400 hover:ring-opacity-50 cursor-pointer">
+        <div class="card-body text-center space-y-4 py-12">
+          <h3 class="text-2xl font-bold text-blue-600 dark:text-blue-400">Préstamo Bancario</h3>
+          <p class="text-gray-600 dark:text-gray-300">Registra préstamos con interés bancario y lleva un control detallado de tus pagos.</p>
+          <button class="btn btn-primary mt-4 w-full transition-all duration-300 hover:scale-105">Registrar</button>
+        </div>
       </a>
-      <a href="{% url 'loan:create_nobank' %}"
-         class="inline-block bg-green-600 text-white dark:text-white px-6 py-3 rounded hover:bg-green-700 transition transform hover:scale-[1.01]">
-         Préstamo no Bancario
+
+      <!-- No Banco Card -->
+      <a href="{% url 'loan:create_nobank' %}" class="card bg-white dark:bg-gray-900 shadow-xl rounded-xl border border-gray-200 dark:border-gray-700 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:ring-2 hover:ring-green-800 hover:ring-opacity-50 cursor-pointer">
+        <div class="card-body text-center space-y-4 py-12">
+          <h3 class="text-2xl font-bold text-green-900 dark:text-green-800">Préstamo no Bancario</h3>
+          <p class="text-gray-600 dark:text-gray-300">Registra préstamos alternativos con condiciones más flexibles y control personal.</p>
+          <button class="btn btn-success mt-4 w-full transition-all duration-300 hover:scale-105">Registrar</button>
+        </div>
       </a>
-    </nav>
+
+    </div>
+
   </div>
 </div>
 {% endblock content %}

@@ -4,66 +4,91 @@
 
 {% block content %}
 
+<!-- Breadcrumb -->
 <nav class="mb-6" aria-label="breadcrumb">
-  <ul class="breadcrumb text-sm">
-    <li>
-      <a href="{% url 'loan:bank_list' %}" class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
-        <!-- in case I want to add a narrow -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m-6-6l6 6-6 6" />
-        </svg>
-        Volver a lista
-      </a>
-    </li>
-  </ul>
+  <a href="{% url 'loan:bank_list' %}" class="btn btn-sm btn-outline btn-primary gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    Volver a lista
+  </a>
 </nav>
 
-<div class="container mx-auto px-4 py-8 max-w-5xl grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="container mx-auto px-4 py-8 max-w-6xl grid grid-cols-1 md:grid-cols-4 gap-8">
 
-  <!-- Sidebar Right -->
-  <aside class="col-span-1 bg-white dark:bg-gray-900 rounded-lg shadow p-6 space-y-4">
-    <h3 class="text-lg font-semibold">Aquí puedes:</h3>
-    <div class="flex flex-col space-y-2">
-      <a href="{% url 'loan:bank_delete' bank_detail.id %}"
-         class="text-red-600 hover:text-red-800 font-semibold">
-        Eliminar préstamo
-      </a>
-      {% if loan_details %}
-      <a href="{% url 'loan:bank_detail_pay' loan_details.0.id %}"
-         class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-center">
-        Pagar
-      </a>
-      {% endif %}
+  <!-- Sidebar -->
+  <aside class="col-span-1">
+    <div class="card bg-base-100 dark:bg-base-200 shadow-xl">
+      <div class="card-body">
+        <h3 class="card-title text-lg">Acciones</h3>
+        <div class="flex flex-col gap-3 mt-4">
+          <a href="{% url 'loan:bank_delete' bank_detail.id %}"
+             class="btn btn-outline btn-error w-full">
+            Eliminar préstamo
+          </a>
+          {% if loan_details %}
+          <a href="{% url 'loan:bank_detail_pay' loan_details.0.id %}"
+             class="btn btn-success w-full">
+            Pagar
+          </a>
+          {% endif %}
+        </div>
+
+        <div class="mt-6">
+          <h4 class="font-semibold mb-2">¿Qué puedes hacer aquí?</h4>
+          <p class="text-sm leading-relaxed mb-3 text-gray-600">
+            En esta sección puedes simular y registrar los pagos de tu préstamo.
+            Es recomendable dar seguimiento mensual a tus pagos para mantener un control claro sobre tu deuda.
+          </p>
+          <p class="text-sm leading-relaxed text-gray-600">
+            Al seleccionar la opción <span class="font-semibold">Pagar</span>, se aplicará el pago correspondiente al mes y
+            se actualizará automáticamente el balance de tu préstamo en la lista.
+          </p>
+        </div>
+      </div>
     </div>
   </aside>
 
   <!-- Main Content -->
-  <main class="col-span-1 md:col-span-3 dark:bg-gray-900 bg-white rounded-lg shadow p-6">
-    <h3 class="text-2xl font-semibold mb-6">Préstamo bancario: {{ bank_detail.name }}</h3>
+  <main class="col-span-1 md:col-span-3">
+    <div class="card bg-base-100 dark:bg-base-200 shadow-xl">
+      <div class="card-body">
+        <h3 class="card-title text-2xl font-bold">
+          Préstamo bancario: <span class="text-primary">{{ bank_detail.name }}</span>
+        </h3>
 
-    <div class="overflow-x-auto">
-      <table class="min-w-full border-collapse dark:bg-gray-800 border border-gray-300 text-center">
-        <thead>
-          <tr class="bg-gray-100 dark:bg-gray-900">
-            <th class="border border-gray-300 px-4 py-2">Mes</th>
-            <th class="border border-gray-300 px-4 py-2">Pago</th>
-            <th class="border border-gray-300 px-4 py-2">Aporte</th>
-            <th class="border border-gray-300 px-4 py-2">Interés</th>
-            <th class="border border-gray-300 px-4 py-2">Balance</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in loan_details %}
-          <tr class="hover:bg-gray-50">
-            <td class="border border-gray-300 px-4 py-2">{{ row.months }}</td>
-            <td class="border border-gray-300 px-4 py-2">${{ row.payment|intcomma }}</td>
-            <td class="border border-gray-300 px-4 py-2">${{ row.principal|intcomma }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ row.interest_rate }}%</td>
-            <td class="border border-gray-300 px-4 py-2">${{ row.remaining|intcomma }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        <div class="overflow-x-auto mt-6">
+          <table class="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>Mes</th>
+                <th>Pago</th>
+                <th>Aporte</th>
+                <th>Interés</th>
+                <th>Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in loan_details %}
+              <tr>
+                <td>{{ row.months }}</td>
+                <td>${{ row.payment|intcomma }}</td>
+                <td>${{ row.principal|intcomma }}</td>
+                <td>{{ row.interest_rate }}%</td>
+                <td>${{ row.remaining|intcomma }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="text-center py-4 text-gray-500">
+                  No hay detalles disponibles para este préstamo.
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+      </div>
     </div>
   </main>
 

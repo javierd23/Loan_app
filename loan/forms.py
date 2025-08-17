@@ -24,5 +24,5 @@ class BankLoanForm(forms.ModelForm):
 
     class Meta:
         model = BankLoan
-        exclude = ['user']
+        exclude = ['user','payment']
 

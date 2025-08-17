@@ -4,101 +4,104 @@
 {% block title %}Préstamos Bancarios{% endblock title %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-10 max-w-5xl space-y-10">
+<div class="container mx-auto px-4 py-12 max-w-6xl space-y-12">
 
-  <section class="prose max-w-none">
-    <h1 class="text-3xl font-bold mb-4">Préstamos bancarios</h1>
-    <p>
-      Préstamos bancarios son financiamientos otorgados por instituciones financieras
-      reguladas, como bancos múltiples o asociaciones de ahorro y préstamo, que permiten a
-      personas o empresas acceder a una suma de dinero a cambio de
-      pagarla en cuotas mensuales, incluyendo intereses, durante un período determinado.
+  <!-- Intro Section -->
+  <section class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8 prose max-w-none">
+    <h1 class="text-4xl font-bold mb-4 text-blue-600 dark:text-blue-400">Préstamos Bancarios</h1>
+    <p class="text-gray-700 dark:text-gray-300">
+      Los préstamos bancarios son financiaciones otorgadas por instituciones financieras reguladas,
+      que permiten a personas o empresas acceder a dinero a cambio de cuotas mensuales con intereses.
     </p>
 
-    <h2 class="mt-8 mb-4 text-2xl font-semibold">Características comunes de los préstamos bancarios en RD:</h2>
-    <ul class="list-disc list-inside space-y-2">
-      <li><strong>Interés fijo o variable</strong> (según el tipo de préstamo)</li>
-      <li><strong>Cuotas mensuales</strong> (usualmente bajo sistema francés de amortización)</li>
-      <li><strong>Plazos variados</strong> (desde 6 meses hasta 20 años o más)</li>
+    <h2 class="mt-8 mb-4 text-2xl font-semibold text-gray-800 dark:text-gray-200">Características comunes en RD:</h2>
+    <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+      <li><strong>Interés fijo o variable</strong> según el tipo de préstamo</li>
+      <li><strong>Cuotas mensuales</strong> usualmente bajo sistema francés de amortización</li>
+      <li><strong>Plazos variados</strong> desde 6 meses hasta 20 años o más</li>
       <li><strong>Requisitos:</strong> historial crediticio, ingresos comprobables, garantía en algunos casos</li>
       <li><strong>Regulados por:</strong>
-        <a href="https://www.sb.gob.do/" target="_blank" class="text-blue-600 hover:underline">
-          la Superintendencia de Bancos (SB) y sujetos a normas de la Junta Monetaria
+        <a href="https://www.sb.gob.do/" target="_blank" class="link link-primary underline">
+          la Superintendencia de Bancos y normas de la Junta Monetaria
         </a>
       </li>
     </ul>
   </section>
 
-  <section id="bank_form" class="bg-white p-6 dark:bg-gray-900 rounded-lg shadow-md">
-    <form method="POST" class="space-y-6">
+  <!-- Form Section -->
+  <section id="bank_form" class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 shadow-xl rounded-2xl p-8">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">Simula tu préstamo</h2>
+    <form method="POST" class="space-y-6 bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md">
       {% csrf_token %}
       {{ form|crispy }}
-      <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+
+      <button type="submit" class="btn btn-primary w-full rounded-lg py-3 text-lg font-semibold hover:scale-105 transition-transform">
         Calcular
       </button>
     </form>
   </section>
 
+  <!-- Result Section -->
   {% if result %}
-  <section class="bg-green-50 border dark:bg-gray-900 border-green-300 rounded p-6 space-y-4">
-    <h3 class="text-xl font-semibold">Resultado:</h3>
-    <p>
-      La cuota mensual sería de:<br>
-      <strong>${{ result.month_pay|floatformat:2 }}</strong>
-      Considerando un monto de <strong>${{ result.loan_amount_total|floatformat:2 }}</strong>
+  <section class="bg-green-50 dark:bg-green-900 shadow-inner rounded-xl p-6 space-y-4 mt-6">
+    <h3 class="text-lg font-semibold text-green-700 dark:text-green-300">Resultado:</h3>
+    <p class="text-green-800 dark:text-green-200">
+      La cuota mensual sería de <strong>${{ result.month_pay|intcomma }}</strong><br>
+      Considerando un monto de <strong>${{ result.loan_amount_total|intcomma }}</strong>
       a una tasa de interés de <strong>{{ result.interest_rate }}%</strong>
       por un plazo de <strong>{{ result.months }}</strong> meses.
     </p>
-  </section>
 
-  <div class="overflow-x-auto dark:bg-gray-900 rounded-lg shadow-md">
-    <table class="min-w-full border-collapse border border-gray-300 text-center">
-      <thead class="bg-gray-100 dark:bg-gray-800 ">
-        <tr>
-          <th class="border border-gray-300 px-4 py-2">Mes</th>
-          <th class="border border-gray-300 px-4 py-2">Pago</th>
-          <th class="border border-gray-300 px-4 py-2">Aporte</th>
-          <th class="border border-gray-300 px-4 py-2">Interés</th>
-          <th class="border border-gray-300 px-4 py-2">Balance</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in result.schedule %}
-        <tr class="hover:bg-gray-50">
-          <td class="border border-gray-300 px-4 py-2">{{ row.month }}</td>
-          <td class="border border-gray-300 px-4 py-2">${{ row.monthly_payment|intcomma }}</td>
-          <td class="border border-gray-300 px-4 py-2">${{ row.principal|intcomma }}</td>
-          <td class="border border-gray-300 px-4 py-2">${{ row.interest|intcomma }}</td>
-          <td class="border border-gray-300 px-4 py-2">${{ row.remaining_balance|intcomma }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    <!-- Schedule Table -->
+    <div class="overflow-x-auto rounded-lg shadow-inner mt-4">
+      <table class="table-auto w-full text-center border-collapse text-gray-700 dark:text-gray-300">
+        <thead class="bg-blue-200 dark:bg-blue-800 text-gray-800 dark:text-gray-200">
+          <tr>
+            <th class="px-4 py-2">Mes</th>
+            <th class="px-4 py-2">Pago</th>
+            <th class="px-4 py-2">Aporte</th>
+            <th class="px-4 py-2">Interés</th>
+            <th class="px-4 py-2">Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in result.schedule %}
+          <tr class="hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors">
+            <td class="px-4 py-2">{{ row.month }}</td>
+            <td class="px-4 py-2">${{ row.monthly_payment|intcomma }}</td>
+            <td class="px-4 py-2">${{ row.principal|intcomma }}</td>
+            <td class="px-4 py-2">${{ row.interest|intcomma }}</td>
+            <td class="px-4 py-2">${{ row.remaining_balance|intcomma }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
   {% endif %}
 
-  <section class="prose max-w-none mt-10">
-    <h4>Los resultados de esta simulación son aproximados.</h4>
-    <ul>
+  <!-- Notes Section -->
+  <section class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8 prose mt-10">
+    <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Consideraciones importantes</h4>
+    <ul class="list-disc list-inside space-y-4 text-gray-700 dark:text-gray-300">
       <li>
-        <h5>Variaciones en las tasas de interés</h5>
-        <p>Los bancos pueden tener tasas promocionales, tasas variables, o cambiar condiciones sin previo aviso.</p>
+        <h5 class="font-semibold">Variaciones en las tasas de interés</h5>
+        <p>Los bancos pueden tener tasas promocionales o variables y cambiar condiciones sin previo aviso.</p>
       </li>
       <li>
-        <h5>Comisiones y cargos ocultos</h5>
-        <p>Algunos préstamos incluyen cargos por apertura, seguros obligatorios o
-          gastos legales que no siempre se reflejan en el interés nominal.</p>
+        <h5 class="font-semibold">Comisiones y cargos ocultos</h5>
+        <p>Algunos préstamos incluyen cargos por apertura, seguros obligatorios o gastos legales que no siempre se reflejan en el interés nominal.</p>
       </li>
       <li>
-        <h5>Cambios en condiciones del préstamo</h5>
-        <p>Si haces pagos adelantados, reestructuraciones o cancelaciones anticipadas, el cálculo se modifica.</p>
+        <h5 class="font-semibold">Cambios en condiciones del préstamo</h5>
+        <p>Pagos adelantados, reestructuraciones o cancelaciones anticipadas modifican el cálculo del préstamo.</p>
       </li>
       <li>
-        <h5>En caso de ser un préstamo hipotecario</h5>
-        <p>En caso de préstamos hipotecarios, la cuota mensual aumentaría producto del seguro
-          de vida y de propiedad, no incluidos en el cálculo.</p>
+        <h5 class="font-semibold">Préstamos hipotecarios</h5>
+        <p>La cuota mensual puede aumentar por seguros de vida y propiedad, no incluidos en el cálculo.</p>
       </li>
     </ul>
   </section>
+
 </div>
 {% endblock %}

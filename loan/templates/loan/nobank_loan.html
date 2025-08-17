@@ -5,17 +5,12 @@
 {% block content %}
 
 <nav class="mb-6" aria-label="breadcrumb">
-  <ul class="breadcrumb text-sm">
-    <li>
-      <a href="{% url 'loan:register_loan' %}" class="text-blue-600 hover:text-blue-800 flex items-center gap-1">
-        <!-- in case I want to add a narrow -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m-6-6l6 6-6 6" />
-        </svg>
-        Tipo de Préstamos
-      </a>
-    </li>
-  </ul>
+  <a href="{% url 'loan:register_loan' %}" class="btn btn-sm btn-outline btn-primary gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    Tipo de Préstamo
+  </a>
 </nav>
 
 <div class="w-full min-h-screen px-2 py-8">

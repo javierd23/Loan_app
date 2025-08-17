@@ -16,7 +16,7 @@ from django.views.generic import CreateView, ListView, DetailView, DeleteView, U
 from .models import NoBankLoan, BankLoan, BankLoanDetail
 
 from .forms import LoanPaymentForm, BankForm, NobanForm, BankLoanForm
-from .tete import Bank, Loans, no_bank_desc_loan, BankLoanUser
+from .tete import Bank, Loans, no_bank_desc_loan, BankLoanUser, bank_payment
 
 class BankView(View):
     template_name = "loan/bank.html"
@@ -124,6 +124,8 @@ class NoBankCreateView(LoginRequiredMixin, CreateView):
         no_bank = form.save(commit=False)
         no_bank.user = self.request.user
         no_bank.save()
+
+        messages.success(self.request, "Su préstamo no bancario se ha registrado exitosamente!")
         return super(NoBankCreateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -204,7 +206,10 @@ class NoBankDetailUpdateView(LoginRequiredMixin, View):
                 no_bank.loan_amount = result
                 no_bank.save()
 
-                return redirect(reverse_lazy('loan:no_bank_detail', args=[pk]))
+                messages.success(request, f'✅ ¡Pago exitoso! Se realizó un pago de ${no_bank.monthly_payment:,}'
+                                          f' al préstamo "{no_bank.name}".'
+)
+                return redirect(reverse_lazy('loan:bank_list'))
 
             else:
                 return render(request, self.template_name, context)
@@ -244,6 +249,10 @@ class NoBankLoanDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'loan/no_bank_delete.html'
     success_url = reverse_lazy('loan:bank_list')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡Su préstamo no bancario se ha eliminado exitosamente!")
+        return response
 
 class BankCreateView(LoginRequiredMixin, View):
     """This view will create the Bank loan and its payments
@@ -305,7 +314,11 @@ class BankCreateView(LoginRequiredMixin, View):
                     form.add_error(None, "No mas de 600 meses y menos de 1 mes es permitido.")
                     return render(request, self.template_name, context)
 
+                # I am getting the payment based on the loan amount, interest and months...
+                loan_payment = bank_payment(months, interest_rate, loan_amount)
+
                 loan_bank = form_loan.save(commit=False)
+                loan_bank.payment = loan_payment
                 loan_bank.user = self.request.user
                 loan_bank.save()
 
@@ -350,12 +363,16 @@ class BankLoanDetailView(LoginRequiredMixin, DetailView):
         context["loan_details"] = BankLoanDetail.objects.filter(bankloan=self.object)
         return context
 
-
 class BankLoanDeleteView(LoginRequiredMixin, DeleteView):
     model = BankLoan
     template_name = "loan/bank_delete.html"
     context_object_name = "bank_loan"
     success_url = reverse_lazy('loan:bank_list')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡Su préstamo bancario se ha eliminado exitosamente!")
+        return response
 
 
 class BankLoanDetailPay(LoginRequiredMixin, View):

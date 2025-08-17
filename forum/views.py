@@ -11,6 +11,7 @@ from .forms import CommentForm, ReplyForm
 #import generic views and base views.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
+from django.contrib import messages
 
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from .owner import OwnerListView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView, OwnerDetailView
@@ -57,14 +58,31 @@ class ForumCreateView(OwnerCreateView):
     fields = ['title', 'text']
     success_url= reverse_lazy('forum:all')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡El formulario se ha creado correctamente!")
+        return response
+
+
+
 class ForumUpdateView(OwnerUpdateView):
     model = Forum
     fields = ['title', 'text']
     success_url = reverse_lazy('forum:all')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡El formulario se ha actualizado correctamente!")
+        return response
+
 class ForumDeleteView(OwnerDeleteView):
     model = Forum
     success_url = reverse_lazy('forum:all')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡El formulario se ha eliminado correctamente!")
+        return response
 
 
 #Here I add the comment post, delete and update views
@@ -81,6 +99,7 @@ class CommentCreateView(LoginRequiredMixin, View):
             comment.forum = fq #here we get the forum_id for the comments to be fletch to the for forum id.
             comment.save()
 
+            messages.success(request, "¡Gracias por su comentario!")
             #I redirect to the detail forum and take the ride forum id, so it does the fletch
             return redirect(reverse("forum:forum_detail", args=[pk]))
 
@@ -105,7 +124,10 @@ class CommentDeleteView(OwnerDeleteView):
         #I need to invoke this func since with need to redirect to a url with a pk as detailview requires it.
         return reverse_lazy('forum:forum_detail', args=[self.object.forum_id])
 
-
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡El comentario se ha eliminado correctamente!")
+        return response
 
 class CommentUpdateView(OwnerUpdateView):
     model = Comment
@@ -121,6 +143,10 @@ class CommentUpdateView(OwnerUpdateView):
         # I need to get the pk as well
         return reverse_lazy('forum:forum_detail', args=[self.object.forum_id])
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡El comentario se ha actualizado correctamente!")
+        return response
 
 #reply views...
 class ReplyCreateView(LoginRequiredMixin, View):
@@ -137,6 +163,8 @@ class ReplyCreateView(LoginRequiredMixin, View):
             reply.comment = comments_instance
             reply.owner = request.user
             reply.save()
+
+            messages.success(request, "¡Gracias por su respuesta!")
             return redirect(reverse("forum:forum_detail", args=[forum_pk]))
         #rendering to details with erros if invalid reply...
         all_comments_forum = Comment.objects.filter(forum=forum_id).prefetch_related('replies')
@@ -161,6 +189,11 @@ class ReplyUpdateView(OwnerUpdateView):
         forum_id = self.object.comment.forum.id
         return reverse_lazy('forum:forum_detail', args=[forum_id])
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡Las respuesta se ha actualizado correctamente!")
+        return response
+
 class ReplyDeleteView(OwnerDeleteView):
     model = Reply
     template_name = "forum/reply_confirm_delete.html"
@@ -174,6 +207,11 @@ class ReplyDeleteView(OwnerDeleteView):
     def get_success_url(self):
         forum_id = self.object.comment.forum.id
         return reverse_lazy('forum:forum_detail', args=[forum_id])
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡La respuesta se ha eliminado correctamente!")
+        return response
 
 
 #builing a detail view for comment to prefetch replies.
@@ -212,9 +250,15 @@ class SingleRepyDeleteView(OwnerDeleteView):
         context["comment"] = self.object.comment
         return context
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡La respuesta se ha eliminado correctamente!")
+        return response
+
     def get_success_url(self):
         comment_id = self.object.comment.id
         return reverse_lazy('forum:comment_reply_detail', args=[self.object.comment_id])
+
 
 
 class SingleReplyUpdateView(OwnerUpdateView):
@@ -226,6 +270,11 @@ class SingleReplyUpdateView(OwnerUpdateView):
         context = super().get_context_data(**kwargs)
         context["comment"] = self.object.comment
         return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "¡La respuesta se ha actualizada correctamente!")
+        return response
 
     def get_success_url(self):
         comment_id = self.object.comment.id

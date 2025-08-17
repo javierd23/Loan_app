@@ -7,160 +7,179 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
     <!-- Left Sidebar -->
-    <aside class="col-span-1 dark:bg-gray-900 bg-white shadow rounded-lg p-6">
-      <div class="flex flex-col items-center">
-        {% if profile.photo %}
-          <img src="{{ profile.photo.url }}" alt="Foto de perfil" class="w-32 h-32 rounded-full object-cover shadow-md mb-4">
-          <a href="{% url 'accounts:settings' %}" class="text-sm text-blue-600 hover:underline">Cambiar foto</a>
-        {% else %}
-          <div class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 mb-4">
-            Sin foto
-          </div>
-          <a href="{% url 'accounts:settings' %}" class="text-sm text-blue-600 hover:underline">Agregar foto</a>
-        {% endif %}
-      </div>
+    <aside class="col-span-1">
+      <div class="card bg-base-100 dark:bg-gray-900 shadow-xl rounded-xl overflow-hidden">
+        <div class="card-body items-center text-center">
+          {% if profile.photo %}
+            <div class="avatar mb-4">
+              <div class="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                <img src="{{ profile.photo.url }}" alt="Foto de perfil"/>
+              </div>
+            </div>
+            <a href="{% url 'accounts:settings' %}" class="link link-primary text-sm">Cambiar foto</a>
+          {% else %}
+            <div class="avatar placeholder mb-4">
+              <div class="bg-neutral-focus text-neutral-content rounded-full w-32">
+                <span class="text-2xl">?</span>
+              </div>
+            </div>
+            <a href="{% url 'accounts:settings' %}" class="link link-primary text-sm">Agregar foto</a>
+          {% endif %}
 
-      <h3 class="text-lg font-semibold mt-6 mb-2 text-center">{{ user_obj.username }}</h3>
-      <p class="text-gray-600 text-sm text-center mb-6">{{ user_obj.email }}</p>
+          <h3 class="text-lg font-semibold mt-4">{{ user_obj.username }}</h3>
+          <p class="text-gray-500 dark:text-gray-400 text-sm">{{ user_obj.email }}</p>
 
-      <div class="space-y-2">
-        <h4 class="text-sm font-semibold text-gray-500 uppercase mb-2">Redes sociales</h4>
+          <div class="divider"></div>
 
-        {% if profile.facebook %}
-          <p><a href="{{ profile.facebook }}" target="_blank" class="text-blue-600 hover:underline">Facebook</a></p>
-        {% else %}
-          <p class="text-gray-400 italic text-sm">No Facebook.</p>
-        {% endif %}
+          <h4 class="text-sm font-semibold uppercase">Redes sociales</h4>
+          <ul class="space-y-1 mt-2 text-left">
+            {% if profile.facebook %}<li><a href="{{ profile.facebook }}" target="_blank" class="link link-primary">Facebook</a></li>{% else %}<li class="text-gray-400 italic text-sm">No Facebook</li>{% endif %}
+            {% if profile.twitter %}<li><a href="{{ profile.twitter }}" target="_blank" class="link link-primary">Twitter</a></li>{% else %}<li class="text-gray-400 italic text-sm">No Twitter</li>{% endif %}
+            {% if profile.linkedin %}<li><a href="{{ profile.linkedin }}" target="_blank" class="link link-primary">LinkedIn</a></li>{% else %}<li class="text-gray-400 italic text-sm">No LinkedIn</li>{% endif %}
+            {% if profile.instagram %}<li><a href="{{ profile.instagram }}" target="_blank" class="link link-primary">Instagram</a></li>{% else %}<li class="text-gray-400 italic text-sm">No Instagram</li>{% endif %}
+            {% if profile.github %}<li><a href="{{ profile.github }}" target="_blank" class="link link-primary">GitHub</a></li>{% else %}<li class="text-gray-400 italic text-sm">No GitHub</li>{% endif %}
+          </ul>
 
-        {% if profile.twitter %}
-          <p><a href="{{ profile.twitter }}" target="_blank" class="text-blue-600 hover:underline">Twitter</a></p>
-        {% else %}
-          <p class="text-gray-400 italic text-sm">No Twitter.</p>
-        {% endif %}
-
-        {% if profile.linkedin %}
-          <p><a href="{{ profile.linkedin }}" target="_blank" class="text-blue-600 hover:underline">LinkedIn</a></p>
-        {% else %}
-          <p class="text-gray-400 italic text-sm">No LinkedIn.</p>
-        {% endif %}
-
-        {% if profile.instagram %}
-          <p><a href="{{ profile.instagram }}" target="_blank" class="text-blue-600 hover:underline">Instagram</a></p>
-        {% else %}
-          <p class="text-gray-400 italic text-sm">No Instagram.</p>
-        {% endif %}
-
-        {% if profile.github %}
-          <p><a href="{{ profile.github }}" target="_blank" class="text-blue-600 hover:underline">GitHub</a></p>
-        {% else %}
-          <p class="text-gray-400 italic text-sm">No GitHub.</p>
-        {% endif %}
-      </div>
-
-      <div class="mt-6 border-t pt-4 text-center">
-        <h4 class="text-sm font-semibold text-gray-500 uppercase mb-2">Información personal</h4>
-        <p class="text-gray-700">{{ profile.phone_number|default:"No registrado" }}</p>
-        <p class="text-gray-700">{{ profile.birth_date|date:"d M, Y"|default:"No registrado" }}</p>
-        <p class="text-gray-700">{{ profile.location|default:"No registrado" }}</p>
+          <div class="divider"></div>
+          <h4 class="text-sm font-semibold uppercase">Información personal</h4>
+          <p class="text-gray-700 dark:text-gray-300">{{ profile.phone_number|default:"No registrado" }}</p>
+          <p class="text-gray-700 dark:text-gray-300">{{ profile.birth_date|date:"d M, Y"|default:"No registrado" }}</p>
+          <p class="text-gray-700 dark:text-gray-300">{{ profile.location|default:"No registrado" }}</p>
+        </div>
       </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="col-span-1 md:col-span-2 bg-white dark:bg-gray-900 shadow rounded-lg p-6">
-      <h2 class="text-2xl font-semibold mb-4">Bienvenido, {{ user.first_name }} {{ user.last_name }}</h2>
-      <p class="mb-6 text-gray-700">Aquí está la lista de tus préstamos registrados.</p>
 
-      {% block loans_list %}
+    <!-- Main Content -->
+    <main class="col-span-1 md:col-span-2 space-y-6">
 
-      <!-- Bancarios -->
-      <section class="mb-8">
-        <h3 class="text-xl font-semibold mb-3">Préstamos bancarios:</h3>
+      <!-- Welcome Card -->
+      <div class="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 transform transition hover:scale-[1.01]">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+          Bienvenido, {{ user.first_name }} {{ user.last_name }}
+        </h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Aquí está la lista de tus préstamos registrados.</p>
 
-        {% if bank_loan and bank_loan|length > 0 %}
-          <div class="overflow-x-auto dark:bg-gray-900">
-            <table class="min-w-full dark:bg-gray-800 table-auto border-collapse border border-gray-200">
-              <thead>
-                <tr class="bg-gray-100 dark:bg-gray-800">
-                  <th class="border border-gray-300 px-4 py-2 text-left">Nombre</th>
-                  <th class="border border-gray-300 px-4 py-2 text-right">Pagos mensuales</th>
-                  <th class="border border-gray-300 px-4 py-2 text-right">Intereses mensuales</th>
-                  <th class="border border-gray-300 px-4 py-2 text-right">Monto del préstamo</th>
-                  <th class="border border-gray-300 px-4 py-2 text-center">Meses pagados</th>
+        {% block loans_list %}
+
+        <!-- Search Box -->
+        <div class="mb-4 flex justify-end">
+          <input type="text" id="loanSearch" placeholder="Buscar préstamo..."
+                 class="input input-bordered w-full md:w-64 dark:bg-gray-700 dark:text-white"/>
+        </div>
+
+        <!-- Bancarios -->
+        <section class="mb-6">
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Préstamos bancarios</h3>
+          {% if bank_loan and bank_loan|length > 0 %}
+          <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+            <table id="bankLoansTable" class="table w-full table-zebra">
+              <thead class="bg-gray-100 dark:bg-gray-700">
+                <tr>
+                  <th>Nombre</th>
+                  <th class="text-right">Pago mensual</th>
+                  <th class="text-right">Interés mensual</th>
+                  <th class="text-right">Monto</th>
+                  <th class="text-center">Meses pagados</th>
                 </tr>
               </thead>
               <tbody>
                 {% for loan in bank_loan %}
-                <tr class="hover:bg-gray-50 dark:bg-gray-900">
-                  <td class="border border-gray-300 px-4 py-2">
-                    <a href="{% url 'loan:bank_detail' loan.id %}" class="text-blue-600 hover:underline">
-                      {{ loan.name }}
-                    </a>
-                  </td>
-                  <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.monthly_payment|intcomma }}</td>
-                  <td class="border border-gray-300 px-4 py-2 text-right">{{ loan.interest_rate }}%</td>
-                  <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.loan_amount|intcomma }}</td>
-                  <td class="border border-gray-300 px-4 py-2 text-center">{{ loan.month_paid }}</td>
+                <tr>
+                  <td><a href="{% url 'loan:bank_detail' loan.id %}" class="text-blue-500 hover:underline">{{ loan.name }}</a></td>
+                  <td class="text-right">${{ loan.payment|intcomma }}</td>
+                  <td class="text-right">{{ loan.interest_rate }}%</td>
+                  <td class="text-right">${{ loan.loan_amount|intcomma }}</td>
+                  <td class="text-center"><span class="badge badge-primary">{{ loan.month_paid }}</span></td>
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
           </div>
-        {% else %}
-          <p class="text-gray-500 italic">No hay préstamos bancarios registrados aún.</p>
-        {% endif %}
-      </section>
+          {% else %}
+            <p class="text-gray-500 italic">No hay préstamos bancarios registrados aún.</p>
+          {% endif %}
+        </section>
 
-      <!-- No Bancarios -->
-      <section>
-        <h3 class="text-xl font-semibold mb-3">Préstamos no bancarios:</h3>
-
-        {% if no_bank and no_bank|length > 0 %}
-          <div class="overflow-x-auto">
-            <table class="min-w-full table-auto border-collapse border border-gray-200">
-              <thead>
-                <tr class="bg-gray-100">
-                  <th class="border border-gray-300 px-4 py-2 text-left">Nombre</th>
-                  <th class="border border-gray-300 px-4 py-2 text-right">Pagos mensuales</th>
-                  <th class="border border-gray-300 px-4 py-2 text-right">Intereses mensuales</th>
-                  <th class="border border-gray-300 px-4 py-2 text-right">Monto del préstamo</th>
+        <!-- No Bancarios -->
+        <section>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">Préstamos no bancarios</h3>
+          {% if no_bank and no_bank|length > 0 %}
+          <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+            <table id="noBankLoansTable" class="table w-full table-zebra">
+              <thead class="bg-gray-100 dark:bg-gray-700">
+                <tr>
+                  <th>Nombre</th>
+                  <th class="text-right">Pago mensual</th>
+                  <th class="text-right">Interés mensual</th>
+                  <th class="text-right">Monto</th>
                 </tr>
               </thead>
               <tbody>
                 {% for loan in no_bank %}
-                <tr class="hover:bg-gray-50">
-                  <td class="border border-gray-300 px-4 py-2">
-                    <a href="{% url 'loan:no_bank_detail' loan.id %}" class="text-blue-600 hover:underline">
-                      {{ loan.name }}
-                    </a>
-                  </td>
-                  <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.monthly_payment|intcomma }}</td>
-                  <td class="border border-gray-300 px-4 py-2 text-right">{{ loan.interest_rate }}%</td>
-                  <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.loan_amount|intcomma }}</td>
+                <tr>
+                  <td><a href="{% url 'loan:no_bank_detail' loan.id %}" class="text-blue-500 hover:underline">{{ loan.name }}</a></td>
+                  <td class="text-right">${{ loan.monthly_payment|intcomma }}</td>
+                  <td class="text-right">{{ loan.interest_rate }}%</td>
+                  <td class="text-right">${{ loan.loan_amount|intcomma }}</td>
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
           </div>
-        {% else %}
-          <p class="text-gray-500 italic">No hay préstamos no bancarios registrados aún.</p>
-        {% endif %}
-      </section>
+          {% else %}
+            <p class="text-gray-500 italic">No hay préstamos no bancarios registrados aún.</p>
+          {% endif %}
+        </section>
 
-      {% endblock %}
+        {% endblock %}
+      </div>
+
     </main>
 
+    <!-- Add JS for search/filter -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('loanSearch');
+        const bankTable = document.getElementById('bankLoansTable');
+        const noBankTable = document.getElementById('noBankLoansTable');
+
+        searchInput.addEventListener('keyup', () => {
+          const filter = searchInput.value.toLowerCase();
+
+          // Filter Bank Loans
+          if (bankTable) {
+            Array.from(bankTable.tBodies[0].rows).forEach(row => {
+              const name = row.cells[0].innerText.toLowerCase();
+              row.style.display = name.includes(filter) ? '' : 'none';
+            });
+          }
+
+          // Filter No Bank Loans
+          if (noBankTable) {
+            Array.from(noBankTable.tBodies[0].rows).forEach(row => {
+              const name = row.cells[0].innerText.toLowerCase();
+              row.style.display = name.includes(filter) ? '' : 'none';
+            });
+          }
+        });
+      });
+    </script>
     <!-- Right Sidebar -->
-    <aside class="col-span-1 dark:bg-gray-900 bg-white shadow rounded-lg p-6">
-      <h3 class="text-lg font-semibold mb-4">Sugerencias</h3>
-      <p class="mb-4 text-gray-700">Recuerda que puedes registrar tu préstamo aquí.</p>
-      <a href="{% url 'loan:register_loan' %}" class="block bg-blue-600 text-white text-center py-2 rounded hover:bg-blue-700 transition">
-        Añadir nuevo préstamo
-      </a>
+    <aside class="col-span-1">
+      <div class="card bg-base-100 dark:bg-gray-900 shadow-xl rounded-xl">
+        <div class="card-body">
+          <h3 class="card-title text-lg">Sugerencias</h3>
+          <p class="text-gray-600 dark:text-gray-300">Recuerda que puedes registrar tu préstamo aquí.</p>
+          <a href="{% url 'loan:register_loan' %}" class="btn btn-primary w-full mt-4 transform transition hover:scale-[1.02]">
+            Añadir nuevo préstamo
+          </a>
+        </div>
+      </div>
     </aside>
 
   </div>
 </div>
 {% endblock %}
-
-
 

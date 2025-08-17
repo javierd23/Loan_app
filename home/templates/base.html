@@ -2,118 +2,170 @@
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
+            <style>
+            /* Animated gradient background */
+            @keyframes gradientBG {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            .animated-gradient {
+                background: linear-gradient(270deg, #3b82f6, #6366f1, #8b5cf6);
+                background-size: 600% 600%;
+                animation: gradientBG 15s ease infinite;
+            }
+
+            /* Link underline hover effect */
+            .nav-link {
+                position: relative;
+            }
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -2px;
+                width: 0;
+                height: 2px;
+                background-color: #facc15; /* yellow-300 */
+                transition: width 0.3s ease;
+            }
+            .nav-link:hover::after {
+                width: 100%;
+            }
+        </style>
     {% tailwind_css %}
     <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
     <meta charset="utf-8">
 
     <title>{% block title %}Nosotros{% endblock %}</title>
 </head>
-<body class="bg-gray-100 bg-white dark:bg-gray-800 text-black dark:text-white">
+<body class="min-h-screen flex flex-col">
 
-<nav class="bg-gray-100 shadow-md fixed w-full z-50 transition-transform transform hover:scale-[1.01]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16 items-center">
+    <nav class="sticky top-0 z-50 shadow-lg">
 
-            <!-- Left: Logo and desktop links -->
-            <div class="flex items-center space-x-4">
-                <a href="{% url 'home:home' %}" class="flex items-center">
-                    <img src="{% static 'home/logo.png' %}" alt="Logo" class="h-10 w-10">
-                    <span class="ml-2 text-xl font-bold text-gray-800">tuCuotaRD</span>
-                </a>
-                <div class="hidden md:flex space-x-6">
-                    <a href="{% url 'home:about_page' %}" class="text-gray-700 hover:text-blue-500">Nosotros</a>
-                    <a href="{% url 'home:more_page' %}" class="text-gray-700 hover:text-blue-500">Mas+</a>
-                    <a href="{% url 'home:contact_page' %}" class="text-gray-700 hover:text-blue-500">Contactos</a>
-                    <a href="{% url 'forum:all' %}" class="text-gray-700 hover:text-blue-500">Forum</a>
+        <div class="animated-gradient">
+            <div class="max-w-7xl mx-auto px-4 md:px-8">
+                <div class="flex justify-between items-center h-16">
+
+                    <!-- Logo -->
+                    <a href="{% url 'home:home' %}" class="flex items-center space-x-2">
+                        <img src="{% static 'home/logo.png' %}" alt="Logo" class="h-10 w-10 rounded-full border-2 border-white">
+                        <span class="text-white font-bold text-xl">tuCuotaRD</span>
+                    </a>
+
+                    <!-- Desktop Links -->
+                    <div class="hidden md:flex space-x-6">
+                        <a href="{% url 'home:about_page' %}" class="text-white font-medium nav-link">Nosotros</a>
+                        <a href="{% url 'home:more_page' %}" class="text-white font-medium nav-link">Mas+</a>
+                        <a href="{% url 'forum:all' %}" class="text-white font-medium nav-link">Forum</a>
+                    </div>
+
+                    <!-- Auth / User -->
+                    <div class="flex items-center space-x-4">
+                        {% if user.is_authenticated %}
+                        <div class="dropdown dropdown-end">
+                            <label tabindex="0" class="btn btn-ghost btn-sm rounded-full flex items-center space-x-2 text-white hover:bg-white/10 transition">
+                                {% if user.profile.photo %}
+                                    <img src="{{ user.profile.photo.url }}" alt="Avatar" class="w-8 h-8 rounded-full border-2 border-white object-cover">
+                                {% else %}
+                                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+                                        {{ user.username|slice:":1"|upper }}
+                                    </div>
+                                {% endif %}
+                                <span>{{ user.username }}</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </label>
+                            <ul tabindex="0" class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-56 mt-2">
+                                <li>
+                                    <a href="{% url 'accounts:profile' request.user.username %}" class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A11.959 11.959 0 0112 15c2.485 0 4.78.747 6.879 2.029M12 12a4 4 0 100-8 4 4 0 000 8z" />
+                                        </svg>
+                                        Perfil
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'accounts:settings' %}" class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2" />
+                                        </svg>
+                                        Editar perfil
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'loan:register_loan' %}" class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                        Añade un préstamo
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'loan:bank_list' %}" class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m-6-8h6M5 6h14v12H5V6z" />
+                                        </svg>
+                                        Tus préstamos
+                                    </a>
+                                </li>
+                                <li>
+                                    <form method="POST" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="w-full flex items-center gap-2 text-red-600">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                                            </svg>
+                                            Cerrar sesión
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                        {% else %}
+                        <a href="{% url 'login' %}?next={% url 'home:home' %}" class="btn btn-sm bg-blue-600 text-white hover:bg-blue-400">Iniciar sesión</a>
+                        {% endif %}
+
+                        <!-- Mobile Hamburger -->
+                        <label for="mobile-toggle" class="md:hidden btn btn-square btn-ghost text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </label>
+                    </div>
                 </div>
             </div>
 
-            {# Right: Auth links and user menu #}
-            <div class="flex items-center space-x-4">
-
+            <!-- Mobile Menu -->
+            <input type="checkbox" id="mobile-toggle" class="hidden peer" />
+            <div class="peer-checked:flex hidden flex-col md:hidden absolute top-full left-0 w-full bg-base-100 shadow-lg z-40">
+                <a href="{% url 'home:about_page' %}" class="px-4 py-2 hover:bg-blue-100">Nosotros</a>
+                <a href="{% url 'home:more_page' %}" class="px-4 py-2 hover:bg-blue-100">Mas+</a>
+                <a href="{% url 'home:contact_page' %}" class="px-4 py-2 hover:bg-blue-100">Contactos</a>
+                <a href="{% url 'forum:all' %}" class="px-4 py-2 hover:bg-blue-100">Forum</a>
                 {% if user.is_authenticated %}
-                <!-- Desktop user dropdown -->
-                <div class="hidden md:block relative group">
-                    <button class="flex items-center text-gray-700 hover:text-blue-500 focus:outline-none">
-                        <span class="mr-2">{{ user.username }}</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div
-                        class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                        <a href="{% url 'accounts:profile' request.user.username %}"
-                           class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Perfil</a>
-                        <a href="{% url 'accounts:settings' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Editar
-                            perfil</a>
-                        <a href="{% url 'loan:register_loan' %}"
-                           class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Añade un préstamo</a>
-                        <a href="{% url 'loan:bank_list' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Tus
-                            préstamos</a>
-                        <form method="POST" action="{% url 'logout' %}" class="block">
-                            {% csrf_token %}
-                            <button type="submit"
-                                    class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">Cerrar sesión
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Mobile hamburger button -->
-                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
-                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-
+                <a href="{% url 'accounts:profile' request.user.username %}" class="px-4 py-2 hover:bg-blue-100">Perfil</a>
+                <a href="{% url 'accounts:settings' %}" class="px-4 py-2 hover:bg-blue-100">Editar perfil</a>
+                <a href="{% url 'loan:register_loan' %}" class="px-4 py-2 hover:bg-blue-100">Añade un préstamo</a>
+                <a href="{% url 'loan:bank_list' %}" class="px-4 py-2 hover:bg-blue-100">Tus préstamos</a>
+                <form method="POST" action="{% url 'logout' %}" class="px-4 py-2">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full text-left text-red-600 hover:bg-blue-100 rounded">Cerrar sesión</button>
+                </form>
                 {% else %}
-                <a href="{% url 'login' %}?next={% url 'home:home' %}"
-                   class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Iniciar sesión</a>
-
-                <!-- Mobile hamburger button for non-auth users -->
-                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
-                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+                <a href="{% url 'login' %}?next={% url 'home:home' %}" class="px-4 py-2 text-blue-600 hover:bg-blue-100">Iniciar sesión</a>
                 {% endif %}
             </div>
         </div>
-    </div>
-
-    <!-- Mobile menu, hidden by default -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
-        <div class="px-4 pt-4 pb-2 space-y-1">
-            <a href="{% url 'home:about_page' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Nosotros</a>
-            <a href="{% url 'home:more_page' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Mas+</a>
-            <a href="{% url 'home:contact_page' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Contactos</a>
-            <a href="{% url 'forum:all' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Forum</a>
-
-            {% if user.is_authenticated %}
-            <a href="{% url 'accounts:profile' request.user.username %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Perfil</a>
-            <a href="{% url 'accounts:settings' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Editar perfil</a>
-            <a href="{% url 'loan:register_loan' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Añade un préstamo</a>
-            <a href="{% url 'loan:bank_list' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Tus préstamos</a>
-            <form method="POST" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="w-full text-left px-3 py-2 text-red-600 hover:bg-gray-100 rounded-md">Cerrar sesión</button>
-            </form>
-            {% else %}
-            <a href="{% url 'login' %}?next={% url 'home:home' %}" class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:bg-blue-100">Iniciar sesión</a>
-            {% endif %}
-        </div>
-    </div>
-</nav>
+    </nav>
 
 
-<div class="pt-20">
-    {% block content %}{% endblock %}
-</div>
+    <main class="flex-grow">
+      {% block content %}
+      {% endblock %}
+    </main>
 
 
 {% if messages %}
@@ -161,5 +213,41 @@
 </script>
 {% endif %}
 
+<footer class="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 py-6 mt-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+
+    <!-- Logo / Name -->
+    <div class="mb-4 md:mb-0">
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white">Carlos Javier</h2>
+      <p class="text-sm">Desarrollador Web Backend | Django</p>
+    </div>
+
+    <!-- Links -->
+    <div class="flex space-x-6 mb-4 md:mb-0">
+      <a href="{% url 'home:contact_page' %}" class="hover:text-blue-600 transition">Sobre mí</a>
+      <a href="https://github.com/javierd23?tab=repositories" target="_blank" class="hover:text-blue-600 transition">Proyectos</a>
+      <a href="{% url 'home:contact_page' %}" class="hover:text-blue-600 transition">Contacto</a>
+    </div>
+
+    <!-- Social Icons -->
+    <div class="flex space-x-4">
+      <a href="https://github.com/javierd23" class="hover:text-gray-900 dark:hover:text-white" target="_blank" rel="noopener noreferrer">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.263.82-.583 0-.288-.01-1.05-.015-2.06-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.334-1.756-1.334-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.805 1.305 3.49.998.108-.776.418-1.305.76-1.605-2.665-.305-5.467-1.335-5.467-5.932 0-1.31.467-2.38 1.235-3.22-.124-.303-.535-1.527.117-3.182 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 013.003-.403c1.02.005 2.046.137 3.003.403 2.288-1.552 3.294-1.23 3.294-1.23.654 1.655.243 2.88.12 3.182.77.84 1.232 1.91 1.232 3.22 0 4.61-2.807 5.624-5.48 5.922.43.372.814 1.103.814 2.222 0 1.605-.015 2.898-.015 3.293 0 .322.216.698.825.58C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+      </a>
+      <a href="https://www.linkedin.com/in/carlos-enrique-javier-de-la-rosa-98b892a8/" class="hover:text-blue-700 transition" target="_blank" rel="noopener noreferrer">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.1c.67-1.27 2.31-2.6 4.75-2.6 5.08 0 6 3.34 6 7.68V24h-5v-7.7c0-1.83-.03-4.2-2.56-4.2-2.57 0-2.96 2-2.96 4.08V24h-5V8z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+    &copy; 2025 Carlos Javier. Todos los derechos reservados.
+  </div>
+</footer>
 </body>
 </html>

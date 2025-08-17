@@ -3,38 +3,52 @@
 {% block title %}Eliminar Préstamo{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto mt-16 p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg text-center">
+<div class="container mx-auto max-w-md mt-16">
+  <div class="card bg-base-100 dark:bg-base-200 shadow-xl">
+    <div class="card-body text-center">
 
-  <h2 class="text-3xl font-bold dark:text-white mb-6 text-black-600">Eliminar este préstamo</h2>
+      <h2 class="card-title text-2xl font-bold justify-center mb-4">
+        Eliminar Préstamo
+      </h2>
 
-  <p class="mb-6 dark:text-gray-400 text-gray-700 text-lg">
-    ¿Estás seguro de querer eliminar esta respuesta?<br>
-    <span class="font-semibold dark:text-white text-gray-900">{{ no_bank.name }}</span>
-  </p>
+      <div class="alert alert-warning mb-6 text-sm">
+        <span>
+          ¿Estás seguro de querer eliminar el préstamo
+          <strong>{{ no_bank.name }}</strong>?<br>
+          <span class="text-xs">⚠️ Esta acción no se puede deshacer.</span>
+        </span>
+      </div>
 
-  <form action="" method="POST" onsubmit="return confirmDelete();" class="space-y-4">
-    {% csrf_token %}
+      <!-- Botón que abre el modal -->
+      <button onclick="delete_modal.showModal()" class="btn btn-error w-full">
+        Sí, eliminar
+      </button>
 
-    <button
-      type="submit"
-      class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300"
-    >
-      Sí, eliminar
-    </button>
+      <a href="{% url 'loan:no_bank_detail' no_bank.id %}" class="btn btn-outline w-full mt-2">
+        Cancelar
+      </a>
 
-    <button
-      type="button"
-      onclick="window.location.href='{% url 'loan:no_bank_detail' no_bank.id %}';"
-      class="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 rounded-lg transition duration-300"
-    >
-      Cancelar
-    </button>
-  </form>
+    </div>
+  </div>
 </div>
 
-<script>
-  function confirmDelete() {
-    return confirm('¿Confirmas que quieres eliminar esta respuesta? Esta acción no se puede deshacer.');
-  }
-</script>
+<!-- Modal DaisyUI -->
+<dialog id="delete_modal" class="modal">
+  <div class="modal-box text-center">
+    <h3 class="font-bold text-lg mb-4">Confirmar Eliminación</h3>
+    <p class="mb-6">
+      ¿Seguro que deseas eliminar este préstamo?<br>
+      <span class="font-bold text-red-600">{{ no_bank.name }}</span><br>
+      <small class="text-xs">⚠️ Esta acción no se puede deshacer.</small>
+    </p>
+
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="flex justify-center gap-4">
+        <button type="submit" class="btn btn-error">Sí, eliminar</button>
+        <button type="button" onclick="delete_modal.close()" class="btn">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</dialog>
 {% endblock %}

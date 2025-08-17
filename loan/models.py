@@ -25,6 +25,7 @@ class BankLoan(models.Model):
     name = models.CharField(max_length=100, verbose_name='Nombre')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    payment = models.DecimalField(max_digits=10, decimal_places=2)
     interest_rate = models.IntegerField(verbose_name="Intereses Anual")
     loan_amount = models.DecimalField(verbose_name="Monto del préstamo",
                                       max_digits=10, decimal_places=2)

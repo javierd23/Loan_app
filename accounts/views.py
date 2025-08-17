@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import login
 
-
+from django.contrib import messages
 from .forms import SingUpForm
 
 from .forms import ProfileCreate
@@ -30,6 +30,7 @@ class SingUpView(View):
             user = form.save()
             login(request, user)
 
+            messages.success(request, "¡Tu cuenta ha sido registrada exitosamente!")
             return redirect(reverse('home:home'))
         else:
             return render(request, "home/sing_up.html", {'form': form})
@@ -81,11 +82,13 @@ class ProfileUpdateOrCreateView(LoginRequiredMixin, View):
         except UserProfile.DoesNotExist:
             form = ProfileCreate(request.POST, request.FILES)
 
-
         if form.is_valid():
             form = form.save(commit=False)
             form.user = request.user
             form.save()
+
+            messages.success(request, "¡Tu perfil ha sido actualizado exitosamente!")
+
             return redirect(reverse_lazy('accounts:profile', args=[request.user.username]))
 
         context = {'form': form}

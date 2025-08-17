@@ -4,96 +4,91 @@
 {% block title %}Préstamos No Bancarios{% endblock title %}
 
 {% block content %}
+<div class="container mx-auto px-4 py-12 max-w-6xl space-y-12">
 
-<div class="container mx-auto px-4 py-10 max-w-5xl space-y-8">
-
-  <section class="prose max-w-none">
-    <h1 class="text-3xl font-bold mb-4">Préstamos no bancarios</h1>
-    <p>
-      <strong>Préstamos no bancarios</strong> son aquellos que se otorgan fuera del sistema financiero tradicional (bancos).
-      Los otorgan entidades como cooperativas, financieras, prestamistas privados, empresas de microcrédito
-      o plataformas digitales. Aunque cumplen funciones similares,
-      suelen tener condiciones más flexibles, pero también pueden tener mayores riesgos o intereses más altos.
+  <!-- Intro Section -->
+  <section class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 prose max-w-none">
+    <h1 class="text-4xl font-bold mb-4 text-blue-600 dark:text-blue-400">Préstamos no bancarios</h1>
+    <p class="text-gray-700 dark:text-gray-300">
+      <strong>Préstamos no bancarios</strong> son aquellos otorgados fuera del sistema financiero tradicional.
+      Los otorgan entidades como cooperativas, financieras, prestamistas privados, microcréditos o plataformas digitales.
+      Suelen ser más flexibles pero con riesgos o intereses más altos.
     </p>
 
-    <h3 class="mt-6 mb-3 font-semibold">Características principales:</h3>
-    <ul class="list-disc list-inside space-y-1">
-      <li><strong>Entidad:</strong> No es un banco. Puede ser una financiera, cooperativa, empresa privada o persona física.</li>
+    <h3 class="mt-6 mb-3 font-semibold text-gray-800 dark:text-gray-200">Características principales:</h3>
+    <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+      <li><strong>Entidad:</strong> Financiera, cooperativa, empresa privada o persona física.</li>
       <li><strong>Acceso rápido:</strong> Menos requisitos, ideal para personas sin historial bancario o con urgencias.</li>
-      <li><strong>Intereses:</strong> A menudo son más altos que los bancarios.</li>
-      <li><strong>Flexibilidad:</strong> Plazos de pago y montos más personalizados, pero con menor regulación.</li>
-      <li><strong>Riesgos:</strong> Algunos no están regulados formalmente, por lo que es importante leer bien las condiciones.</li>
+      <li><strong>Intereses:</strong> Suelen ser más altos que los bancarios.</li>
+      <li><strong>Flexibilidad:</strong> Plazos y montos más personalizados, aunque con menor regulación.</li>
+      <li><strong>Riesgos:</strong> Algunos no están formalmente regulados; leer las condiciones es clave.</li>
     </ul>
-
-    <p class="mt-4">
-      En muchos países, muchas personas recurren a financieras, prestamistas informales o cooperativas como alternativa a los bancos,
-      especialmente cuando necesitan dinero rápido y no califican para un préstamo bancario tradicional.
-    </p>
   </section>
 
-  <section id="nobank" class="bg-white dark:bg-gray-900  rounded-lg shadow p-6 space-y-6">
+  <!-- Loan Form -->
+  <section id="nobank" class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 shadow-xl rounded-xl p-8">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">Calcular préstamo no bancario</h2>
 
-    <form method="post" action="" class="space-y-6">
+    <form method="post" action="" class="space-y-6 bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md">
       {% csrf_token %}
 
       {% if form.non_field_errors %}
-        <div class="bg-red-100 border dark:text-white  dark:bg-red-900 border-red-400 text-red-700 px-4 py-3 rounded">
+        <div class="alert alert-error text-sm mb-4">
           {% for error in form.non_field_errors %}
-            <p>{{ error }}</p>
+            <span>{{ error }}</span>
           {% endfor %}
         </div>
       {% endif %}
 
       {{ form|crispy }}
 
-      <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+      <button type="submit" class="btn btn-primary w-full rounded-lg py-3 text-lg font-semibold hover:scale-105 transition-transform">
         Calcular
       </button>
     </form>
 
     {% if result %}
-    <div class="bg-green-50 border dark:bg-gray-900 border-green-300 rounded p-4">
-      <h3 class="text-lg font-semibold mb-2">Resultado del préstamo:</h3>
-      <p>
+    <div class="mt-8 p-6 bg-gay-200 dark:bg-green-900 rounded-xl shadow-inner space-y-4">
+      <p class="text-green-800 dark:text-green-200 font-semibold text-lg">
         Usted pagaría aproximadamente
         <strong>${{ result.schedule.0.monthly_pay|intcomma }}</strong> cada mes,
         durante un período estimado de <strong>{{ result.schedule|length }} meses</strong>.
-        Este cálculo asume que mantendrá un compromiso constante con los pagos y que no añadirá nuevos préstamos al balance existente.
       </p>
-    </div>
 
-    <div class="overflow-x-auto">
-      <table class="min-w-full dark:bg-gray-900 border-collapse border border-gray-300 mt-4">
-        <thead>
-          <tr class="dark:bg-gray-800 bg-gray-100">
-            <th class="border border-gray-300 px-4 py-2 text-left">Mes</th>
-            <th class="border border-gray-300 px-4 py-2 text-right">Pagos mensuales</th>
-            <th class="border border-gray-300 px-4 py-2 text-right">Pago al capital</th>
-            <th class="border border-gray-300 px-4 py-2 text-right">Pago al interés</th>
-            <th class="border border-gray-300 px-4 py-2 text-right">Balance del préstamo</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for loan in result.schedule %}
-          <tr class="hover:bg-gray-50">
-            <td class="border border-gray-300 px-4 py-2">{{ loan.month }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.monthly_pay|intcomma }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.des_pay|intcomma }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.des_int|intcomma }}</td>
-            <td class="border border-gray-300 px-4 py-2 text-right">${{ loan.loan_amount|intcomma }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <!-- Loan Table -->
+      <div class="overflow-x-auto rounded-lg shadow-inner">
+        <table class="table-auto w-full border-collapse text-gray-700 dark:text-gray-300">
+          <thead class="bg-blue-200 dark:bg-blue-800 text-gray-800 dark:text-gray-200">
+            <tr>
+              <th class="px-4 py-2">Mes</th>
+              <th class="px-4 py-2 text-right">Pagos mensuales</th>
+              <th class="px-4 py-2 text-right">Pago al capital</th>
+              <th class="px-4 py-2 text-right">Pago al interés</th>
+              <th class="px-4 py-2 text-right">Balance del préstamo</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for loan in result.schedule %}
+            <tr class="hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors">
+              <td class="px-4 py-2">{{ loan.month }}</td>
+              <td class="px-4 py-2 text-right">${{ loan.monthly_pay|intcomma }}</td>
+              <td class="px-4 py-2 text-right">${{ loan.des_pay|intcomma }}</td>
+              <td class="px-4 py-2 text-right">${{ loan.des_int|intcomma }}</td>
+              <td class="px-4 py-2 text-right">${{ loan.loan_amount|intcomma }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
     {% endif %}
   </section>
 
-  <section class="prose max-w-none">
-    <p>
-      Los <strong>pagos del préstamo</strong> deben ajustarse a lo que estés realmente dispuesto y capaz de pagar por tu préstamo mensualmente.
-      Esto nos permite calcular un plazo de pago específico según el monto que te comprometas a cubrir cada mes.
+  <!-- Outro -->
+  <section class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 prose max-w-none">
+    <p class="text-gray-700 dark:text-gray-300">
+      Los <strong>pagos del préstamo</strong> deben ajustarse a lo que estés dispuesto a pagar mensualmente.
+      Esto nos permite calcular un plazo específico según tu capacidad de pago.
     </p>
   </section>
 
