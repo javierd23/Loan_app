@@ -72,7 +72,15 @@ class ProfileUpdateOrCreateView(LoginRequiredMixin, View):
         except UserProfile.DoesNotExist:
             form = ProfileCreate()
 
-        context = {'form': form}
+        social_fields = [
+            (form['twitter'], 'mdi:twitter'),
+            (form['linkedin'], 'mdi:linkedin'),
+            (form['instagram'], 'mdi:instagram'),
+            (form['github'], 'mdi:github'),
+            (form['facebook'], 'mdi:facebook'),
+        ]
+
+        context = {'form': form, 'social_fields': social_fields}
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):

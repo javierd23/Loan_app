@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_views
 
+from home.views import my_custom_page_not_found_view, my_custom_error_view
+
 urlpatterns = [
     path("admin_prv/", admin.site.urls),
     path("", include("home.urls")),
@@ -29,5 +31,8 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
 
 
-
 ]
+
+# 404 http views...
+handler404 = my_custom_page_not_found_view
+handler500 = my_custom_error_view

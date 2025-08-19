@@ -128,7 +128,7 @@ class BankLoanUser:
 
         total = []
         months_count = 0
-        while  self.loan_amount >= 0:
+        while True:
             dec_pay = month_pay - (self.loan_amount * interest_rat)
             desc_amount = self.loan_amount - dec_pay
             self.loan_amount = desc_amount

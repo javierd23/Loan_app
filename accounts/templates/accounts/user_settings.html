@@ -1,12 +1,11 @@
 {% extends "base.html" %}
-{% load tailwind_filters %}
 {% block title %}Configuración{% endblock %}
 
 {% block content %}
 
 <!-- Breadcrumb -->
-<nav class="mb-6" aria-label="breadcrumb">
-  <a href="{% url 'accounts:profile' request.user.username %}" class="btn btn-sm btn-outline btn-primary gap-2">
+<nav class="mb-6 flex items-center" aria-label="breadcrumb">
+  <a href="{% url 'accounts:profile' request.user.username %}" class="btn btn-sm btn-outline btn-primary gap-2 flex items-center">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
     </svg>
@@ -14,30 +13,10 @@
   </a>
 </nav>
 
-<div class="w-full min-h-screen px-2 py-8">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="w-full min-h-screen px-4 py-8">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-    <!-- Left Sidebar (empty or for future links) -->
-    <aside class="hidden md:block col-span-1"></aside>
-
-    <!-- Main Content: Settings Form -->
-    <main class="col-span-1 md:col-span-2">
-      <div class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 transform transition hover:scale-[1.01]">
-        <h2 class="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">Configuración de perfil</h2>
-        <form action="{% url 'accounts:settings' %}" method="post" enctype="multipart/form-data" class="space-y-6">
-          {% csrf_token %}
-          {{ form|crispy }}
-          <div class="flex justify-end">
-            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-              Guardar cambios
-            </button>
-          </div>
-
-        </form>
-      </div>
-    </main>
-
-    <!-- Right Sidebar: Change Password -->
+    <!-- Left Sidebar (empty for future links) -->
     <aside class="col-span-1">
       <div class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 transform transition hover:scale-[1.01]">
         <h3 class="text-gray-700 dark:text-gray-300 text-sm font-semibold mb-4 uppercase tracking-wide">Cambiar contraseña</h3>
@@ -49,7 +28,92 @@
       </div>
     </aside>
 
+    <!-- Main Content: Settings Form -->
+    <main class="col-span-2">
+      <div class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 transform transition hover:scale-[1.01]">
+        <h2 class="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">Configuración de perfil</h2>
+        <form action="" method="post" enctype="multipart/form-data" class="space-y-5">
+          {% csrf_token %}
+
+          <!-- Nickname -->
+          <div class="flex flex-col">
+            {{ form.nickname.label_tag }}
+            {{ form.nickname }}
+            <p class="text-red-500 text-sm">{{ form.nickname.errors }}</p>
+          </div>
+
+          <!-- Birth Date -->
+          <div class="flex flex-col">
+            {{ form.birth_date.label_tag }}
+            {{ form.birth_date }}
+            <p class="text-red-500 text-sm">{{ form.birth_date.errors }}</p>
+          </div>
+
+          <!-- Phone & Location -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col">
+              {{ form.phone_number.label_tag }}
+              {{ form.phone_number }}
+              <p class="text-red-500 text-sm">{{ form.phone_number.errors }}</p>
+            </div>
+            <div class="flex flex-col">
+              {{ form.location.label_tag }}
+              {{ form.location }}
+              <p class="text-red-500 text-sm">{{ form.location.errors }}</p>
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for field, icon in social_fields %}
+            <div class="flex flex-col">
+              <label class="flex items-center gap-2">
+                <span class="iconify text-gray-500 dark:text-gray-300" data-icon="{{ icon }}" data-width="20" data-height="20"></span>
+                {{ field.label }}
+              </label>
+              {{ field }}
+              <p class="text-red-500 text-sm">{{ field.errors }}</p>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Photo Upload -->
+          <div class="flex flex-col">
+            {{ form.photo.label_tag }}
+            {{ form.photo }}
+            <p class="text-red-500 text-sm">{{ form.photo.errors }}</p>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-end">
+            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+              Guardar cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Right Sidebar: if ever needed -->
+
+
   </div>
 </div>
+
+<!-- Flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- Iconify for social icons -->
+<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+
+<script>
+  flatpickr("input[name='birth_date']", {
+    dateFormat: "Y-m-d",
+    maxDate: "today",
+    altInput: true,
+    altFormat: "F j, Y",
+  });
+</script>
 
 {% endblock %}

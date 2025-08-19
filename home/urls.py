@@ -12,4 +12,5 @@ urlpatterns = [
     path("more/", views.more, name="more_page"),
     path("feedback/", views.FeedbackCreateView.as_view(), name="feedback"),
 
+
 ]
