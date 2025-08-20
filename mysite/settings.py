@@ -27,7 +27,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["tucuotard.com", "www.tucuotard.com"]
+ALLOWED_HOSTS = ["tucuotard.com", "www.tucuotard.com", "http://tucuotard-1.us-east-2.elasticbeanstalk.com/"]
 
 
 
