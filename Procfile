@@ -1,1 +1,1 @@
-web: gunicorn mysite.wsgi
+web: gunicorn --bind :8000 --workers 1 mysite.wsgi:application
