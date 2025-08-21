@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_views
 
-from home.views import my_custom_page_not_found_view, my_custom_error_view, health_check
+from home.views import my_custom_page_not_found_view, my_custom_error_view
 
 urlpatterns = [
     path("admin_prv/", admin.site.urls),
@@ -29,7 +29,6 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path('accounts/', include('django.contrib.auth.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
-    path('health/', health_check, name='health_check'),
 
 
 ]
