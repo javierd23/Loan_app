@@ -39,7 +39,5 @@ Thumbs.db
 ehthumbs.db
 
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+# Ignore Django settings with secrets
+settings.py
