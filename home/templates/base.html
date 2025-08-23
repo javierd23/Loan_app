@@ -12,12 +12,14 @@
     gtag('config', 'G-Q5YCZTJWKC');
   </script>
 
-  {% load static %}
-  <!-- this is for favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'home/favicon_ico/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'home/favicon_ico/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'home/favicon_ico/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'site.webmanifest' %}">
+
+    {% load static %}
+    <!-- this is for favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'home/favicon_ico/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'home/favicon_ico/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'home/favicon_ico/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'home/favicon_ico/site.webmanifest' %}">
+
             <style>
             /* Animated gradient background */
             @keyframes gradientBG {
@@ -49,8 +51,10 @@
                 width: 100%;
             }
         </style>
+
     {% tailwind_css %}
     <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+
     <meta charset="utf-8">
 
     <title>{% block title %}Nosotros{% endblock %}</title>

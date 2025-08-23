@@ -1,0 +1,2 @@
+set -a; source /home/carlos23/Loan_app/.env; set +a
+
