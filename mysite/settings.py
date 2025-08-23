@@ -210,7 +210,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_DIRS = [BASE_DIR / 'home' / 'static']
+STATICFILES_DIRS = [
+    BASE_DIR / 'home' / 'static'
+]
 
 
 #Root of the upload media for the user, this is for profile photo
