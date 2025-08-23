@@ -1,15 +1,25 @@
 from django.core.exceptions import ValidationError
+
 from django.db import models
 from django.contrib.auth.models import User
+
+from PIL import Image
 
 
 
 class UserProfile(models.Model):
+    photo = models.ImageField(upload_to="profile_pics/")
 
-    def validate_avatar(image):
-        max_size = 512
-        if image.width > max_size or image.height > max_size:
-            raise ValidationError(f"La imagen deben ser {max_size}x{max_size}px")
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.photo:
+            img_path = self.photo.path
+            img = Image.open(img_path)
+
+            max_size = (1000, 1000)
+            img.thumbnail(max_size)  # resizing the image to avoid
+            img.save(img_path)
 
     #relation
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profiles')
@@ -28,7 +38,7 @@ class UserProfile(models.Model):
     github = models.URLField(blank=True)
     facebook = models.URLField(blank=True)
 
-    photo = models.ImageField(validators=[validate_avatar],
+    photo = models.ImageField(
                               upload_to="profile_pics/", null=True, blank=True,
                               verbose_name="Foto de perfil")
 
