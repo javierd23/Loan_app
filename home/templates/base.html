@@ -85,8 +85,8 @@
                         {% if user.is_authenticated %}
                         <div class="dropdown dropdown-end">
                             <label tabindex="0" class="btn btn-ghost btn-sm rounded-full flex items-center space-x-2 text-white hover:bg-white/10 transition">
-                                {% if user.profile.photo %}
-                                    <img src="{{ user.profile.photo.url }}" alt="Avatar" class="w-8 h-8 rounded-full border-2 border-white object-cover">
+                                {% if user.profiles.photo %}
+                                    <img src="{{ user.profiles.photo.url }}" alt="Avatar" class="w-8 h-8 rounded-full border-2 border-white object-cover">
                                 {% else %}
                                     <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
                                         {{ user.username|slice:":1"|upper }}
