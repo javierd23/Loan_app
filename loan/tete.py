@@ -132,9 +132,12 @@ class BankLoanUser:
             dec_pay = month_pay - (self.loan_amount * interest_rat)
             desc_amount = self.loan_amount - dec_pay
             self.loan_amount = desc_amount
+            print(self.loan_amount)
             desc_pay = interest_rat * self.loan_amount
             pay_month = month_pay - desc_pay
             months_count += 1
+
+            if self.loan_amount <= 0: break
 
             total.append(
             {"month": months_count,
@@ -144,17 +147,17 @@ class BankLoanUser:
              "remaining_balance": round(max(self.loan_amount, 0), 2)}
                     )
 
-            if self.loan_amount <= 0: break
+
         return total
 
 #testing BankLoanUser class...
-#loan_1 = BankLoanUser(40000,10,12)
-#result = loan_1.bank_loan()
+loan_1 = BankLoanUser(12000,5,8)
+result = loan_1.bank_loan()
 
 
 #data = [ item for item in result ]
 
-#print(result)
+print(result)
 
 
 def bank_payment(months, interest_rate, loan_amount):
