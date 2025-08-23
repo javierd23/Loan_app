@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'loan.apps.LoanConfig',
     'home.apps.HomeConfig',
+    'django.contrib.sites',
     'forum.apps.ForumConfig',
     'accounts.apps.AccountsConfig',
     'tailwind',
