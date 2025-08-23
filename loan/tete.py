@@ -154,7 +154,7 @@ class BankLoanUser:
 
 #data = [ item for item in result ]
 
-#print(data)
+#print(result)
 
 
 def bank_payment(months, interest_rate, loan_amount):
