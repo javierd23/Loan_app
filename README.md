@@ -16,11 +16,7 @@ It supports both **flat interest** and **amortized interest** methods, giving us
 
 ---
 
-## 🖼️ Screenshots
 
-> _(Add screenshots of your app interface here — homepage, loan results, comparison chart, etc.)_
-
----
 
 ## ⚙️ Tech Stack
 
