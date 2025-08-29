@@ -84,7 +84,7 @@ class Bank:
                  "remaining_balance": round(max(self.loan_amount, 0), 2)}
                 )
 
-            if self.loan_amount  <= 0: break
+            if self.loan_amount <= 0: break
         return {
         "schedule": total, #this is the whole dict and the following is just to get some info in the a different display
         "month_pay": round(month_pay, 2),
@@ -128,16 +128,17 @@ class BankLoanUser:
 
         total = []
         months_count = 0
+
         while True:
             dec_pay = month_pay - (self.loan_amount * interest_rat)
             desc_amount = self.loan_amount - dec_pay
             self.loan_amount = desc_amount
-            print(self.loan_amount)
             desc_pay = interest_rat * self.loan_amount
             pay_month = month_pay - desc_pay
             months_count += 1
+            print(months_count)
 
-            if self.loan_amount <= 0: break
+            if self.months == months_count - 1: break
 
             total.append(
             {"month": months_count,
@@ -151,13 +152,13 @@ class BankLoanUser:
         return total
 
 #testing BankLoanUser class...
-loan_1 = BankLoanUser(12000,5,8)
+loan_1 = BankLoanUser(100000,24,12)
 result = loan_1.bank_loan()
 
-
-#data = [ item for item in result ]
-
 print(result)
+data = result[:]
+
+print(data)
 
 
 def bank_payment(months, interest_rate, loan_amount):
